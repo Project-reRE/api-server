@@ -1,4 +1,4 @@
-import {Entity, ManyToMany, PrimaryColumn} from 'typeorm'
+import { Entity, ManyToMany, PrimaryColumn } from 'typeorm'
 import { UserEntity } from './user.entity'
 
 @Entity('roles')

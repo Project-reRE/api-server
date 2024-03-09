@@ -1,7 +1,8 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn, Entity,
+  DeleteDateColumn,
+  Entity,
   Index,
   JoinTable,
   ManyToMany,

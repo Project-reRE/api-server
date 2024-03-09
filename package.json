@@ -1,8 +1,8 @@
 {
-  "name": "user-api-server",
+  "name": "rere-api-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Project Rere Api server",
+  "author": "SeungMinKim",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

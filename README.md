@@ -1,13 +1,38 @@
-# Swagger
+# 기획서
+  - [기획서 Figma Link](https://www.figma.com/file/ZZ6EVbe28gv4BXzipp9q0L/App-reRE?type=design&node-id=1-3&mode=design&t=llQ8kmT1cuo8LCIW-0)
+## Service Architecture
+- Service 확장성 + 기술 확장성을 고려하여 MSA 구조로 진행
+  - [MSA 구조 장단점 링크]( https://velog.io/@whitebear/MSA)
+- MSA 구조로 할 경우, 문제점
+  - DB 구조
+    - 공통으로 사용되는 Table의 경우(ex user Table Data 복제 이슈, Relation 문제가 있음)
+    - Kafka 를 활용하여 Event Driven Pattern 적용
+    - https://medium.com/dtevangelist/event-driven-microservice-%EB%9E%80-54b4eaf7cc4a
+- Service 구성도
+  - TBD
+## Table 
+[ERD CLOUD](https://www.erdcloud.com/d/kMhhaePaTf3vPRSCB)
 
-- [API 사용](http://localhost:3000/api)
-- 배포 후 localHost -> 서버 API로 변경
+![image](https://github.com/Project-reRE/api-server/assets/20696473/bd03e324-fe4e-4f4c-a41e-762b28cc4eb4)
 
-# NestJS
+### TBD
+## Service
+###  Rest-api-gateway
+#### REST 방식을 사용하여 Client와 grpc 서버들 사이 연결
+- TBD
+### grpc server
+- grpc를 사용하여 rest 와 연결
+- grpc 설명 TBD , 사용 이유 TBD
+#### grpc-user
+- user table 담당 비즈니스 로직 구현
+- TBD
+#### grpc-statistics
+- statistics table 담당 비즈니스 로직 구현
+- TBD
+#### grpc-moive
+- moive table 담당 비즈니스 로직 구현
+- TBD
 
-# TypeORM
-
-# MySQL
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>

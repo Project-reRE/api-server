@@ -1,8 +1,27 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "monorepo": true,
   "compilerOptions": {
-    "deleteOutDir": true
+    "webpack": true,
+    "assets": [
+      "**/*.proto",
+      "**/*.json",
+      "**/*.png",
+      "**/*.py",
+      "**/*.template.html"
+    ],
+    "watchAssets": true
+  },
+  "projects": {
+    "rest-api-gateway": {
+      "type": "application",
+      "root": "apps/rest-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/rest-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/rest-api-gateway/tsconfig.app.json"
+      }
+    }
   }
 }

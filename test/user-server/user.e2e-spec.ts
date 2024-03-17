@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
-import { UserServerModule } from '../../apps/user-server/src/user-server.module'
+import { GrpcUserModule } from '../../apps/grpc-user/src/grpc-user.module'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UserServerModule],
+      imports: [GrpcUserModule],
     }).compile()
 
     app = moduleFixture.createNestApplication()

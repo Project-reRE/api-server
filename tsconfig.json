@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@grpc-idl/grpc": [
+        "grpc-idl/ts"
+      ],
+      "@grpc-idl/grpc/*": [
+        "grpc-idl/ts/*"
+      ]
+    }
   }
 }

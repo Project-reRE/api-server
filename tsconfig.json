@@ -18,10 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@grpc-idl/grpc": [
+      "@grpc-idl/proto": [
         "grpc-idl/ts"
       ],
-      "@grpc-idl/grpc/*": [
+      "@grpc-idl/proto/*": [
         "grpc-idl/ts/*"
       ]
     }

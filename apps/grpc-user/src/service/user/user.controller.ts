@@ -9,7 +9,7 @@ import {
   FindOneUserResponse,
   UserServiceController,
   UserServiceControllerMethods,
-} from '@grpc-idl/grpc/user'
+} from '@grpc-idl/proto/user'
 
 @Controller('user')
 @UserServiceControllerMethods()

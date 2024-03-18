@@ -5,7 +5,7 @@ import configurations from './config/configurations'
 import { ValidationPipe } from '@nestjs/common'
 import { ServerCredentials } from '@grpc/grpc-js'
 import { join } from 'path'
-import { USER_PACKAGE_NAME } from '@grpc-idl/grpc/user'
+import { USER_PACKAGE_NAME } from '@grpc-idl/proto/user'
 
 async function bootstrap() {
   console.log(`NODE_ENV: ${configurations().env}`)

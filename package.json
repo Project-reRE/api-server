@@ -1,5 +1,5 @@
 {
-  "name": "user-api-server",
+  "name": "api-server",
   "version": "0.0.1",
   "description": "RERE Mono Repository used NestJS and TypeORM",
   "author": "SeungMinKim(https://github.com/SeungMinK)",

@@ -23,6 +23,18 @@
       ],
       "@grpc-idl/proto/*": [
         "grpc-idl/ts/*"
+      ],
+      "@client/client-grpc-stub": [
+        "libs/client-grpc-stub/src"
+      ],
+      "@client/client-grpc-stub/*": [
+        "libs/client-grpc-stub/src/*"
+      ],
+      "@grpc-stub": [
+        "grpc-stub/src"
+      ],
+      "@grpc-stub/*": [
+        "grpc-stub/src/*"
       ]
     }
   }

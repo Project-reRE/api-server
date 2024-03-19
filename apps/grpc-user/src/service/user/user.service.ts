@@ -12,10 +12,12 @@ export class UserService {
   ) {}
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponse> {
+    console.log(request)
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
     if (!existUserEntity) {
       //404 NOT FOUND ERROR RETURN
     }
+    console.log(existUserEntity)
     return { user: existUserEntity }
   }
 

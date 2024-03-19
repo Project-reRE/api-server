@@ -20,15 +20,11 @@ export class GrpcStubUserService implements UserServiceClient {
     this.grpcStubUserService = this.client.getService<UserServiceClient>(USER_SERVICE_NAME)
   }
 
-  findOne(request: FindOneUserRequest, metadata?: Metadata): Observable<FindOneUserResponse> {
-    return this.grpcStubUserService
-      .findOne(request, metadata)
-      .pipe(catchError((e) => throwError(() => new RpcException(e))))
+  findOne(request: FindOneUserRequest): Observable<FindOneUserResponse> {
+    return this.grpcStubUserService.findOne(request).pipe(catchError((e) => throwError(() => new RpcException(e))))
   }
 
-  create(request: CreateUserRequest, metadata?: Metadata): Observable<CreateUserResponse> {
-    return this.grpcStubUserService
-      .create(request, metadata)
-      .pipe(catchError((e) => throwError(() => new RpcException(e))))
+  create(request: CreateUserRequest): Observable<CreateUserResponse> {
+    return this.grpcStubUserService.create(request).pipe(catchError((e) => throwError(() => new RpcException(e))))
   }
 }

@@ -1,12 +1,12 @@
 import { Module, OnApplicationBootstrap } from '@nestjs/common'
-import { UserModule } from '../api/user/user.module'
+import { UserModule } from './api/user/user.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import configurations from '../../grpc-user/src/config/configurations'
+
 import { GrpcStubUserModule } from '../../../grpc-stub/src/grpc-stub-user'
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, BaseExceptionFilter, HttpAdapterHost } from '@nestjs/core'
-import { ClsGuard, ClsInterceptor } from 'nestjs-cls'
+import { APP_INTERCEPTOR, HttpAdapterHost } from '@nestjs/core'
 import { Server } from 'http'
 import { TimeoutInterceptor } from '../../../libs/interceptor/timeout.interceptor'
+import configurations from './config/configurations'
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { TimeoutInterceptor } from '../../../libs/interceptor/timeout.intercepto
     GrpcStubUserModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        host: configService.get('grpc.user.host'),
+        host: configService.get('grpc.user.host') ?? '192.168.10.1',
         port: configService.get('grpc.user.port'),
         protoPath: configService.get('protoPath'),
         isEnabledSecureSsl: configService.get<boolean>('grpc.enableSecureSsl'),

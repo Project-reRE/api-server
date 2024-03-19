@@ -21,6 +21,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/rest-api-gateway/tsconfig.app.json"
       }
+    },
+    "grpc-user": {
+      "type": "application",
+      "root": "apps/grpc-user",
+      "entryFile": "main",
+      "sourceRoot": "apps/grpc-user/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/grpc-user/tsconfig.app.json"
+      }
     }
   }
 }

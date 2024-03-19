@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package user;
+
+
+service UserService {
+  rpc FindOne(FindOneUserRequest) returns (FindOneUserResponse) {}
+  rpc Create(CreateUserRequest) returns (CreateUserResponse) {}
+  //  rpc Update(HeroById) returns (Hero) {}
+  //  rpc Remove(HeroById) returns (Hero) {}
+  //  rpc FindMany(HeroById) returns (Hero) {}
+}
+
+message FindOneUserRequest {
+  string id = 1;
+}
+
+message FindOneUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  string username = 1;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+}
+
+
+

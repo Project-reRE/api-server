@@ -23,7 +23,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config apps/user-api-server/test/jest-e2e.json",
-    "pbcompile": "protoc -I grpc-idl/proto --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_opt=nestJs=true --ts_proto_opt=useOptionals=messages --ts_proto_opt=useDate=string --ts_proto_opt=env=node --ts_proto_opt=addNestjsRestParameter=true --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=unknownFields=false --ts_proto_opt=snakeToCamel=false --ts_proto_opt=addGrpcMetadata=true --ts_proto_out=./grpc-idl/ts/ grpc-idl/proto/*.proto"
+    "pbcompile": "protoc -I grpc-idl/proto --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_opt=nestJs=true --ts_proto_opt=useOptionals=messages --ts_proto_opt=useDate=string --ts_proto_opt=env=node --ts_proto_opt=addNestjsRestParameter=true --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=unknownFields=false --ts_proto_opt=snakeToCamel=false --ts_proto_opt=addGrpcMetadata=false --ts_proto_out=./grpc-idl/ts/ grpc-idl/proto/*.proto"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.10.3",

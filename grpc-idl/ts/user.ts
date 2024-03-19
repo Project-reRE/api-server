@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -29,21 +28,19 @@ export interface User {
 export const USER_PACKAGE_NAME = "user";
 
 export interface UserServiceClient {
-  findOne(request: FindOneUserRequest, metadata: Metadata, ...rest: any): Observable<FindOneUserResponse>;
+  findOne(request: FindOneUserRequest, ...rest: any): Observable<FindOneUserResponse>;
 
-  create(request: CreateUserRequest, metadata: Metadata, ...rest: any): Observable<CreateUserResponse>;
+  create(request: CreateUserRequest, ...rest: any): Observable<CreateUserResponse>;
 }
 
 export interface UserServiceController {
   findOne(
     request: FindOneUserRequest,
-    metadata: Metadata,
     ...rest: any
   ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
 
   create(
     request: CreateUserRequest,
-    metadata: Metadata,
     ...rest: any
   ): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
 }

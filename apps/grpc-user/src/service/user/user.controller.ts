@@ -11,10 +11,9 @@ import {
   UserServiceControllerMethods,
 } from '@grpc-idl/proto/user'
 import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFilter'
-import { ExceptionFilter } from '../../../../../libs/filter/rpc-exception.filter'
 
 @Controller('user')
-@UseFilters(AllExceptionsFilter, ExceptionFilter)
+@UseFilters(AllExceptionsFilter)
 @UserServiceControllerMethods()
 export class UserController implements UserServiceController {
   constructor(private readonly userService: UserService) {}

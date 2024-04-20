@@ -19,9 +19,10 @@ export class UserService {
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
     if (!existUserEntity) {
       //404 NOT FOUND ERROR RETURN
+
       throw {
-        statusCode: status.NOT_FOUND,
-        message: 'USER_NOTFOUND',
+        code: status.NOT_FOUND,
+        message: [`USER_NOT_FOUND`],
       }
     }
     console.log(existUserEntity)

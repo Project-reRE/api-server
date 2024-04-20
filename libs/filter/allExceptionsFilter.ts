@@ -4,51 +4,30 @@ import { throwError } from 'rxjs'
 import { ServiceError } from '@grpc/grpc-js'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 import { ExceptionFilter } from './rpc-exception.filter'
+import { Response } from 'express'
 
 @Catch()
 export class AllExceptionsFilter extends ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
-    console.log('>>>>')
-    console.log(exception)
-    console.log('<<<<<<')
-    console.log(host.getType())
-
     switch (host.getType()) {
       case 'rpc':
+        //TODO [DEBUG] Log 전체 제거
+        console.log('[DEBUG]RPC ERROR HERE')
         return throwError(() => exception)
 
       case 'http':
+        console.log('[DEBUG] ALL Execption HTTP Exception HERE ')
         const ctx = host.switchToHttp()
         const response = ctx.getResponse<Response>()
-
         const error: ServiceError = exception.getError() as ServiceError
-
         const grpcErrorCode = error.code
-
-        console.log(grpcErrorCode)
 
         const httpStatusCode: HttpStatus = this.convertGrpcErrorCodeToHttpStatusCode(grpcErrorCode)
 
-        console.log(httpStatusCode)
-
-        let errorBody
-
-        try {
-          errorBody = JSON.parse(error.details)
-        } catch (e) {
-          errorBody = {
-            statusCode: 500,
-            code: 'UNKNOWN_ERROR_RPC',
-            message: [error.details],
-          }
-        }
-
-        const errorCode = errorBody.code ?? 'UNKNOWN_ERROR_RPC'
-        const message = errorBody.message
-
-        return null
-      case 'ws':
-        return
+        response.status(httpStatusCode).json({
+          message: [error.details],
+        })
+        break
     }
   }
 

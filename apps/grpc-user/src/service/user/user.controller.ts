@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common'
+import { Controller, UseFilters } from '@nestjs/common'
 import { Metadata } from '@grpc/grpc-js'
 import { UserService } from './user.service'
 
@@ -10,8 +10,10 @@ import {
   UserServiceController,
   UserServiceControllerMethods,
 } from '@grpc-idl/proto/user'
+import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFilter'
 
 @Controller('user')
+@UseFilters(AllExceptionsFilter)
 @UserServiceControllerMethods()
 export class UserController implements UserServiceController {
   constructor(private readonly userService: UserService) {}

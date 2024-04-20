@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, UseFilters } from '@nestjs/common'
 import { GrpcStubUserService } from '@grpc-stub/grpc-stub-user'
 import { CreateUserRequest, CreateUserResponse, FindOneUserResponse } from '@grpc-idl/proto/user'
 import { firstValueFrom } from 'rxjs'
+import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFilter'
 
 @Controller()
+@UseFilters(AllExceptionsFilter)
 export class UserController {
   constructor(private readonly grpcStubUserService: GrpcStubUserService) {}
 

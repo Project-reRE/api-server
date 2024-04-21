@@ -12,7 +12,7 @@ import { UserModule } from './service/user/user.module'
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configurations],
-      envFilePath: [`.env.${process.env.NODE_ENV}`],
+      envFilePath: [`.env`],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

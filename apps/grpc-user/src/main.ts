@@ -9,6 +9,17 @@ import { USER_PACKAGE_NAME } from '@grpc-idl/proto/user'
 
 async function bootstrap() {
   console.log(`NODE_ENV: ${configurations().env}`)
+  console.log(`NODE_ENV: ${configurations().database.host}`)
+  console.log(`NODE_ENV: ${configurations().database.port}`)
+  console.log(`NODE_ENV: ${configurations().database.user}`)
+  console.log(`NODE_ENV: ${configurations().database.password}`)
+  console.log(`NODE_ENV: ${configurations().database.name}`)
+
+  console.log(`NODE_ENV: ${configurations().database.slave.host}`)
+  console.log(`NODE_ENV: ${configurations().database.slave.port}`)
+  console.log(`NODE_ENV: ${configurations().database.slave.user}`)
+  console.log(`NODE_ENV: ${configurations().database.slave.password}`)
+  console.log(`NODE_ENV: ${configurations().database.slave.name}`)
 
   const grpcPort = configurations().grpcPort
   const protoPath = configurations().protoPath

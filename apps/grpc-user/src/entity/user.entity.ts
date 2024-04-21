@@ -35,17 +35,17 @@ export class UserEntity {
 
   @Column({ type: 'datetime', nullable: true, default: null })
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  birthDate: Date
+  birthDate: string
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  createdDate: Date
+  createdDate: string
 
   @UpdateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  updatedDate: Date
+  updatedDate: string
 
   @DeleteDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  deletedDate: Date
+  deletedDate: string
 }

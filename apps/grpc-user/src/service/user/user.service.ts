@@ -5,7 +5,7 @@ import { UserEntity } from '../../entity/user.entity'
 import { CreateUserRequest, CreateUserResponse, FindOneUserRequest, FindOneUserResponse } from '@grpc-idl/proto/user'
 import { status } from '@grpc/grpc-js'
 import { RpcException } from '@nestjs/microservices'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 const SALT_ROUNDS = 10
 

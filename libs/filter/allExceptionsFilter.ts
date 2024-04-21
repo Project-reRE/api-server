@@ -12,15 +12,16 @@ export class AllExceptionsFilter extends ExceptionFilter {
     switch (host.getType()) {
       case 'rpc':
         //TODO [DEBUG] Log 전체 제거
-        console.log('[DEBUG]RPC ERROR HERE')
+        console.log(exception)
         return throwError(() => exception)
 
       case 'http':
-        console.log('[DEBUG] ALL Execption HTTP Exception HERE ')
         const ctx = host.switchToHttp()
         const response = ctx.getResponse<Response>()
         const error: ServiceError = exception.getError() as ServiceError
         const grpcErrorCode = error.code
+
+        console.log(error)
 
         const httpStatusCode: HttpStatus = this.convertGrpcErrorCodeToHttpStatusCode(grpcErrorCode)
 

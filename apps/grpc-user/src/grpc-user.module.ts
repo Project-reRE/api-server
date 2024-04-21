@@ -57,7 +57,7 @@ import { UserModule } from './service/user/user.module'
         entities: [UserEntity],
         timezone: configService.get('database.timezone'),
         // Set this option as false here and instead sync schema when GrpcUserModule is created to disable foreign key constraint.
-        synchronize: false,
+        synchronize: true,
         // logging: configService.get('env') === 'development' ? ['query', 'error'] : undefined,
         logging:
           configService.get('env') === 'test' ? ['error'] : configService.get('env') === 'development' ?? undefined,

@@ -13,7 +13,16 @@ export interface FindOneUserResponse {
 }
 
 export interface CreateUserRequest {
-  username: string;
+  externalId?: string | undefined;
+  nickName: string;
+  description?: string | undefined;
+  password: string;
+  profileUrl?: string | undefined;
+  email: string;
+  provider?: string | undefined;
+  role?: string | undefined;
+  gender: boolean;
+  birthDate: string;
 }
 
 export interface CreateUserResponse {
@@ -22,7 +31,18 @@ export interface CreateUserResponse {
 
 export interface User {
   id: string;
-  username: string;
+  externalId: string;
+  nickName: string;
+  description?: string | undefined;
+  profileUrl?: string | undefined;
+  email: string;
+  provider: string;
+  role: string;
+  gender: boolean;
+  birthDate: string;
+  createdDate: string;
+  updatedDate: string;
+  deletedDate?: string | undefined;
 }
 
 export const USER_PACKAGE_NAME = "user";

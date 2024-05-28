@@ -7,6 +7,7 @@ import { APP_INTERCEPTOR, HttpAdapterHost } from '@nestjs/core'
 import { Server } from 'http'
 import { TimeoutInterceptor } from '../../../libs/interceptor/timeout.interceptor'
 import configurations from './config/configurations'
+import { MovieModule } from './api/movie/movie.module'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import configurations from './config/configurations'
       }),
     }),
     UserModule,
+    MovieModule,
   ],
   // TODO GUARD, FILTER, APP_INTERCEPTOR 추가 필요
   providers: [

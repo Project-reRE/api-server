@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
-import { DataSource, Repository, serialize } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { UserEntity } from '../../entity/user.entity'
 import { CreateUserRequest, CreateUserResponse, FindOneUserRequest, FindOneUserResponse } from '@grpc-idl/proto/user'
 import { status } from '@grpc/grpc-js'
-import { RpcException } from '@nestjs/microservices'
 import * as bcrypt from 'bcrypt'
+import { serialize } from 'class-transformer'
 
 const SALT_ROUNDS = 10
 
@@ -27,7 +27,7 @@ export class UserService {
       }
     }
     console.log(existUserEntity)
-    return { user: existUserEntity }
+    return { user: JSON.parse(serialize(existUserEntity)) }
   }
 
   async createUser(request: CreateUserRequest): Promise<CreateUserResponse> {
@@ -48,7 +48,7 @@ export class UserService {
 
     const createdUserEntity = await this.userRepository.save(creatableUserEntity)
 
-    return { user: createdUserEntity }
+    return { user: JSON.parse(serialize(createdUserEntity)) }
   }
 
   /**

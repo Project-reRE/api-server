@@ -34,6 +34,59 @@
 - TBD
 
 
+## Service 구조도 (간단 버전, UI 업그레이드 필요)
+![image](https://github.com/Project-reRE/api-server/assets/20696473/98091b46-d81d-46ed-8226-5b32adb57fe7)
+
+## 개발 진행 상황
+### Backend 진행 상황
+### 개발
+##### 유저 서비스
+###### 유저 조회
+- @GET users/{userId}
+###### 회원가입
+- 카카오 (개발 중)
+- 클라랑 같이 소셜 로그인 기능 필요
+- 애플 (개발 전)
+- 클라랑 같이 소셜 로그인 기능 필요
+- ID/PW  (개발 완료)
+- 소셜 로그인 기능 개발 완료시, ADMIN 계정 생성용으로만 사용 예정
+##### 영화 검색 기능 (개발 완료)
+- @GET /movies
+- queryParams 및 response 적용하면서 수정 논의 필요
+- 화면 : 영화 검색
+###### grpc-movie (개발 중)
+- 검색 된 영화 저장
+- 화면 : 없음 _ 영화 평가 및 랭킹 데이터 생성 용
+- 로그인 기능 (개발 중)
+###### Auth Token 적용
+- API  Role Guard 적용
+- 화면 : 없음, 전반적인 관리
+- 영화 평가 기능 추가 개발전_로그인 기능 개발 필요
+###### 영화 평가 기능 추가
+- @POST 'revaluations'
+- body : movieId
+- 화면 : 영화 재평가 하기
+###### 유저별 재평가 리스트 조회
+- @GET 'revaluations'
+- querytParams : userId
+- 화면 : 재평가한 영화 목록 보기 
+###### 랭킹 기능 추가 개발전_로그인 기능 개발 필요
+- @GET 'open-moive-ranking'
+- 화면 : 데일리 랭킹 표시 (랭킹)
+- 배너 기능 추가개발전_로그인 기능 개발 필요
+- @GET 'open-moive-banner'
+###### Movie Banner
+- 화면 : 데일리 랭킹 표시 (배너)
+- @GET 'open-moive-banner-rolling-configuration'
+- 배너 Rolling Config 값
+### 인프라
+#### AWS 인프라 셋팅
+##### WAF
+##### 포트 OPEN
+##### API 서버 CI / CD
+##### 웹서버 CI / CD 
+
+## typeORM
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

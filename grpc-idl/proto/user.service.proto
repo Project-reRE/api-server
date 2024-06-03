@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package user.service;
+import "user.proto";
+
+service UserService {
+  rpc FindOneUserExternalId(FindOneUserExternalIdRequest) returns (FindOneUserExternalIdResponse);
+  rpc FindOneUser(FindOneUserRequest) returns (FindOneUserResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message FindOneUserExternalIdRequest {
+  string externalId = 1;
+}
+
+message FindOneUserExternalIdResponse {
+  User user = 1;
+}
+
+message FindOneUserRequest {
+  string id = 1;
+}
+
+message FindOneUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  optional string externalId = 1;
+  string nickName = 2;
+  optional string description = 3;
+  optional string password = 4;
+  optional string profileUrl = 5;
+  optional string email = 6;
+  optional string provider = 7;
+  optional string role = 8;
+  optional bool gender = 9;
+  optional string birthDate = 10;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+
+
+

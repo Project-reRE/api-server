@@ -5,7 +5,7 @@ import configurations from './config/configurations'
 import { ValidationPipe } from '@nestjs/common'
 import { ServerCredentials } from '@grpc/grpc-js'
 import { join } from 'path'
-import { USER_PACKAGE_NAME } from '@grpc-idl/proto/user'
+import { USER_SERVICE_PACKAGE_NAME } from '@grpc-idl/proto/user.service'
 
 async function bootstrap() {
   console.log(`NODE_ENV: ${configurations().env}`)
@@ -21,8 +21,8 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         url: `0.0.0.0:${grpcPort}`,
-        package: [USER_PACKAGE_NAME],
-        protoPath: [join(__dirname, protoPath + 'user.proto')],
+        package: [USER_SERVICE_PACKAGE_NAME],
+        protoPath: [join(__dirname, protoPath + 'user.service.proto')],
         maxSendMessageLength: 1024 * 1024 * 100,
         maxReceiveMessageLength: 1024 * 1024 * 100,
         loader: {

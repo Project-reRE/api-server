@@ -11,6 +11,8 @@ import {
   FindOneUserResponse,
 } from '@grpc-idl/proto/user.service'
 import { serialize } from 'class-transformer'
+import { RpcException } from '@nestjs/microservices'
+import { status as GrpcStatus } from '@grpc/grpc-js'
 
 @Injectable()
 export class UserService {
@@ -29,6 +31,13 @@ export class UserService {
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponse> {
     console.log(request, 'findOneUser')
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
+    if (!existUserEntity) {
+      throw new RpcException({
+        code: 'USER_NOTFOUND',
+        status: GrpcStatus.NOT_FOUND,
+        message: `User with ID ${request.id} not found`,
+      })
+    }
 
     return { user: JSON.parse(serialize(existUserEntity)) }
   }

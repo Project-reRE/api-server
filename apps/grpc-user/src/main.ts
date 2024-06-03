@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { ServerCredentials } from '@grpc/grpc-js'
 import { join } from 'path'
 import { USER_SERVICE_PACKAGE_NAME } from '@grpc-idl/proto/user.service'
+import { GrpcExceptionsFilter } from '../../../libs/filter/grpc-exceptions.filter'
 
 async function bootstrap() {
   console.log(`NODE_ENV: ${configurations().env}`)
@@ -38,6 +39,7 @@ async function bootstrap() {
   )
 
   app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalFilters(new GrpcExceptionsFilter())
   // app.useGlobalInterceptors(new LoggerGlobalInterceptor())
 
   await app.startAllMicroservices()

@@ -1,14 +1,12 @@
-import { Controller, Get, Query, UseFilters, ValidationPipe } from '@nestjs/common'
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
 import axios from 'axios'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFilter'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieDto } from './dto/movie.dto'
 
 @Controller()
 @ApiTags('movies')
-@UseFilters(AllExceptionsFilter)
 export class MovieController {
   constructor() {}
 

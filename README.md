@@ -162,3 +162,28 @@ you'd like to join them, please [read more here](https://docs.nestjs.com/support
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Build Commands
+
+### Build and Run grpc-user Service Only
+```sh
+docker build -t grpc-user-service -f apps/grpc-user/Dockerfile .
+docker run -d -p 50051:50051 grpc-user-service
+```
+
+### Build and Run rest-api-gateway Service Only
+```sh
+docker build -t rest-api-gateway-service -f apps/rest-api-gateway/Dockerfile .
+docker run -d -p 3000:3000 rest-api-gateway-service
+```
+
+### Build and Run All Services with docker-compose
+```sh
+docker-compose up --build
+```
+
+### Build and Run MySQL Service Only
+```sh
+cd db
+docker-compose -f docker-compose-db.yml up
+```

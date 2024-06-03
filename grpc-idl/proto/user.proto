@@ -2,41 +2,6 @@ syntax = "proto3";
 
 package user;
 
-
-
-service UserService {
-  rpc FindOne(FindOneUserRequest) returns (FindOneUserResponse) {}
-  rpc Create(CreateUserRequest) returns (CreateUserResponse) {}
-  //  rpc Update(HeroById) returns (Hero) {}
-  //  rpc Remove(HeroById) returns (Hero) {}
-  //  rpc FindMany(HeroById) returns (Hero) {}
-}
-
-message FindOneUserRequest {
-  string id = 1;
-}
-
-message FindOneUserResponse {
-  User user = 1;
-}
-
-message CreateUserRequest {
-  optional string externalId = 1;
-  string nickName = 2;
-  optional string description = 3;
-  string password = 4;
-  optional string profileUrl = 5;
-  string email = 6;
-  optional string provider = 7;
-  optional string role = 8;
-  bool gender = 9;
-  string birthDate = 10;
-}
-
-message CreateUserResponse {
-  User user = 1;
-}
-
 message User {
   string id = 1;
   string externalId = 2;

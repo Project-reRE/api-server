@@ -1,15 +1,15 @@
 import { Controller, UseFilters } from '@nestjs/common'
-import { Metadata } from '@grpc/grpc-js'
 import { UserService } from './user.service'
 
 import {
   CreateUserRequest,
   CreateUserResponse,
+  FindOneUserExternalIdRequest,
   FindOneUserRequest,
   FindOneUserResponse,
   UserServiceController,
   UserServiceControllerMethods,
-} from '@grpc-idl/proto/user'
+} from '@grpc-idl/proto/user.service'
 import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFilter'
 
 @Controller('user')
@@ -18,11 +18,15 @@ import { AllExceptionsFilter } from '../../../../../libs/filter/allExceptionsFil
 export class UserController implements UserServiceController {
   constructor(private readonly userService: UserService) {}
 
-  findOne(request: FindOneUserRequest, metadata: Metadata, ...rest): Promise<FindOneUserResponse> {
+  findOneUserExternalId(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponse> {
+    return this.userService.findOneUserExternal(request)
+  }
+
+  findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponse> {
     return this.userService.findOneUser(request)
   }
 
-  create(request: CreateUserRequest, metadata: Metadata, ...rest): Promise<CreateUserResponse> {
+  createUser(request: CreateUserRequest): Promise<CreateUserResponse> {
     return this.userService.createUser(request)
   }
 }

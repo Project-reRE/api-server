@@ -1,6 +1,6 @@
-import { IsBoolean, IsDateString, IsEmail, IsISO8601, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator'
+import { IsBoolean, IsDateString, IsEmail, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { CreateUserRequest } from '@grpc-idl/proto/user'
+import { CreateUserRequest } from '@grpc-idl/proto/user.service'
 
 export class CreateUserRequestDto implements CreateUserRequest {
   @IsOptional()
@@ -19,7 +19,7 @@ export class CreateUserRequestDto implements CreateUserRequest {
     example: 'Ab#$1234',
   })
   @IsOptional()
-  readonly password: string
+  readonly password?: string
 
   @IsNotEmpty()
   @ApiProperty({
@@ -42,7 +42,7 @@ export class CreateUserRequestDto implements CreateUserRequest {
     example: 'testUser1@test.com',
   })
   @IsEmail()
-  readonly email: string
+  readonly email?: string
 
   @IsOptional()
   @Length(0, 100)
@@ -59,10 +59,10 @@ export class CreateUserRequestDto implements CreateUserRequest {
   })
   @IsNotEmpty()
   @IsBoolean()
-  readonly gender: boolean
+  readonly gender?: boolean
 
   @ApiProperty({ example: '2021-01-23T16:57:35.977Z' })
   @IsDateString()
   @IsNotEmpty()
-  readonly birthDate: string
+  readonly birthDate?: string
 }

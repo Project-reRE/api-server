@@ -1,0 +1,33 @@
+
+version: '3'
+
+services:
+  rest-api-gateway:
+    build:
+      context: .
+      dockerfile: apps/rest-api-gateway/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - grpc-user
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USER=${MYSQL_USER}
+      - DATABASE_PASSWORD=${MYSQL_PASSWORD}
+      - DATABASE_NAME=${MYSQL_DATABASE}
+
+  grpc-user:
+    build:
+      context: .
+      dockerfile: apps/grpc-user/Dockerfile
+    ports:
+      - "50051:50051"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USER=${MYSQL_USER}
+      - DATABASE_PASSWORD=${MYSQL_PASSWORD}
+      - DATABASE_NAME=${MYSQL_DATABASE}

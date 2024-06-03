@@ -1,12 +1,11 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common'
-import { UserModule } from './api/user/user.module'
+import { Module } from '@nestjs/common'
+import { AuthModule } from './api/auth/auth.module'
+import { RolesGuard } from '../../../libs/guard/roles.guard'
+import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-
-import { GrpcStubUserModule } from '../../../grpc-stub/src/grpc-stub-user'
-import { APP_INTERCEPTOR, HttpAdapterHost } from '@nestjs/core'
-import { Server } from 'http'
-import { TimeoutInterceptor } from '../../../libs/interceptor/timeout.interceptor'
 import configurations from './config/configurations'
+import { GrpcStubUserModule } from '@grpc-stub/grpc-stub-user'
+import { UserModule } from './api/user/user.module'
 import { MovieModule } from './api/movie/movie.module'
 
 @Module({
@@ -14,34 +13,25 @@ import { MovieModule } from './api/movie/movie.module'
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configurations],
-      envFilePath: [`.env.${process.env.NODE_ENV}`],
+      envFilePath: [`.env`],
     }),
     GrpcStubUserModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        host: configService.get('grpc.user.host') ?? '192.168.10.1',
+        host: configService.get('grpc.user.host'),
         port: configService.get('grpc.user.port'),
         protoPath: configService.get('protoPath'),
         isEnabledSecureSsl: configService.get<boolean>('grpc.enableSecureSsl'),
       }),
     }),
+    JwtModule.register({
+      secret: process.env.SERVCET_KEY,
+      signOptions: { expiresIn: '1h' },
+    }),
+    AuthModule,
     UserModule,
     MovieModule,
   ],
-  // TODO GUARD, FILTER, APP_INTERCEPTOR 추가 필요
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: TimeoutInterceptor,
-    },
-  ],
+  providers: [RolesGuard],
 })
-export class RestApiGatewayModule implements OnApplicationBootstrap {
-  constructor(private readonly refHost: HttpAdapterHost<any>) {}
-
-  onApplicationBootstrap() {
-    const server: Server = this.refHost.httpAdapter.getHttpServer()
-    server.keepAliveTimeout = 61 * 1000
-    server.headersTimeout = 65 * 1000
-  }
-}
+export class RestApiGatewayModule {}

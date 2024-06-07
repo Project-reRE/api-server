@@ -30,6 +30,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/grpc-user/tsconfig.app.json"
       }
+    },
+    "grpc-movie": {
+      "type": "application",
+      "root": "apps/grpc-movie",
+      "entryFile": "main",
+      "sourceRoot": "apps/grpc-movie/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/grpc-movie/tsconfig.app.json"
+      }
     }
   }
 }

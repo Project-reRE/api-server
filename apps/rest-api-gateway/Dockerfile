@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY apps ./apps
 COPY nest-cli.json ./
-COPY tsconfig*.json ./
+COPY *.json ./
 COPY libs ./libs
 COPY grpc-idl/* ./grpc-idl/*
 COPY grpc-stub/* ./grpc-stub/*

@@ -4,19 +4,11 @@ FROM node:14
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
+# Copy all files to the app directory
+COPY . .
+
 # Install app dependencies.
-COPY package*.json ./
-COPY apps ./apps
-COPY nest-cli.json ./
-COPY *.json ./
-COPY libs ./libs
-COPY grpc-idl/* ./grpc-idl/*
-COPY grpc-stub/* ./grpc-stub/*
-
 RUN npm install
-
-# Copy the app code.
-COPY apps/rest-api-gateway ./
 
 # Build the app
 RUN npm run build-rest-api-gateway

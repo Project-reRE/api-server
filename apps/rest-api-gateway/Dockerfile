@@ -12,7 +12,7 @@ RUN npm install
 COPY apps/rest-api-gateway ./
 
 # Build the app
-RUN npm nest build rest-api-gateway
+RUN npm run build-rest-api-gateway
 
 # Start the app
 CMD [ "node", "dist/main.js" ]

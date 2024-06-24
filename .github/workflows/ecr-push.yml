@@ -9,7 +9,6 @@ on:
 jobs:
   build-rest-api-gateway:
     runs-on: ubuntu-latest
-    needs: build-grpc-user  # 이 단계는 grpc-user 빌드가 끝난 후에 실행됨
 
     steps:
       - name: Checkout code

@@ -22,4 +22,4 @@ COPY apps/rest-api-gateway ./
 RUN npm run build-rest-api-gateway
 
 # Start the app
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/apps/rest-api-gateway/main.js" ]

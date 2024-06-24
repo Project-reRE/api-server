@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Docker image for rest-api-gateway
         run: |
           IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-dev-rest-api-gateway:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./rest-api-gateway
+          docker build -t $IMAGE_TAG ./apps/rest-api-gateway
           docker push $IMAGE_TAG
 
       - name: Logout from ECR
@@ -63,7 +63,7 @@ jobs:
       - name: Build and push Docker image for grpc-user
         run: |
           IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-grpc-user:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./grpc-user
+          docker build -t $IMAGE_TAG ./apps/grpc-user
           docker push $IMAGE_TAG
 
       - name: Logout from ECR

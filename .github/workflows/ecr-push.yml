@@ -31,7 +31,7 @@ jobs:
       - name: Build and push Docker image for rest-api-gateway
         run: |
           IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-rest-api-gateway:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./apps/rest-api-gateway
+          docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 
       - name: Logout from ECR
@@ -39,7 +39,7 @@ jobs:
 
   build-grpc-user:
     runs-on: ubuntu-latest
-    needs: build-rest-api-gateway  # 이 단계는 rest-api-gateway 빌드가 끝난 후에 실행됨
+    needs: build-rest-api-gateway
 
     steps:
       - name: Checkout code
@@ -62,7 +62,7 @@ jobs:
       - name: Build and push Docker image for grpc-user
         run: |
           IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-grpc-user:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./apps/grpc-user
+          docker build -t $IMAGE_TAG -f apps/grpc-user/Dockerfile .
           docker push $IMAGE_TAG
 
       - name: Logout from ECR

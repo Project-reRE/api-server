@@ -1,4 +1,3 @@
-
 # Use the official Node.js image.
 FROM node:14
 
@@ -10,7 +9,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the app code.
-COPY . .
+COPY apps/rest-api-gateway ./
 
 # Build the app
 RUN npm run build

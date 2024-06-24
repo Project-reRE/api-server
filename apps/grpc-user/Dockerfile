@@ -1,4 +1,3 @@
-
 # Use the official Node.js image.
 FROM node:14
 
@@ -10,10 +9,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the app code.
-COPY . .
+COPY apps/grpc-user ./
 
 # Build the app
-RUN npm run build
+RUN npm run build grpc-user
 
 # Start the app
 CMD [ "node", "dist/main.js" ]

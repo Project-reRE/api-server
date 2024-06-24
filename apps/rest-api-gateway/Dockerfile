@@ -6,6 +6,13 @@ WORKDIR /usr/src/app
 
 # Install app dependencies.
 COPY package*.json ./
+COPY apps ./apps
+COPY nest-cli.json ./
+COPY tsconfig*.json ./
+COPY libs ./libs
+COPY grpc-idl/grpc ./grpc-idl/grpc
+COPY grpc-stub/grpc ./grpc-stub/grpc
+
 RUN npm install
 
 # Copy the app code.

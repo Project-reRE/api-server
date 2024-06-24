@@ -26,7 +26,6 @@ export class MovieController {
     query: FindMovieQueryDto,
   ): Promise<FindMovieResponseDto> {
     console.log(query)
-    console.log('deploy test')
 
     const KDMB_API_KEY = process.env.KDMB_API_KEY
     const KMDB_API_URL = process.env.KDMB_API_URL

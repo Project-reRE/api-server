@@ -10,8 +10,8 @@ COPY apps ./apps
 COPY nest-cli.json ./
 COPY tsconfig*.json ./
 COPY libs ./libs
-COPY grpc-idl/grpc ./grpc-idl/grpc
-COPY grpc-stub/grpc ./grpc-stub/grpc
+COPY grpc-idl/* ./grpc-idl/*
+COPY grpc-stub/* ./grpc-stub/*
 
 RUN npm install
 

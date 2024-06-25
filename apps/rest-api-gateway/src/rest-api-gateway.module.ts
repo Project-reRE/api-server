@@ -7,6 +7,7 @@ import configurations from './config/configurations'
 import { GrpcStubUserModule } from '@grpc-stub/grpc-stub-user'
 import { UserModule } from './api/user/user.module'
 import { MovieModule } from './api/movie/movie.module'
+import { HealthModule } from './api/health/health.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { MovieModule } from './api/movie/movie.module'
     AuthModule,
     UserModule,
     MovieModule,
+    HealthModule,
   ],
   providers: [RolesGuard],
 })

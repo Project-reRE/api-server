@@ -30,7 +30,7 @@ jobs:
 
       - name: Build and push Docker image for rest-api-gateway
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-dev-rest-api-gateway:${{ github.sha }}
+          IMAGE_TAG=637423208245.dkr.ecr.ap-northeast-2.amazonaws.com/dev-rest-api-gateway
           docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 

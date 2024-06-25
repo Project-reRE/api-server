@@ -14,4 +14,9 @@ RUN npm install
 RUN npm run build-rest-api-gateway
 
 # Start the app
-CMD [ "node", "dist/apps/rest-api-gateway/main.js" ]
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+RUN chmod +x /wait
+
+#CMD ["sh", "-c", "/wait && node dist/apps/rest-api-gateway/main"]
+
+CMD node dist/apps/rest-api-gateway/main

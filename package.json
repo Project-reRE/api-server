@@ -9,6 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "concurrently \"nest build rest-api-gateway\" \"nest build grpc-user\"",
     "build-rest-api-gateway": "nest build rest-api-gateway",
+    "build-grpc-user": "nest build grpc-user",
     "format": "prettier --write \\\\\\\\\\\\\\\"apps/**/*.ts\\\\\\\\\\\\\\\" \\\\\\\\\\\\\\\"test/**/*.ts\\\\\\\\\\\\\\\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

@@ -4,15 +4,14 @@ FROM node:14
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
+# Copy all files to the app directory
+COPY . .
+
 # Install app dependencies.
-COPY package*.json ./
 RUN npm install
 
-# Copy the app code.
-COPY apps/grpc-user ./
-
 # Build the app
-RUN npm run build grpc-user
+RUN npm run build-grpc-user
 
 # Start the app
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/apps/grpc-user/main.js" ]

@@ -30,12 +30,12 @@ jobs:
 
       - name: Build and push Docker image for rest-api-gateway
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-rest-api-gateway-dev
+          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway-dev
           docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 
       - name: Logout from ECR
-        run: docker logout ${{ secrets.ECR_REPOSITORY }}-rest-api-gateway-dev
+        run: docker logout ${{ secrets.ECR_REPOSITORY }}rest-api-gateway-dev
 
   build-grpc-user:
     runs-on: ubuntu-latest
@@ -61,9 +61,9 @@ jobs:
 
       - name: Build and push Docker image for grpc-user
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-grpc-user-dev
+          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}grpc-user-dev
           docker build -t $IMAGE_TAG -f apps/grpc-user/Dockerfile .
           docker push $IMAGE_TAG
 
       - name: Logout from ECR
-        run: docker logout ${{ secrets.ECR_REPOSITORY }}-grpc-user-dev
+        run: docker logout ${{ secrets.ECR_REPOSITORY }}grpc-user-dev

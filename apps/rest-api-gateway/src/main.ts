@@ -4,7 +4,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from '../../../libs/filter/allExceptions.filter'
 
 async function bootstrap() {
+  console.info(`Rest API Gateway Service BootStrap Doing`)
   const app = await NestFactory.create(RestApiGatewayModule)
+
+  console.log(process.env.NODE_ENV)
 
   const config = new DocumentBuilder()
     .setTitle('API Server')
@@ -16,6 +19,8 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter())
 
   await app.listen(3000)
+
+  console.info(`Rest API Gateway Service is listening, PID: ${process.pid}`)
 }
 
 bootstrap()

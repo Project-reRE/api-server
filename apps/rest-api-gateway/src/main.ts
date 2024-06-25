@@ -18,7 +18,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document)
   app.useGlobalFilters(new AllExceptionsFilter())
 
-  await app.listen(80)
+  await app.listen(3000)
 
   console.info(`Rest API Gateway Service is listening, PID: ${process.pid}`)
 }

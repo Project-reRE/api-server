@@ -8,6 +8,8 @@ import { GrpcStubUserModule } from '@grpc-stub/grpc-stub-user'
 import { UserModule } from './api/user/user.module'
 import { MovieModule } from './api/movie/movie.module'
 import { HealthModule } from './api/health/health.module'
+import { MovieSetModule } from './api/movie-set/movie-set.module'
+import { BannerModule } from './api/banner/banner.module'
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { HealthModule } from './api/health/health.module'
     UserModule,
     MovieModule,
     HealthModule,
+    MovieSetModule,
+    BannerModule,
   ],
   providers: [RolesGuard],
 })

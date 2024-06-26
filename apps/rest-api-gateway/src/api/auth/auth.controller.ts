@@ -19,6 +19,8 @@ export class AuthController {
     console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
     const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
 
+    console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
+
     let { user: existUser } = await firstValueFrom(
       this.grpcStubUserService.findOneUserExternalId({ externalId: kakaoUser.id }),
     )

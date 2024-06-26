@@ -28,7 +28,8 @@ export class MovieController {
     console.log({ methodName: 'findMovies', data: query, context: 'query' })
 
     const KDMB_API_KEY = process.env.KDMB_API_KEY
-    const KMDB_API_URL = process.env.KDMB_API_URL
+    const KMDB_API_URL =
+      'http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2'
 
     const title = query.title
     const director = query.director

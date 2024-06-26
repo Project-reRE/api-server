@@ -16,11 +16,14 @@ export class AuthController {
 
   @Get('kakao')
   async kakaoLogin(@Headers('kakao-token') kakaoToken: string) {
+    console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
     const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
 
     let { user: existUser } = await firstValueFrom(
       this.grpcStubUserService.findOneUserExternalId({ externalId: kakaoUser.id }),
     )
+
+    console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
 
     if (!existUser) {
       const { user: createdUser } = await firstValueFrom(
@@ -31,7 +34,11 @@ export class AuthController {
     }
 
     const payload = { externalId: existUser.externalId, role: existUser.role, id: existUser.id }
+
+    console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
     const jwt = this.jwtService.sign(payload)
+
+    console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
 
     return { jwt }
   }

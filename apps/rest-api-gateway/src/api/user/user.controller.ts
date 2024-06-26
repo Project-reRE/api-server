@@ -14,19 +14,21 @@ export class UserController {
 
   @Get('/users/:userId')
   async findOne(@Param('userId') userId: string): Promise<FindOneUserResponseDto> {
-    const { user } = await firstValueFrom(this.grpcStubUserService.findOneUser({ id: userId }))
+    console.log({ methodName: 'findOne', data: userId, context: 'userId' })
 
-    console.log(user)
+    const { user: existUser } = await firstValueFrom(this.grpcStubUserService.findOneUser({ id: userId }))
 
-    return plainToInstance(FindOneUserResponseDto, user)
+    console.log({ methodName: 'findOne', data: existUser, context: 'existUser' })
+
+    return plainToInstance(FindOneUserResponseDto, existUser)
   }
 
   @Post('/users')
-  async create(@Body() request: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    console.log(request, 'createUser')
-    const createdUser = await firstValueFrom(this.grpcStubUserService.createUser(request))
-    console.log('HERE')
-    console.log(createdUser)
+  async createUser(@Body() request: CreateUserRequestDto): Promise<CreateUserResponseDto> {
+    console.log({ methodName: 'createUser', data: request, context: 'request' })
+    const { user: createdUser } = await firstValueFrom(this.grpcStubUserService.createUser(request))
+
+    console.log({ methodName: 'createUser', data: createdUser, context: 'createdUser' })
 
     return plainToInstance(CreateUserResponseDto, createdUser)
   }

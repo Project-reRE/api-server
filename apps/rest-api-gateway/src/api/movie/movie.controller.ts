@@ -25,7 +25,7 @@ export class MovieController {
     )
     query: FindMovieQueryDto,
   ): Promise<FindMovieResponseDto> {
-    console.log(query)
+    console.log({ methodName: 'findMovies', data: query, context: 'query' })
 
     const KDMB_API_KEY = process.env.KDMB_API_KEY
     const KMDB_API_URL = process.env.KDMB_API_URL
@@ -53,6 +53,8 @@ export class MovieController {
       `${sort ? `&sort=${sort}` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
       `${listCount ? `&listCount=${listCount}` : ``}`
+
+    console.log({ methodName: 'findMovies', data: URL, context: 'URL' })
 
     const existMovieData: any = await axios({
       url: URL,

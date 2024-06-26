@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FindMovieSetResponseDto } from './dto/find-movie-set.response.dto'
+import { MovieSetDto } from './dto/movie-set.dto'
 
 @Controller()
 @ApiTags('movie-sets')
@@ -16,11 +17,12 @@ export class MovieSetController {
   async findOpenMovieSets(): Promise<FindMovieSetResponseDto> {
     console.log({ methodName: 'findOpenMovieSets', data: '', context: 'request' })
     // home service 개발 완료 전 까지 Dummy Data return
-    const dummyResponse = [
+    const dummyResponse: MovieSetDto[] = [
       {
         title: '마동석이 나온 영화',
         template: 'scroll_view',
         displayOrder: 0,
+        condition: 'most_revaluation',
         data: [
           {
             DOCID: '범죄도시',
@@ -136,6 +138,7 @@ export class MovieSetController {
         title: '범죄도시 스릴러',
         template: 'scroll_view',
         displayOrder: 1,
+        condition: 'highest_numStars',
         data: [
           {
             DOCID: '범죄도시',

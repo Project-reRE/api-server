@@ -9,6 +9,8 @@ async function bootstrap() {
 
   console.log(process.env.NODE_ENV)
 
+  console.log({ kmdb: { API_KEY: process.env.KDMB_API_KEY, API_URL: process.env.KDMB_API_URL } })
+
   const config = new DocumentBuilder()
     .setTitle('API Server')
     .setDescription('The rere API description')

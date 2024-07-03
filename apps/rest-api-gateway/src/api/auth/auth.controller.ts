@@ -41,7 +41,7 @@ export class AuthController {
     const payload = { externalId: existUser.externalId, role: existUser.role, id: existUser.id }
 
     console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
-    const jwt = this.jwtService.sign(payload)
+    const jwt = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET_KEY })
 
     console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
 

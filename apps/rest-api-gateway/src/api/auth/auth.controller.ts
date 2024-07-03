@@ -1,9 +1,9 @@
-import { Controller, Get, Headers } from '@nestjs/common'
+import { Controller, Get, Headers, HttpException, HttpStatus } from '@nestjs/common'
 import { KakaoService } from './kakao.service'
 import { JwtService } from '@nestjs/jwt'
 import { GrpcStubUserService } from '@grpc-stub/grpc-stub-user'
-import { firstValueFrom } from 'rxjs'
 import { ApiTags } from '@nestjs/swagger'
+import { firstValueFrom } from 'rxjs'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -28,11 +28,14 @@ export class AuthController {
     console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
 
     if (!existUser) {
-      const { user: createdUser } = await firstValueFrom(
-        this.grpcStubUserService.createUser({ externalId: kakaoUser.id, nickName: kakaoUser.properties.nickname }),
+      throw new HttpException(
+        {
+          code: 'NOT_YET_RERE_USER',
+          status: HttpStatus.NOT_FOUND,
+          message: `not yet rere user`,
+        },
+        HttpStatus.NOT_FOUND,
       )
-
-      existUser = createdUser
     }
 
     const payload = { externalId: existUser.externalId, role: existUser.role, id: existUser.id }

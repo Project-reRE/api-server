@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import axios, { AxiosResponse } from 'axios'
 
 @Injectable()
@@ -16,7 +16,14 @@ export class KakaoService {
     } catch (error) {
       console.log({ methodName: 'getUserInfo', data: error, context: 'error' })
 
-      throw new Error('Failed to fetch user info from Kakao')
+      throw new HttpException(
+        {
+          code: 'KAKAO_TOKEN_NOT_VERIFYED',
+          status: HttpStatus.UNAUTHORIZED,
+          message: `Request failed with status code 401`,
+        },
+        HttpStatus.UNAUTHORIZED,
+      )
     }
   }
 }

@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common'
+import { MovieController } from './service/movie/movie.controller'
+import { MovieService } from './service/movie/movie.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import configurations from './config/configurations'
 import { TypeOrmModule } from '@nestjs/typeorm'

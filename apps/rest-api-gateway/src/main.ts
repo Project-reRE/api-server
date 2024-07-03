@@ -2,10 +2,28 @@ import { NestFactory } from '@nestjs/core'
 import { RestApiGatewayModule } from './rest-api-gateway.module'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from '../../../libs/filter/allExceptions.filter'
+import { json, urlencoded } from 'express'
 
 async function bootstrap() {
   console.info(`Rest API Gateway Service BootStrap Doing`)
   const app = await NestFactory.create(RestApiGatewayModule)
+
+  app.use(json({ limit: '1mb' }))
+  app.use(urlencoded({ extended: true, limit: '1mb' }))
+
+  //FIXME: enable CORS for staging/production
+
+  if (['local', 'dev'].includes(process.env.NODE_ENV)) {
+    app.enableCors({
+      origin: '*', // rere dev web 주소 필요
+    })
+  } else if (process.env.NODE_ENV === 'production') {
+    app.enableCors({
+      origin: [
+        //prod 배포시 rere web 주소 필요
+      ],
+    })
+  }
 
   console.log(process.env.NODE_ENV)
 

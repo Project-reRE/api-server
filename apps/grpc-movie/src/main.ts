@@ -41,7 +41,7 @@ async function bootstrap() {
   // app.useGlobalInterceptors(new LoggerGlobalInterceptor())
 
   await app.startAllMicroservices()
-  console.log(`gRPC User Service is listening / PORT: ${grpcPort}`)
+  console.log(`gRPC Movie Service is listening / PORT: ${grpcPort}`)
 }
 
 bootstrap()

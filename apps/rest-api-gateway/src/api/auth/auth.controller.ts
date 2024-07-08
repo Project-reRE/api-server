@@ -128,7 +128,7 @@ export class AuthController {
     return null
   }
 
-  @Get('kakao/201')
+  @Get('kakao/200')
   async kakaoLoginTest201(@Headers('kakao-token') kakaoToken: string) {
     console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
     // const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)

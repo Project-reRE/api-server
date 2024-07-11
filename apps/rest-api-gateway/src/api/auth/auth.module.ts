@@ -12,7 +12,6 @@ import { AuthService } from './auth.service'
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60m' },
     }),
-    ,
     UserModule,
   ],
   controllers: [AuthController],

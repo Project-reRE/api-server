@@ -1,14 +1,15 @@
 import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
-import axios from 'axios'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
+import { MovieService } from './movie.service'
+import axios from 'axios'
 import { MovieDto } from './dto/movie.dto'
 
 @Controller()
 @ApiTags('movies')
 export class MovieController {
-  constructor() {}
+  constructor(private readonly movieService: MovieService) {}
 
   @Get('/movies')
   @ApiOperation({
@@ -84,9 +85,17 @@ export class MovieController {
       }
     })
 
+    // let movieEntity: MovieEntity = JSON.parse({ ...results })
+    //
+    // Object.assign(movieEntity, results)
+    //
+    // await this.movieService.createMovie(movieEntity)
+
     return {
       totalRecords: existMovieData.data.Data[0].Result.length,
       results: results,
     }
+
+    return null
   }
 }

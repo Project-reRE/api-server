@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { UserService } from '../user/user.service'
 import { JwtService } from '@nestjs/jwt'
-import axios, { AxiosResponse } from 'axios/index'
+import axios from 'axios'
 
 @Injectable()
 export class AuthService {
@@ -11,7 +11,7 @@ export class AuthService {
 
   async getUserInfoForKakao(kakaoToken: string): Promise<any> {
     try {
-      const response: AxiosResponse = await axios.get(this.kakaoApiUrl, {
+      const response = await axios.get(this.kakaoApiUrl, {
         headers: { Authorization: `Bearer ${kakaoToken}` },
       })
       return response.data

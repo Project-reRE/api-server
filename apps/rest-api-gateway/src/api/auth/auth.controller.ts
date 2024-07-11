@@ -1,9 +1,8 @@
 import { Controller, Get, Headers, HttpException, HttpStatus } from '@nestjs/common'
 import { KakaoService } from './kakao.service'
 import { JwtService } from '@nestjs/jwt'
-import { GrpcStubUserService } from '@grpc-stub/grpc-stub-user'
 import { ApiTags } from '@nestjs/swagger'
-import { firstValueFrom } from 'rxjs'
+import { UserService } from '../user/user.service'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -11,7 +10,7 @@ export class AuthController {
   constructor(
     private readonly kakaoService: KakaoService,
     private readonly jwtService: JwtService,
-    private readonly grpcStubUserService: GrpcStubUserService,
+    private userService: UserService,
   ) {}
 
   @Get('kakao')
@@ -21,11 +20,9 @@ export class AuthController {
 
     console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
 
-    let { user: existUser } = await firstValueFrom(
-      this.grpcStubUserService.findOneUserExternalId({ externalId: kakaoUser.id }),
-    )
+    let { user: existUser } = await this.userService.findOneUserExternal({ externalId: kakaoUser.id })
 
-    console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
+    await console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
 
     if (!existUser) {
       throw new HttpException(

@@ -47,8 +47,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         }
       }
     } else if (exception instanceof HttpException) {
-      console.log('!!!!!!!')
-      console.log('!!!!!!!')
       // HTTP 에러 처리
       const httpResponse = exception.getResponse() as any
       status = exception.getStatus()

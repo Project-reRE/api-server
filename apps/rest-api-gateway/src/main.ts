@@ -30,10 +30,12 @@ async function bootstrap() {
   console.log({ kmdb: { API_KEY: process.env.KMDB_API_KEY, API_URL: process.env.KMDB_API_URL } })
 
   const config = new DocumentBuilder()
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }) // Add this line
     .setTitle('API Server')
     .setDescription('The rere API description')
     .setVersion('1.0')
     .build()
+
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)
   app.useGlobalFilters(new AllExceptionsFilter())

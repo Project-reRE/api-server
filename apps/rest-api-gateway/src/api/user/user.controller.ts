@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
 import { plainToInstance } from 'class-transformer'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 
 @Controller()
 @ApiTags('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('/users/:userId')
   @ApiOperation({
     summary: '유저 정보 상세 조회',
@@ -43,5 +45,17 @@ export class UserController {
     console.log({ methodName: 'createUser', data: createdUser, context: 'createdUser' })
 
     return plainToInstance(CreateUserResponseDto, createdUser)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my/profile')
+  @ApiOperation({
+    summary: '유저 정보 상세 조회',
+    description: 'JWT 토큰 안에 들어 있는 유저 정보',
+  })
+  @ApiOkResponse({ type: FindOneUserResponseDto })
+  async getProfile(@Request() request): Promise<FindOneUserResponseDto> {
+    console.log(request, 'getProfile')
+    return request.user as FindOneUserResponseDto
   }
 }

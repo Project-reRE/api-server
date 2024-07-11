@@ -1,14 +1,14 @@
 import { Controller, Get, Headers, HttpException, HttpStatus } from '@nestjs/common'
-import { KakaoService } from './kakao.service'
 import { JwtService } from '@nestjs/jwt'
 import { ApiTags } from '@nestjs/swagger'
 import { UserService } from '../user/user.service'
+import { AuthService } from './auth.service'
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(
-    private readonly kakaoService: KakaoService,
+    private readonly authService: AuthService,
     private readonly jwtService: JwtService,
     private userService: UserService,
   ) {}
@@ -16,7 +16,7 @@ export class AuthController {
   @Get('kakao')
   async kakaoLogin(@Headers('kakao-token') kakaoToken: string) {
     console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
-    const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
+    const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
 
     console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
 
@@ -48,7 +48,7 @@ export class AuthController {
   @Get('kakao/401')
   async kakaoLoginTest401(@Headers('kakao-token') kakaoToken: string) {
     console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
-    const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
+    const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
 
     console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
 
@@ -101,7 +101,7 @@ export class AuthController {
       HttpStatus.NOT_FOUND,
     )
     //
-    // const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
+    // const kakaoUser = await this.AuthService.getUserInfo(kakaoToken)
     //
     // // console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
     // //
@@ -128,7 +128,7 @@ export class AuthController {
   @Get('kakao/200')
   async kakaoLoginTest201(@Headers('kakao-token') kakaoToken: string) {
     console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
-    // const kakaoUser = await this.kakaoService.getUserInfo(kakaoToken)
+    // const kakaoUser = await this.AuthService.getUserInfo(kakaoToken)
     //
     // console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
     //

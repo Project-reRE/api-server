@@ -1,42 +1,31 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { UserService } from "../user/user.service";
-import { JwtService } from "@nestjs/jwt";
-import { UserDto } from "../user/dto/user.dto";
-import { AuthLoginRequestDto } from "./dto/auth-login-request.dto";
-import { AuthLoginResponseDto } from "./dto/auth-login-response.dto";
-import { JwtPayloadDto } from "./dto/jwt-payload.dto";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { UserService } from '../user/user.service'
+import { JwtService } from '@nestjs/jwt'
+import axios, { AxiosResponse } from 'axios/index'
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  private readonly kakaoApiUrl = 'https://kapi.kakao.com/v2/user/me'
 
-  async validateUser(request: AuthLoginRequestDto): Promise<UserDto> {
-    console.log(request);
-    const existUser = await this.usersService.findOneUserByUsername({
-      username: request.username,
-    });
+  constructor(private usersService: UserService, private jwtService: JwtService) {}
 
-    return existUser;
-  }
+  async getUserInfoForKakao(kakaoToken: string): Promise<any> {
+    try {
+      const response: AxiosResponse = await axios.get(this.kakaoApiUrl, {
+        headers: { Authorization: `Bearer ${kakaoToken}` },
+      })
+      return response.data
+    } catch (error) {
+      console.log({ methodName: 'getUserInfo', data: error, context: 'error' })
 
-  async login(request: AuthLoginRequestDto): Promise<AuthLoginResponseDto> {
-    const existUser = await this.validateUser({ username: request.username });
-    if (!existUser) {
       throw new HttpException(
         {
-          code: "NOT_YET_CHATTING_SERVER_USER",
+          code: 'KAKAO_TOKEN_NOT_VERIFYED',
           status: HttpStatus.UNAUTHORIZED,
-          message: `가입 되지 않은 사용자`,
+          message: `Request failed with status code 401`,
         },
         HttpStatus.UNAUTHORIZED,
-      );
+      )
     }
-    const payload = { ...existUser } as JwtPayloadDto;
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
   }
 }

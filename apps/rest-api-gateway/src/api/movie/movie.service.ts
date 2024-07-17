@@ -14,7 +14,7 @@ export class MovieService {
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
     console.log(request, 'createMovie')
 
-    const creatableMovie = this.movieRepository.create({ ...request })
+    const creatableMovie = this.movieRepository.create(request)
 
     await this.movieRepository.save(creatableMovie)
 

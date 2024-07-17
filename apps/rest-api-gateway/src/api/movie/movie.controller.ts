@@ -1,16 +1,18 @@
-import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
+import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieService } from './movie.service'
 import axios from 'axios'
 import { MovieDto } from './dto/movie.dto'
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 
 @Controller()
 @ApiTags('movies')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('/movies')
   @ApiOperation({
     summary: '영화 검색',
@@ -62,6 +64,8 @@ export class MovieController {
       method: 'GET',
     })
 
+    console.log(existMovieData.data.Data[0].Result, 'findMovies')
+
     const results: MovieDto[] = existMovieData.data.Data[0].Result.map((value) => {
       return {
         DOCID: value?.DDCID,
@@ -85,11 +89,9 @@ export class MovieController {
       }
     })
 
-    // let movieEntity: MovieEntity = JSON.parse({ ...results })
-    //
-    // Object.assign(movieEntity, results)
-    //
-    // await this.movieService.createMovie(movieEntity)
+    for (let i = 0; i < results.length; i++) {
+      this.movieService.createMovie(results[i])
+    }
 
     return {
       totalRecords: existMovieData.data.Data[0].Result.length,

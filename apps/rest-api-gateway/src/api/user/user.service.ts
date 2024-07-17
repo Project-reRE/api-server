@@ -7,14 +7,12 @@ import { status as GrpcStatus } from '@grpc/grpc-js'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
-import { AuthService } from '../auth/auth.service'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly authService: AuthService,
   ) {}
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {

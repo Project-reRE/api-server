@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service'
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('users/:userId')
   @ApiOperation({
     summary: '유저 정보 조회',

@@ -37,27 +37,27 @@ jobs:
       - name: Logout from ECR
         run: docker logout ${{ secrets.ECR_REPOSITORY }}
 
-      - name: Update ECS service with new image
-        run: |
-          CLUSTER_NAME=${{ secrets.ECS_CLUSTER_NAME }}
-          SERVICE_NAME=${{ secrets.ECS_SERVICE_NAME }}
-          CONTAINER_NAME="rest-api-gateway"
-          NEW_IMAGE="${{ secrets.ECR_REPOSITORY }}:rest-api-gateway-dev"
-          
-          # Get the current task definition
-          TASK_DEFINITION_ARN=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].taskDefinition' --output text)
-          
-          # Get the task definition family
-          TASK_FAMILY=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition.family' --output text)
-
-          # Get the container definitions and replace the image
-          CONTAINER_DEFINITIONS=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition.containerDefinitions' --output json | jq --arg IMAGE "$NEW_IMAGE" '.[0].image = $IMAGE | [.]')
-
-          # Register a new task definition
-          NEW_TASK_DEFINITION=$(aws ecs register-task-definition \
-            --family $TASK_FAMILY \
-            --container-definitions "$CONTAINER_DEFINITIONS" \
-            --query 'taskDefinition.taskDefinitionArn' --output text)
-
-          # Update the service with the new task definition
-          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $NEW_TASK_DEFINITION
+#      - name: Update ECS service with new image
+#        run: |
+#          CLUSTER_NAME=${{ secrets.ECS_CLUSTER_NAME }}
+#          SERVICE_NAME=${{ secrets.ECS_SERVICE_NAME }}
+#          CONTAINER_NAME="rest-api-gateway"
+#          NEW_IMAGE="${{ secrets.ECR_REPOSITORY }}:rest-api-gateway-dev"
+#
+#          # Get the current task definition
+#          TASK_DEFINITION_ARN=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].taskDefinition' --output text)
+#
+#          # Get the task definition family
+#          TASK_FAMILY=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition.family' --output text)
+#
+#          # Get the container definitions and replace the image
+#          CONTAINER_DEFINITIONS=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition.containerDefinitions' --output json | jq --arg IMAGE "$NEW_IMAGE" '.[0].image = $IMAGE | [.]')
+#
+#          # Register a new task definition
+#          NEW_TASK_DEFINITION=$(aws ecs register-task-definition \
+#            --family $TASK_FAMILY \
+#            --container-definitions "$CONTAINER_DEFINITIONS" \
+#            --query 'taskDefinition.taskDefinitionArn' --output text)
+#
+#          # Update the service with the new task definition
+#          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $NEW_TASK_DEFINITION

@@ -15,7 +15,7 @@ export class UserEntity {
   @Column({ length: 255, default: '' })
   description: string
 
-  @Column({ length: 255 })
+  @Column({ length: 255, nullable: true })
   password: string
 
   @Column({ type: 'text' })
@@ -39,13 +39,13 @@ export class UserEntity {
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  createdDate: Date
+  createdAt: Date
 
   @UpdateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  updatedDate: Date
+  updatedAt: Date
 
   @DeleteDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  deletedDate: Date
+  deletedAt: Date
 }

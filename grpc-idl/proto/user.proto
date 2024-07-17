@@ -13,9 +13,9 @@ message User {
   string role = 8;
   bool gender = 9;
   string birthDate = 10;
-  string createdDate = 11;
-  string updatedDate = 12;
-  optional string deletedDate = 13;
+  string createdAt = 11;
+  string updatedAt = 12;
+  optional string deletedAt = 13;
 }
 
 

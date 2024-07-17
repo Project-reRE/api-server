@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { UserService } from '../user/user.service'
 import { JwtService } from '@nestjs/jwt'
 import axios from 'axios'
 
@@ -7,7 +6,7 @@ import axios from 'axios'
 export class AuthService {
   private readonly kakaoApiUrl = 'https://kapi.kakao.com/v2/user/me'
 
-  constructor(private usersService: UserService, private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService) {}
 
   async getUserInfoForKakao(kakaoToken: string): Promise<any> {
     try {

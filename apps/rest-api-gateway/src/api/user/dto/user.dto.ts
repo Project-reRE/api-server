@@ -1,8 +1,7 @@
 import { IsBoolean, IsDateString, IsString } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { User } from '@grpc-idl/proto/user'
 
-export class UserDto implements User {
+export class UserDto {
   @ApiProperty({
     example: ' 1',
   })
@@ -58,20 +57,20 @@ export class UserDto implements User {
   gender: boolean
 
   @ApiProperty({
-    example: 'testUser1',
+    example: '1997-09-29',
   })
   @IsString()
   birthDate: string
 
   @ApiProperty({ example: '2021-01-23T16:57:35.977Z' })
   @IsDateString()
-  createdDate: string
+  createdAt: string
 
   @ApiProperty({ example: '2021-01-23T16:57:35.977Z' })
   @IsDateString()
-  updatedDate: string
+  updatedAt: string
 
   @ApiPropertyOptional({ example: '2021-01-23T16:57:35.977Z' })
   @IsDateString()
-  deletedDate?: string | undefined
+  deletedAt?: string | undefined
 }

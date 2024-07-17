@@ -1,32 +1,16 @@
-import { IsBoolean, IsDateString, IsEmail, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator'
+import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { CreateUserRequest } from '@grpc-idl/proto/user.service'
 
-export class CreateUserRequestDto implements CreateUserRequest {
-  @IsOptional()
-  @Length(6, 16)
+export class CreateUserRequestDto {
   @ApiProperty({
     type: String,
-    example: 'testUser1',
+    example: 'kakao',
   })
-  nickName: string
-
-  // 33 characters are allowed: !"#$%&'()*+,-./:;<=>?@[＼]^_`{|}~\
-  @Matches(/^([a-zA-Z0-9!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\\]+)$/)
-  @Length(8, 25)
-  @ApiPropertyOptional({
-    type: String,
-    example: 'Ab#$1234',
-  })
-  @IsOptional()
-  readonly password?: string
-
+  @IsString()
   @IsNotEmpty()
-  @ApiProperty({
-    type: String,
-    example: 'RERE_GCo6YdSwqabcd2bnLEjcx2WrgkL2',
-    description: 'Provider 에서 생성한 oAuth UUID',
-  })
+  readonly provider: string
+
+  //ex) Kakao uId
   readonly externalId: string
 
   @IsOptional()
@@ -36,13 +20,6 @@ export class CreateUserRequestDto implements CreateUserRequest {
     example: 'https://asdasd.png',
   })
   readonly profileUrl?: string
-
-  @ApiProperty({
-    type: String,
-    example: 'testUser1@test.com',
-  })
-  @IsEmail()
-  readonly email?: string
 
   @IsOptional()
   @Length(0, 100)

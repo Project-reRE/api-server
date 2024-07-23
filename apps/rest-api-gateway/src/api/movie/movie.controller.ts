@@ -48,12 +48,6 @@ export class MovieController {
       KMDB_API_URL +
       `&ServiceKey=${KMDB_API_KEY}` +
       `${title ? `&title=${title}` : ``}` +
-      // `${director ? `&director=${director}` : ``}` +
-      // `${actor ? `&actor=${actor}` : ``}` +
-      // `${genre ? `&genre=${genre}` : ``}` +
-      // `${company ? `&company=${company}` : ``}` +
-      // `${releaseDts ? `&releaseDts=${releaseDts}` : ``}` +
-      // `${sort ? `&sort=${sort}` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
       `${listCount ? `&listCount=${listCount}` : ``}`
 
@@ -81,10 +75,7 @@ export class MovieController {
           title: value?.title,
           prodYear: value?.prodYear,
           director: value?.directors[0],
-          // actors: value?.actors,
-          nation: value?.nation,
-          company: value?.company,
-          runtime: value?.runtime,
+          actors: value?.actors,
           rating: value?.rating,
           genre: value?.genre,
           repRatDate: value?.repRatDate,

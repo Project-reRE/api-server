@@ -21,7 +21,7 @@ export class UserEntity {
   @Column({ type: 'text' })
   profileUrl: string
 
-  @Column({ type: 'varchar', unique: true, length: 255 })
+  @Column({ type: 'varchar', unique: true, length: 255, nullable: true })
   email: string
 
   @Column({ type: 'varchar', length: 16, nullable: false, default: 'RERE' })

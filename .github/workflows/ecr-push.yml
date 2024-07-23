@@ -40,5 +40,4 @@ jobs:
       - name: Update ECS service with new image
         run: |
           # Update the service with the new task definition
-          aws ecs update-service --cluster ${{ secrets.ECS_CLUSTER_NAME }} --service ${{ secrets.ECS_SERVICE_NAME }} --task-definition $task_definition_name --force-new-deployment --region ap-northeast-2
-    
+          aws ecs update-service --cluster ${{ secrets.ECS_CLUSTER_NAME }} --service ${{ secrets.ECS_SERVICE_NAME }} --task-definition rest-api-gateway-dev --force-new-deployment --region ap-northeast-2

@@ -1,10 +1,9 @@
-import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common'
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieService } from './movie.service'
 import axios from 'axios'
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 
 @Controller()
 @ApiTags('movies')
@@ -12,7 +11,7 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/movies')
   @ApiOperation({
     summary: '영화 검색',

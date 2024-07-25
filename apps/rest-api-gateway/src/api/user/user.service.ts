@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UserEntity } from '../../entity/user.entity'
 import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/proto/user.service'
-import { status as GrpcStatus } from '@grpc/grpc-js'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
@@ -23,8 +22,8 @@ export class UserService {
       throw new HttpException(
         {
           code: 'USER_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
-          message: `User with ExternalId ${request.externalId} not found`,
+          status: HttpStatus.NOT_FOUND,
+          message: `가입 되지 않은 사용자(externalId : ${request.externalId})`,
         },
         HttpStatus.NOT_FOUND,
       )
@@ -40,8 +39,8 @@ export class UserService {
       throw new HttpException(
         {
           code: 'USER_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
-          message: `User with ID ${request.id} not found`,
+          status: HttpStatus.NOT_FOUND,
+          message: `가입 되지 않은 사용자(id : ${request.id})`,
         },
         HttpStatus.NOT_FOUND,
       )

@@ -27,9 +27,9 @@ export class RevaluationController {
   })
   async createRevaluation(
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    request: CreateRevaluationRequestDto,
     @AuthUser()
     user: UserDto,
-    request: CreateRevaluationRequestDto,
   ): Promise<CreateRevaluationResponseDto> {
     return this.revaluationService.createRevaluation({ ...request, requestUserId: user.id })
   }

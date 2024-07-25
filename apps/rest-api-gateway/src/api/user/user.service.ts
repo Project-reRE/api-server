@@ -6,7 +6,11 @@ import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/prot
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
+
 import * as moment from 'moment'
+import { UpdateUserRequestDto } from './dto/update-user-request.dto.st'
+import { UpdateUserResponseDto } from './dto/update-user-response.dto.st'
+import { RemoveUserResponseDto } from './dto/remove-user-response.dto.st'
 
 @Injectable()
 export class UserService {
@@ -91,5 +95,50 @@ export class UserService {
     console.log(createdUser, 'createUser', 'createdUser')
 
     return Object.assign(createdUser)
+  }
+
+  async updateUser(request: UpdateUserRequestDto): Promise<UpdateUserResponseDto> {
+    console.log(request, 'updateUser')
+
+    const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
+
+    if (!existUserEntity) {
+      throw new HttpException(
+        {
+          code: 'USER_NOTFOUND',
+          status: HttpStatus.NOT_FOUND,
+          message: `가입 되지 않은 사용자(id : ${request.id})`,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+
+    const updatedUser = Object.assign(existUserEntity, request)
+    const savedUser = await this.userRepository.save(updatedUser)
+
+    console.log(savedUser, 'updateUser', 'savedUser')
+
+    return Object.assign(savedUser)
+  }
+
+  async removeUser(request: FindOneUserRequest): Promise<RemoveUserResponseDto> {
+    console.log(request, 'removeUser')
+
+    const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
+
+    if (!existUserEntity) {
+      throw new HttpException(
+        {
+          code: 'USER_NOTFOUND',
+          status: HttpStatus.NOT_FOUND,
+          message: `가입 되지 않은 사용자(id : ${request.id})`,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+
+    await this.userRepository.softRemove(existUserEntity)
+
+    return { id: request.id }
   }
 }

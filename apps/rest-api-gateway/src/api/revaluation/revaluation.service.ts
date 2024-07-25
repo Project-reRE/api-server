@@ -30,7 +30,7 @@ export class RevaluationService {
         {
           code: 'MOVIE_NOTFOUND',
           status: GrpcStatus.NOT_FOUND,
-          message: `유효 하지 않은 영화 (id : ${request.movieId})`,
+          message: `존재 하지 않은 영화 정보(id : ${request.movieId})`,
         },
         HttpStatus.NOT_FOUND,
       )

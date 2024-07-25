@@ -2,7 +2,7 @@ import { Body, Controller, Get, Header, Headers, Param, Post, Request, UseGuards
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 import { AuthService } from '../auth/auth.service'
@@ -18,9 +18,20 @@ export class UserController {
   @ApiOperation({
     summary: '유저 정보 조회',
   })
-  @ApiCreatedResponse({
-    type: CreateUserResponseDto,
-    description: 'application/json.',
+  @ApiOkResponse({
+    type: FindOneUserResponseDto,
+    description: '유저 정보 조회 성공',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'USER_NOTFOUND - 가입 되지 않은 사용자',
+    schema: {
+      example: {
+        statusCode: 404,
+        code: 'USER_NOTFOUND',
+        message: '가입 되지 않은 사용자(id : 12345)',
+      },
+    },
   })
   @Header('Content-Type', 'application/json')
   async findOneUser(@Param('userId') userId: string): Promise<FindOneUserResponseDto> {
@@ -33,7 +44,29 @@ export class UserController {
   })
   @ApiCreatedResponse({
     type: CreateUserResponseDto,
-    description: 'application/json.',
+    description: '회원 가입 성공',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'ALREADY_EXIST_USER_EXTERNAL_ID - 이미 가입된 사용자',
+    schema: {
+      example: {
+        statusCode: 409,
+        code: 'ALREADY_EXIST_USER_EXTERNAL_ID',
+        message: '이미 가입된 사용자(id : 12345)',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'UNDERAGE_USER - 만 14세 미만은 가입할 수 없습니다.',
+    schema: {
+      example: {
+        statusCode: 400,
+        code: 'UNDERAGE_USER',
+        message: '만 14세 미만은 가입할 수 없습니다.(나이 : 13)',
+      },
+    },
   })
   async createUser(
     @Headers('oAuth-token') oAuthToken: string,

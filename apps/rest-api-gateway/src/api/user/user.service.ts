@@ -6,6 +6,7 @@ import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/prot
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
 import { FindOneUserResponseDto } from './dto/find-one-user-response.dto'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
+import * as moment from 'moment'
 
 @Injectable()
 export class UserService {
@@ -62,6 +63,22 @@ export class UserService {
           message: `이미 가입된 사용자(id : ${existUserEntity.id})`,
         },
         HttpStatus.CONFLICT,
+      )
+    }
+
+    // 만 14세 미만인지 확인
+    const birthDate = moment(request.birthDate)
+    const currentDate = moment()
+    const age = currentDate.diff(birthDate, 'years')
+
+    if (age < 14) {
+      throw new HttpException(
+        {
+          code: 'UNDERAGE_USER',
+          status: HttpStatus.BAD_REQUEST,
+          message: `만 14세 미만은 가입할 수 없습니다.(나이 : ${age})`,
+        },
+        HttpStatus.BAD_REQUEST,
       )
     }
 

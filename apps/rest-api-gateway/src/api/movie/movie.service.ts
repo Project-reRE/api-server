@@ -79,23 +79,25 @@ export class MovieService {
     console.log(existMovieData.data.Data[0].Result, 'findMovies')
 
     const results = existMovieData.data.Data[0].Result?.map((value) => {
+      const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
+      const stlls = value?.stlls?.toLowerCase()?.split('.jpg')[0]
+
       return {
         // DOCID: value?.DDCID,
         id: `${value?.movieId}-${value?.movieSeq}`,
         data: {
           title: value?.title,
           prodYear: value?.prodYear,
-          director: value?.directors[0],
-          actors: value?.actors,
           directors: Array.isArray(value?.directors?.director)
+            ? value.directors.director.slice(0, 10)
             : value?.directors?.director, // 최대 10명
           actors: Array.isArray(value?.actors?.actor) ? value.actors.actor.slice(0, 10) : value?.actors?.actor, // 최대 10명
           rating: value?.rating,
           genre: value?.genre,
           repRatDate: value?.repRatDate,
           repRlsDate: value?.repRlsDate,
-          posters: value?.posters?.toLowerCase()?.split('.jpg')[0] + '.jpg',
-          stlls: value?.stlls?.toLowerCase()?.split('.jpg')[0] + '.jpg',
+          posters: [posters ? posters + '.jpg' : null],
+          stlls: [stlls ? stlls + '.jpg' : null],
         },
       }
     })

@@ -1,4 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { MovieDataDirectorDto } from './movie-data-director.dto'
+import { MovieDataActorDto } from './movie-data-actor.dto'
 
 export class MovieDataDto {
   @ApiProperty({ example: '범죄도시4' })
@@ -10,18 +12,19 @@ export class MovieDataDto {
   @ApiPropertyOptional({ example: '20240424' })
   repRlsDate?: string
 
-  @ApiPropertyOptional({ type: [] })
-  director?: string[]
+  @ApiPropertyOptional({ type: MovieDataDirectorDto })
+  directors?: MovieDataDirectorDto[]
 
-  @ApiPropertyOptional({ type: [] })
-  actors?: string[]
+  @ApiPropertyOptional({ type: MovieDataActorDto })
+  actors?: MovieDataActorDto[]
 
   @ApiPropertyOptional({
     type: ['http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
   })
-  posters?: string
+  posters?: string[]
+
   @ApiPropertyOptional({
     type: ['http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
   })
-  stlls?: string
+  stlls?: string[]
 }

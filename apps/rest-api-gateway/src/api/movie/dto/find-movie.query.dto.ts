@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class FindMovieQueryDto {
   @ApiPropertyOptional({ example: '범죄도시', description: '영화명' })
@@ -7,8 +7,10 @@ export class FindMovieQueryDto {
   @IsString()
   title?: string
 
-  @ApiPropertyOptional({ example: 25 })
+  @ApiPropertyOptional({
+    example: 25,
+  })
+  @IsString()
   @IsOptional()
-  @IsNumber()
   limit?: number
 }

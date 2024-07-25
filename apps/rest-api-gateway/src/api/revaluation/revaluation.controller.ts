@@ -81,11 +81,8 @@ export class RevaluationController {
     type: FindRevaluationResponseDto,
     description: 'application/json.',
   })
-  async findMyRevaluations(
-    @Param('movieId') movieId: string,
-    @AuthUser() user: UserDto,
-  ): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations(movieId)
+  async findMyRevaluations(@AuthUser() user: UserDto): Promise<FindRevaluationResponseDto> {
+    const existRevaluations = await this.revaluationService.findRevaluations(user.id)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }

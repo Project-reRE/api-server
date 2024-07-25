@@ -55,7 +55,7 @@ export class RevaluationController {
   @UseGuards(JwtAuthGuard)
   @Get('/revaluations')
   @ApiOperation({
-    summary: '특정 영화에 대한 모든 재평가 조회',
+    summary: '[ADMIN 전용] 영화에 전체에 대한 모든 재평가 조회',
     description: '특정 영화에 대한 모든 재평가를 조회합니다.',
   })
   @ApiResponse({

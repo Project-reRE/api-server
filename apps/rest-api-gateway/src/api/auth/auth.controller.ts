@@ -52,6 +52,8 @@ export class AuthController {
       role: existUser.role,
       nickName: existUser.nickName,
       profileUrl: existUser.profileUrl,
+      email: existUser.email,
+      birthDate: existUser.birthDate,
       createdAt: existUser.createdAt,
     }
 

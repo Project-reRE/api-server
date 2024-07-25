@@ -87,6 +87,9 @@ export class MovieService {
           prodYear: value?.prodYear,
           director: value?.directors[0],
           actors: value?.actors,
+          directors: Array.isArray(value?.directors?.director)
+            : value?.directors?.director, // 최대 10명
+          actors: Array.isArray(value?.actors?.actor) ? value.actors.actor.slice(0, 10) : value?.actors?.actor, // 최대 10명
           rating: value?.rating,
           genre: value?.genre,
           repRatDate: value?.repRatDate,

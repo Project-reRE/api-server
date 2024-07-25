@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UserService } from '../user/user.service'
 import { AuthService } from './auth.service'
+import { jwtConstants } from '../../constants/jwt'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -55,7 +56,7 @@ export class AuthController {
     }
 
     console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
-    const jwt = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET_KEY })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
 
     console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
 

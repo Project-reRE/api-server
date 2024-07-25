@@ -20,7 +20,7 @@ export class MovieService {
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
     console.log(request, 'createMovie')
 
-    const existMovie = this.movieRepository.findOne({ where: { id: request.id } })
+    const existMovie = await this.movieRepository.findOne({ where: { id: request.id } })
 
     if (!existMovie) {
       const creatableMovie = this.movieRepository.create(request)
@@ -34,7 +34,7 @@ export class MovieService {
   async findOneMovie(request: FindOneMovieRequestDto): Promise<FindOneMovieResponseDto> {
     console.log(request, 'findOneMovie')
 
-    const existMovie = this.movieRepository.findOne({ where: { id: request.id } })
+    const existMovie = await this.movieRepository.findOne({ where: { id: request.id } })
 
     if (!existMovie) {
       throw new HttpException(
@@ -46,6 +46,8 @@ export class MovieService {
         HttpStatus.NOT_FOUND,
       )
     }
+
+    console.log(existMovie, 'findOneMovie')
 
     return existMovie
   }

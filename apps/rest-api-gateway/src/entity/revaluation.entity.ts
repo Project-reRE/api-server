@@ -1,10 +1,28 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 import { Transform } from 'class-transformer'
+import { MovieEntity } from './movie.entity'
+import { UserEntity } from './user.entity'
 
-@Entity()
+@Entity('revaluations')
+@Index(['movie', 'user', 'createdAt'])
 export class RevaluationEntity {
   @PrimaryColumn({ type: 'varchar', unique: true, length: 20 })
   id: string
+
+  @ManyToOne(() => MovieEntity, (movie) => movie.revaluations)
+  movie: MovieEntity
+
+  @ManyToOne(() => UserEntity, (user) => user.revaluations)
+  user: UserEntity
 
   @Column({ type: 'decimal', precision: 2, scale: 1, comment: 'Number of Stars' })
   numStars: number

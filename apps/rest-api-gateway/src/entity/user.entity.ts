@@ -1,5 +1,14 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 import { Transform } from 'class-transformer'
+import { RevaluationEntity } from './revaluation.entity'
 
 @Entity('users')
 export class UserEntity {
@@ -48,4 +57,7 @@ export class UserEntity {
   @DeleteDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
   deletedAt: Date
+
+  @OneToMany(() => RevaluationEntity, (revaluation) => revaluation.user)
+  revaluations: RevaluationEntity[]
 }

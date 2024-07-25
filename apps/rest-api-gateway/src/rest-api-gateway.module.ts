@@ -12,6 +12,7 @@ import { BannerModule } from './api/banner/banner.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from './entity/user.entity'
 import { MovieEntity } from './entity/movie.entity'
+import { RevaluationModule } from './api/revaluation/revaluation.module'
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { MovieEntity } from './entity/movie.entity'
     HealthModule,
     MovieSetModule,
     BannerModule,
+    RevaluationModule,
   ],
   providers: [RolesGuard],
 })

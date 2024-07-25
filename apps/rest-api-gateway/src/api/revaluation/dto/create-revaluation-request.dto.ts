@@ -34,5 +34,5 @@ export class CreateRevaluationRequestDto {
   @IsString()
   comment: string
 
-  userId: string
+  requestUserId: string
 }

@@ -6,6 +6,8 @@ import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.
 import { CreateRevaluationRequestDto } from './dto/create-revaluation-request.dto'
 import { FindRevaluationResponseDto } from './dto/find-revaluation.response.dto'
 import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-response.dto'
+import { AuthUser } from '../../../../../libs/decorator/auth-user.decorator'
+import { UserDto } from '../user/dto/user.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -26,9 +28,11 @@ export class RevaluationController {
   async createRevaluation(
     @Headers('oAuth-token') oAuthToken: string,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    @AuthUser()
+    user: UserDto,
     request: CreateRevaluationRequestDto,
   ): Promise<CreateRevaluationResponseDto> {
-    return this.revaluationService.createRevaluation(request)
+    return this.revaluationService.createRevaluation({ ...request, requestUserId: user.id })
   }
 
   @UseGuards(JwtAuthGuard)
@@ -43,9 +47,9 @@ export class RevaluationController {
   })
   async findOneRevaluation(
     @Param('movieId') movieId: string,
-    @Param('userId') userId: string,
+    @AuthUser() user: UserDto,
   ): Promise<FindOneRevaluationResponseDto> {
-    return this.revaluationService.findOneRevaluation(movieId, userId)
+    return this.revaluationService.findOneRevaluation(movieId, user.id)
   }
 
   // ADMIN 전용
@@ -59,7 +63,10 @@ export class RevaluationController {
     type: FindRevaluationResponseDto,
     description: 'application/json.',
   })
-  async findRevaluations(@Param('movieId') movieId: string): Promise<FindRevaluationResponseDto> {
+  async findRevaluations(
+    @Param('movieId') movieId: string,
+    @AuthUser() user: UserDto,
+  ): Promise<FindRevaluationResponseDto> {
     const existRevaluations = await this.revaluationService.findRevaluations(movieId)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
@@ -75,7 +82,10 @@ export class RevaluationController {
     type: FindRevaluationResponseDto,
     description: 'application/json.',
   })
-  async findMyRevaluations(@Param('movieId') movieId: string): Promise<FindRevaluationResponseDto> {
+  async findMyRevaluations(
+    @Param('movieId') movieId: string,
+    @AuthUser() user: UserDto,
+  ): Promise<FindRevaluationResponseDto> {
     const existRevaluations = await this.revaluationService.findRevaluations(movieId)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }

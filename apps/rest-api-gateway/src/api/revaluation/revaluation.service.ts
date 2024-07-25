@@ -44,7 +44,7 @@ export class RevaluationService {
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
         movie: { id: request.movieId },
-        user: { id: request.userId },
+        user: { id: request.requestUserId },
         createdAt: Between(revaluationThresholdDate, new Date()),
       },
     })
@@ -60,11 +60,11 @@ export class RevaluationService {
       )
     }
 
-    const creatableRevaluation = this.revaluationRepository.create(request)
+    const creatableRevaluation = this.revaluationRepository.create({ ...request, user: { id: request.requestUserId } })
 
     const createdRevaluation = await this.revaluationRepository.save(creatableRevaluation)
 
-    console.log(createdRevaluation)
+    console.log(createdRevaluation, 'createRevaluation')
 
     return createdRevaluation
   }
@@ -91,23 +91,12 @@ export class RevaluationService {
     return revaluation
   }
 
-  async findRevaluations(movieId: string): Promise<RevaluationEntity[]> {
+  async findRevaluations(userId: string): Promise<RevaluationEntity[]> {
     const revaluations = await this.revaluationRepository
       .createQueryBuilder('revaluation')
-      .innerJoinAndSelect('revaluation.movie', 'movie', 'movie.id = :movieId', { movieId })
-      .innerJoinAndSelect('revaluation.user', 'user')
+      .innerJoinAndSelect('revaluation.movie', 'movie')
+      .innerJoinAndSelect('revaluation.user', 'user', 'user.id = :userId', { userId })
       .getMany()
-
-    if (revaluations.length === 0) {
-      throw new HttpException(
-        {
-          code: 'REVALUATIONS_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
-          message: `유효 하지 않은 영화에 대한 재평가 (movieId : ${movieId})`,
-        },
-        HttpStatus.NOT_FOUND,
-      )
-    }
 
     return revaluations
   }

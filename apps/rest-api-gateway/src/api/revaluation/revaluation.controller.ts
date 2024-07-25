@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RevaluationService } from './revaluation.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
@@ -26,7 +26,6 @@ export class RevaluationController {
     description: 'application/json.',
   })
   async createRevaluation(
-    @Headers('oAuth-token') oAuthToken: string,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     @AuthUser()
     user: UserDto,

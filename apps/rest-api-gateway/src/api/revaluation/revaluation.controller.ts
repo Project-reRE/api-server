@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RevaluationService } from './revaluation.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
@@ -8,6 +8,7 @@ import { FindRevaluationResponseDto } from './dto/find-revaluation.response.dto'
 import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-response.dto'
 import { AuthUser } from '../../../../../libs/decorator/auth-user.decorator'
 import { UserDto } from '../user/dto/user.dto'
+import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -65,8 +66,9 @@ export class RevaluationController {
   async findRevaluations(
     @Param('movieId') movieId: string,
     @AuthUser() user: UserDto,
+    @Query() query: FindRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations(movieId)
+    const existRevaluations = await this.revaluationService.findRevaluations(query)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }
@@ -81,8 +83,11 @@ export class RevaluationController {
     type: FindRevaluationResponseDto,
     description: 'application/json.',
   })
-  async findMyRevaluations(@AuthUser() user: UserDto): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations(user.id)
+  async findMyRevaluations(
+    @AuthUser() user: UserDto,
+    @Query() query: FindRevaluationRequestDto,
+  ): Promise<FindRevaluationResponseDto> {
+    const existRevaluations = await this.revaluationService.findRevaluations(query)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }

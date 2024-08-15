@@ -7,6 +7,7 @@ import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.
 import { MovieEntity } from '../../entity/movie.entity'
 import { status as GrpcStatus } from '@grpc/grpc-js'
 import { UserEntity } from '../../entity/user.entity'
+import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 
 @Injectable()
 export class RevaluationService {
@@ -106,13 +107,26 @@ export class RevaluationService {
     return revaluation
   }
 
-  async findRevaluations(userId: string): Promise<RevaluationEntity[]> {
-    const revaluations = await this.revaluationRepository
+  async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[]> {
+    console.log(request, 'findRevaluations')
+
+    const starDate = request.startDate ?? '2024-01-01 00:00:00'
+    const endDate = request.endDate ?? '2099-01-01 00:00:00'
+
+    const queryBuilder = await this.revaluationRepository
       .createQueryBuilder('revaluation')
       .innerJoinAndSelect('revaluation.movie', 'movie')
-      .innerJoinAndSelect('revaluation.user', 'user', 'user.id = :userId', { userId })
-      .getMany()
+      .innerJoinAndSelect('revaluation.user', 'user')
+      .where(`revaluation.createdAt between ${starDate} and ${endDate}`)
 
-    return revaluations
+    if (request.userId) {
+      queryBuilder.andWhere(`user.id = :userId`, { userId: request.userId })
+    }
+
+    if (request.movieId) {
+      queryBuilder.andWhere(`movie.id = :movieId`, { movieId: request.movieId })
+    }
+
+    return queryBuilder.getMany()
   }
 }

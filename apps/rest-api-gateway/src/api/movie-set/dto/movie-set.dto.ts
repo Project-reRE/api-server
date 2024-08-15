@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { MovieDto } from './movie.dto'
+import { MovieDto } from '../../movie/dto/movie.dto'
 
 export class MovieSetDto {
   @ApiProperty({ example: '마동석이 나온 영화' })

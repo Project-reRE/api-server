@@ -32,16 +32,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -52,16 +61,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -72,16 +90,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -100,16 +127,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -120,16 +156,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -140,16 +185,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -168,16 +222,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -188,16 +251,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },
@@ -208,16 +280,25 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
-              directors: {
-                directorNm: '류승완',
-                directorEnNm: 'Ryoo Seung-wan',
-                directorId: '00004003',
-              },
-              actors: {
-                actorNm: '황정민',
-                actorEnNm: 'Hwang Jung-min',
-                actorId: '00007364',
-              },
+              directors: [
+                {
+                  directorNm: '류승완',
+                  directorEnNm: 'Ryoo Seung-wan',
+                  directorId: '00004003',
+                },
+              ],
+              actors: [
+                {
+                  actorNm: '황정민',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+                {
+                  actorNm: '정우성',
+                  actorEnNm: 'Hwang Jung-min',
+                  actorId: '00007364',
+                },
+              ],
               posters: ['Unknown Type: http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
               stlls: ['Unknown Type: http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
             },

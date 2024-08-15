@@ -29,7 +29,16 @@ export class RevaluationEntity {
 
   @Column({
     type: 'enum',
-    enum: ['PLANNING_INTENT', 'DIRECTORS_DIRECTION', 'ACTING_SKILLS', 'SCENARIO', 'OST', 'SOCIAL_ISSUES'],
+    enum: [
+      'PLANNING_INTENT',
+      'DIRECTORS_DIRECTION',
+      'ACTING_SKILLS',
+      'SCENARIO',
+      'OST',
+      'SOCIAL_ISSUES',
+      'VISUAL_ELEMENT',
+      'SOUND_ELEMENT',
+    ],
     comment: 'Special Point',
     nullable: true,
   })

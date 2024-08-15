@@ -17,10 +17,28 @@ export class CreateRevaluationRequestDto {
   @ApiPropertyOptional({
     example: 'PLANNING_INTENT',
     description: 'Special Point',
-    enum: ['PLANNING_INTENT', 'DIRECTORS_DIRECTION', 'ACTING_SKILLS', 'SCENARIO', 'OST', 'SOCIAL_ISSUES'],
+    enum: [
+      'PLANNING_INTENT',
+      'DIRECTORS_DIRECTION',
+      'ACTING_SKILLS',
+      'SCENARIO',
+      'OST',
+      'SOCIAL_ISSUES',
+      'VISUAL_ELEMENT',
+      'SOUND_ELEMENT',
+    ],
   })
   @IsOptional()
-  @IsEnum(['PLANNING_INTENT', 'DIRECTORS_DIRECTION', 'ACTING_SKILLS', 'SCENARIO', 'OST', 'SOCIAL_ISSUES'])
+  @IsEnum([
+    'PLANNING_INTENT',
+    'DIRECTORS_DIRECTION',
+    'ACTING_SKILLS',
+    'SCENARIO',
+    'OST',
+    'SOCIAL_ISSUES',
+    'VISUAL_ELEMENT',
+    'SOUND_ELEMENT',
+  ])
   specialPoint: string
 
   @ApiPropertyOptional({

@@ -113,6 +113,21 @@ export class UserService {
       )
     }
 
+    if (request.email) {
+      const existUserEmailEntity = await this.userRepository.findOne({ where: { email: request.email } })
+
+      if (existUserEmailEntity) {
+        throw new HttpException(
+          {
+            code: 'ALREADY_EXIST_EMAIL',
+            status: HttpStatus.CONFLICT,
+            message: `이미 사용중인 이메일 `,
+          },
+          HttpStatus.CONFLICT,
+        )
+      }
+    }
+
     const updatedUser = Object.assign(existUserEntity, request)
     const savedUser = await this.userRepository.save(updatedUser)
 

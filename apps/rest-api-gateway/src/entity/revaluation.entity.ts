@@ -5,7 +5,7 @@ import {
   Entity,
   Index,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
 import { Transform } from 'class-transformer'
@@ -15,7 +15,7 @@ import { UserEntity } from './user.entity'
 @Entity('revaluations')
 @Index(['movie', 'user', 'createdAt'])
 export class RevaluationEntity {
-  @PrimaryColumn({ type: 'varchar', unique: true, length: 20 })
+  @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: string
 
   @ManyToOne(() => MovieEntity, (movie) => movie.revaluations)

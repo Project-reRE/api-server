@@ -6,12 +6,15 @@ import { RevaluationEntity } from '../../entity/revaluation.entity'
 import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.dto'
 import { MovieEntity } from '../../entity/movie.entity'
 import { status as GrpcStatus } from '@grpc/grpc-js'
+import { UserEntity } from '../../entity/user.entity'
 
 @Injectable()
 export class RevaluationService {
   constructor(
     @InjectRepository(RevaluationEntity)
     private revaluationRepository: Repository<RevaluationEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     @InjectRepository(MovieEntity)
     private movieRepository: Repository<MovieEntity>,
   ) {}
@@ -24,6 +27,8 @@ export class RevaluationService {
         id: request.movieId,
       },
     })
+
+    console.log(existMovie, 'createRevaluation', 'existMovie')
 
     if (!existMovie) {
       throw new HttpException(
@@ -49,6 +54,8 @@ export class RevaluationService {
       },
     })
 
+    console.log(existRevaluation, 'createRevaluation', 'existRevaluation')
+
     if (existRevaluation) {
       throw new HttpException(
         {
@@ -60,7 +67,11 @@ export class RevaluationService {
       )
     }
 
-    const creatableRevaluation = this.revaluationRepository.create({ ...request, user: { id: request.requestUserId } })
+    const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
+
+    const creatableRevaluation = this.revaluationRepository.create({ ...request, user: existUserEntity })
+
+    console.log(creatableRevaluation, 'createRevaluation', 'creatableRevaluation')
 
     const createdRevaluation = await this.revaluationRepository.save(creatableRevaluation)
 

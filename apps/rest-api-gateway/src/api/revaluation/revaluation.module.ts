@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { RevaluationEntity } from '../../entity/revaluation.entity'
 import { RevaluationService } from './revaluation.service'
 import { MovieEntity } from '../../entity/movie.entity'
+import { UserEntity } from '../../entity/user.entity'
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { MovieEntity } from '../../entity/movie.entity'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([RevaluationEntity, MovieEntity]),
+    TypeOrmModule.forFeature([UserEntity, RevaluationEntity, MovieEntity]),
   ],
   controllers: [RevaluationController],
   providers: [RevaluationService],

@@ -69,7 +69,11 @@ export class RevaluationService {
 
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
 
-    const creatableRevaluation = this.revaluationRepository.create({ ...request, user: existUserEntity })
+    const creatableRevaluation = this.revaluationRepository.create({
+      ...request,
+      user: existUserEntity,
+      movie: existMovie,
+    })
 
     console.log(creatableRevaluation, 'createRevaluation', 'creatableRevaluation')
 

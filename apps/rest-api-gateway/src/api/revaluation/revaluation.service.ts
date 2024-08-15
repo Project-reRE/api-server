@@ -85,11 +85,10 @@ export class RevaluationService {
     return createdRevaluation
   }
 
-  async findOneRevaluation(movieId: string, userId: string): Promise<RevaluationEntity> {
+  async findOneRevaluation(movieId: string): Promise<RevaluationEntity> {
     const revaluation = await this.revaluationRepository.findOne({
       where: {
         movie: { id: movieId },
-        user: { id: userId },
       },
     })
 
@@ -98,7 +97,7 @@ export class RevaluationService {
         {
           code: 'REVALUATION_NOTFOUND',
           status: GrpcStatus.NOT_FOUND,
-          message: `평가 내역이 없음 (movieId : ${movieId}, userId: ${userId})`,
+          message: `영화에 대한 평가 내역이 없음 (movieId : ${movieId})`,
         },
         HttpStatus.NOT_FOUND,
       )

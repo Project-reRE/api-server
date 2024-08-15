@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.dto'
 import { CreateRevaluationRequestDto } from './dto/create-revaluation-request.dto'
 import { FindRevaluationResponseDto } from './dto/find-revaluation.response.dto'
-import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-response.dto'
 import { AuthUser } from '../../../../../libs/decorator/auth-user.decorator'
 import { UserDto } from '../user/dto/user.dto'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
@@ -37,27 +36,9 @@ export class RevaluationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/revaluations/:movieId/:userId')
-  @ApiOperation({
-    summary: '특정 사용자와 영화에 대한 재평가 조회',
-    description: '특정 사용자와 영화에 대한 단일 재평가를 조회합니다.',
-  })
-  @ApiResponse({
-    type: FindOneRevaluationResponseDto,
-    description: 'application/json.',
-  })
-  async findOneRevaluation(
-    @Param('movieId') movieId: string,
-    @AuthUser() user: UserDto,
-  ): Promise<FindOneRevaluationResponseDto> {
-    return this.revaluationService.findOneRevaluation(movieId, user.id)
-  }
-
-  // ADMIN 전용
-  @UseGuards(JwtAuthGuard)
   @Get('/revaluations')
   @ApiOperation({
-    summary: '[ADMIN 전용] 영화에 전체에 대한 모든 재평가 조회',
+    summary: ' 영화에 전체에 대한 모든 재평가 조회',
     description: '특정 영화에 대한 모든 재평가를 조회합니다.',
   })
   @ApiResponse({

@@ -42,9 +42,9 @@ export class UserEntity {
   @Column({ type: 'boolean' })
   gender: boolean
 
-  @Column({ type: 'datetime', nullable: true, default: null })
-  @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
-  birthDate: Date
+  @Column({ type: 'date', nullable: true, default: null })
+  @Transform(({ value }) => (value ? value.split('T')[0] : value))
+  birthDate: string
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))

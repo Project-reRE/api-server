@@ -14,17 +14,29 @@ export class CreateRevaluationRequestDto {
   @Max(5.0)
   numStars: number
 
-  @ApiPropertyOptional({ example: 'PLANNING_INTENT', description: 'Special Point' })
+  @ApiPropertyOptional({
+    example: 'PLANNING_INTENT',
+    description: 'Special Point',
+    enum: ['PLANNING_INTENT', 'DIRECTORS_DIRECTION', 'ACTING_SKILLS', 'SCENARIO', 'OST', 'SOCIAL_ISSUES'],
+  })
   @IsOptional()
   @IsEnum(['PLANNING_INTENT', 'DIRECTORS_DIRECTION', 'ACTING_SKILLS', 'SCENARIO', 'OST', 'SOCIAL_ISSUES'])
   specialPoint: string
 
-  @ApiPropertyOptional({ example: 'POSITIVE', description: 'Past Valuation' })
+  @ApiPropertyOptional({
+    example: 'POSITIVE',
+    description: 'Past Valuation',
+    enum: ['POSITIVE', 'NEGATIVE', 'NOT_SURE'],
+  })
   @IsOptional()
   @IsEnum(['POSITIVE', 'NEGATIVE', 'NOT_SURE'])
   pastValuation: string
 
-  @ApiPropertyOptional({ example: 'POSITIVE', description: 'Present Valuation' })
+  @ApiPropertyOptional({
+    example: 'POSITIVE',
+    description: 'Present Valuation',
+    enum: ['POSITIVE', 'NEGATIVE', 'NOT_SURE'],
+  })
   @IsOptional()
   @IsEnum(['POSITIVE', 'NEGATIVE', 'NOT_SURE'])
   presentValuation: string

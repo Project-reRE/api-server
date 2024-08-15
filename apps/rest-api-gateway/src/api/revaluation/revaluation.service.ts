@@ -110,14 +110,14 @@ export class RevaluationService {
   async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[]> {
     console.log(request, 'findRevaluations')
 
-    const starDate = request.startDate ?? '2024-01-01 00:00:00'
+    const startDate = request.startDate ?? '2024-01-01 00:00:00'
     const endDate = request.endDate ?? '2099-01-01 00:00:00'
 
     const queryBuilder = await this.revaluationRepository
       .createQueryBuilder('revaluation')
       .innerJoinAndSelect('revaluation.movie', 'movie')
       .innerJoinAndSelect('revaluation.user', 'user')
-      .where(`revaluation.createdAt between ${starDate} and ${endDate}`)
+      .where(`revaluation.createdAt between :startDate and :endDate`, { startDate: startDate, endDate: endDate })
 
     if (request.userId) {
       queryBuilder.andWhere(`user.id = :userId`, { userId: request.userId })

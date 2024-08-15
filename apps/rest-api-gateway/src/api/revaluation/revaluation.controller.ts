@@ -9,6 +9,7 @@ import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-respon
 import { AuthUser } from '../../../../../libs/decorator/auth-user.decorator'
 import { UserDto } from '../user/dto/user.dto'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
+import { FindMyRevaluationRequestDto } from './dto/find-my-revaluation.request.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -85,8 +86,10 @@ export class RevaluationController {
   })
   async findMyRevaluations(
     @AuthUser() user: UserDto,
-    @Query() query: FindRevaluationRequestDto,
+    @Query() query: FindMyRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
+    query.userId = user.id // TOKEN 에 있는 USER ID
+
     const existRevaluations = await this.revaluationService.findRevaluations(query)
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }

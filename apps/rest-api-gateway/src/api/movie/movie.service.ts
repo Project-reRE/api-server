@@ -110,7 +110,7 @@ export class MovieService {
     }
 
     return {
-      totalRecords: existMovieData.data.Data[0].Result.length,
+      totalRecords: results.length,
       results: results,
     }
   }

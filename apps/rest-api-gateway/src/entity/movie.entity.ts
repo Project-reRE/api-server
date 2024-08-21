@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { Transform } from 'class-transformer'
 import { RevaluationEntity } from './revaluation.entity'
+import { MovieStatisticsEntity } from './movie-statistics.entity'
 
 @Entity('movies')
 export class MovieEntity {
@@ -12,6 +13,9 @@ export class MovieEntity {
 
   @OneToMany(() => RevaluationEntity, (revaluation) => revaluation.movie)
   revaluations: RevaluationEntity[]
+
+  @OneToMany(() => MovieStatisticsEntity, (statistics) => statistics.movie)
+  statistics: MovieStatisticsEntity
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))

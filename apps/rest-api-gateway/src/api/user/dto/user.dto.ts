@@ -1,5 +1,6 @@
 import { IsBoolean, IsDateString, IsString } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { UserStatisticsDto } from './user-statistics.dto'
 
 export class UserDto {
   @ApiProperty({
@@ -61,6 +62,11 @@ export class UserDto {
   })
   @IsString()
   birthDate: string
+
+  @ApiProperty({
+    type: UserStatisticsDto,
+  })
+  statistics: UserStatisticsDto
 
   @ApiProperty({ example: '2021-01-23T16:57:35.977Z' })
   @IsDateString()

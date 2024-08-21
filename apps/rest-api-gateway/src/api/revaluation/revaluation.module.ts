@@ -7,6 +7,7 @@ import { RevaluationEntity } from '../../entity/revaluation.entity'
 import { RevaluationService } from './revaluation.service'
 import { MovieEntity } from '../../entity/movie.entity'
 import { UserEntity } from '../../entity/user.entity'
+import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { UserEntity } from '../../entity/user.entity'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([UserEntity, RevaluationEntity, MovieEntity]),
+    TypeOrmModule.forFeature([UserEntity, RevaluationEntity, MovieEntity, UserStatisticsEntity]),
   ],
   controllers: [RevaluationController],
   providers: [RevaluationService],

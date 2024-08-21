@@ -39,7 +39,10 @@ export class UserService {
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {
     console.log(request, 'findOneUser')
-    const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
+    const existUserEntity = await this.userRepository.findOne({
+      where: { id: request.id },
+      relations: { statistics: true },
+    })
     if (!existUserEntity) {
       throw new HttpException(
         {
@@ -49,6 +52,13 @@ export class UserService {
         },
         HttpStatus.NOT_FOUND,
       )
+    }
+
+    if (!existUserEntity.statistics) {
+      existUserEntity.statistics = {
+        id: '1',
+        numRevaluations: 48,
+      }
     }
 
     return Object.assign(existUserEntity)
@@ -86,7 +96,7 @@ export class UserService {
       )
     }
 
-    const creatableUser = this.userRepository.create(request)
+    const creatableUser = this.userRepository.create({ ...request, statistics: {} })
 
     creatableUser.nickName = `tester_${new Date().getTime()}`
 

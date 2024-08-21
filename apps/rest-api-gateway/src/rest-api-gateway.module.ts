@@ -14,6 +14,8 @@ import { UserEntity } from './entity/user.entity'
 import { MovieEntity } from './entity/movie.entity'
 import { RevaluationModule } from './api/revaluation/revaluation.module'
 import { RevaluationEntity } from './entity/revaluation.entity'
+import { MovieStatisticsEntity } from './entity/movie-statistics.entity'
+import { UserStatisticsEntity } from './entity/user-statistics.entity'
 
 @Module({
   imports: [
@@ -62,7 +64,7 @@ import { RevaluationEntity } from './entity/revaluation.entity'
            * If set to 0, then node will be removed instead and never re-used. (Default: 0)
            */
         },
-        entities: [UserEntity, MovieEntity, RevaluationEntity],
+        entities: [UserEntity, MovieEntity, RevaluationEntity, MovieStatisticsEntity, UserStatisticsEntity],
         timezone: configService.get('database.timezone'),
         // Set this option as false here and instead sync schema when GrpcUserModule is created to disable foreign key constraint.
         synchronize: true,

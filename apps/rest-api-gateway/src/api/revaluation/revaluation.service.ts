@@ -8,6 +8,7 @@ import { MovieEntity } from '../../entity/movie.entity'
 import { status as GrpcStatus } from '@grpc/grpc-js'
 import { UserEntity } from '../../entity/user.entity'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
+import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
 
 @Injectable()
 export class RevaluationService {
@@ -18,6 +19,8 @@ export class RevaluationService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(MovieEntity)
     private movieRepository: Repository<MovieEntity>,
+    @InjectRepository(UserStatisticsEntity)
+    private userStatisticsRepository: Repository<UserStatisticsEntity>,
   ) {}
 
   async createRevaluation(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
@@ -80,6 +83,8 @@ export class RevaluationService {
 
     const createdRevaluation = await this.revaluationRepository.save(creatableRevaluation)
 
+    await this.increaseUserStatistics(existUserEntity.id)
+
     console.log(createdRevaluation, 'createRevaluation')
 
     return createdRevaluation
@@ -127,5 +132,27 @@ export class RevaluationService {
     }
 
     return queryBuilder.getMany()
+  }
+
+  private async increaseUserStatistics(userId: string) {
+    console.log({ userId }, 'increaseUserStatistics')
+    const existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
+    console.log({ beforeUpdate: existUserStatistics.numRevaluations })
+    existUserStatistics.numRevaluations++
+
+    const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
+    console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+  }
+
+  //TODO MOVIE STATISTICS UPDATE 추가
+  private async movieStatistics(userId: string) {
+    //   console.log({ userId }, 'increaseUserStatistics')
+    //   const existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
+    //   console.log({ beforeUpdate: existUserStatistics.numRevaluations })
+    //   existUserStatistics.numRevaluations++
+    //
+    //   const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
+    //   console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+    // }
   }
 }

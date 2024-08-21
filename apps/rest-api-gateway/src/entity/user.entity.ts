@@ -4,11 +4,13 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
 import { Transform } from 'class-transformer'
 import { RevaluationEntity } from './revaluation.entity'
+import { UserStatisticsEntity } from './user-statistics.entity'
 
 @Entity('users')
 export class UserEntity {
@@ -45,6 +47,9 @@ export class UserEntity {
   @Column({ type: 'date', nullable: true, default: null })
   @Transform(({ value }) => (value ? value.split('T')[0] : value))
   birthDate: string
+
+  @OneToOne(() => UserStatisticsEntity, (statistics) => statistics.user, { cascade: true })
+  statistics: UserStatisticsEntity
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))

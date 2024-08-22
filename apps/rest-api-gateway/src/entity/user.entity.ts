@@ -26,9 +26,6 @@ export class UserEntity {
   @Column({ length: 255, default: '' })
   description: string
 
-  @Column({ length: 255, nullable: true })
-  password: string
-
   @Column({ type: 'text' })
   profileUrl: string
 

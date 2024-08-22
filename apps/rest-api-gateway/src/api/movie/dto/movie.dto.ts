@@ -9,6 +9,6 @@ export class MovieDto {
   @ApiProperty({ type: MovieDataDto })
   data: MovieDataDto
 
-  @ApiPropertyOptional({ type: MovieStatisticsDto })
-  statistics?: MovieStatisticsDto
+  @ApiPropertyOptional({ type: [MovieStatisticsDto] })
+  statistics?: MovieStatisticsDto[]
 }

@@ -15,7 +15,7 @@ export class MovieEntity {
   revaluations: RevaluationEntity[]
 
   @OneToMany(() => MovieStatisticsEntity, (statistics) => statistics.movie)
-  statistics: MovieStatisticsEntity
+  statistics: MovieStatisticsEntity[]
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))

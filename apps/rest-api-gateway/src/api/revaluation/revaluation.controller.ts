@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RevaluationService } from './revaluation.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
@@ -46,7 +46,6 @@ export class RevaluationController {
     description: 'application/json.',
   })
   async findRevaluations(
-    @Param('movieId') movieId: string,
     @AuthUser() user: UserDto,
     @Query() query: FindRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {

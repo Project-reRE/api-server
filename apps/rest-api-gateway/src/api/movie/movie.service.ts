@@ -53,56 +53,54 @@ export class MovieService {
       )
     }
 
-    if (!existMovie.statistics) {
-      existMovie.statistics = {
-        id: '1',
-        numRecentStars: {
-          '2024-04': 4,
-          '2024-05': 3.5,
-          '2024-06': 4.5,
-          '2024-07': 4.2,
-          '2024-08': 5,
-        },
-        numStars: 4.5,
-        numStarsParticipants: 5,
-        numSpecialPoint: {
-          PLANNING_INTENT: 3,
-          DIRECTORS_DIRECTION: 6,
-          ACTING_SKILLS: 1,
-          SCENARIO: 20,
-          OST: 10,
-          SOCIAL_ISSUES: 4,
-          VISUAL_ELEMENT: 5,
-          SOUND_ELEMENT: 5,
-        },
-        numPastValuation: {
-          POSITIVE: 2,
-          NEGATIVE: 6,
-          NOT_SURE: 5,
-        },
-        numPresentValuation: {
-          POSITIVE: 5,
-          NEGATIVE: 3,
-          NOT_SURE: 6,
-        },
-        numGender: {
-          MALE: 1,
-          FEMALE: 2,
-        },
-        numAge: {
-          TEENS: 24,
-          TWENTIES: 148,
-          THIRTIES: 34,
-          FORTIES: 1,
-          FIFTIES: 5,
-          SIXTIES: 10,
-          SEVENTIES: 0,
-          EIGHTIES: 0,
-          NINETIES: 2,
-        },
-        targetDate: '2024-09',
-        movie: null,
-      }
+    existMovie.statistics = {
+      id: '1',
+      numRecentStars: {
+        '2024-04': 4,
+        '2024-05': 3.5,
+        '2024-06': 4.5,
+        '2024-07': 4.2,
+        '2024-08': 5,
+      },
+      numStars: 4.5,
+      numStarsParticipants: 5,
+      numSpecialPoint: {
+        PLANNING_INTENT: 3,
+        DIRECTORS_DIRECTION: 6,
+        ACTING_SKILLS: 1,
+        SCENARIO: 20,
+        OST: 10,
+        SOCIAL_ISSUES: 4,
+        VISUAL_ELEMENT: 5,
+        SOUND_ELEMENT: 5,
+      },
+      numPastValuation: {
+        POSITIVE: 2,
+        NEGATIVE: 6,
+        NOT_SURE: 5,
+      },
+      numPresentValuation: {
+        POSITIVE: 5,
+        NEGATIVE: 3,
+        NOT_SURE: 6,
+      },
+      numGender: {
+        MALE: 1,
+        FEMALE: 2,
+      },
+      numAge: {
+        TEENS: 24,
+        TWENTIES: 148,
+        THIRTIES: 34,
+        FORTIES: 1,
+        FIFTIES: 5,
+        SIXTIES: 10,
+        SEVENTIES: 0,
+        EIGHTIES: 0,
+        NINETIES: 2,
+      },
+      targetDate: '2024-09',
+      movie: null,
     }
 
     console.log(existMovie, 'findOneMovie')

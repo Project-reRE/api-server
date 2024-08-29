@@ -151,7 +151,7 @@ export class MovieService {
 
     const results = existMovieData.data.Data[0].Result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
-      const stlls = value?.stlls?.toLowerCase()?.split('.jpg')[0]
+      const stills = value?.stlls?.toLowerCase()?.split('.jpg')[0]
 
       return {
         // DOCID: value?.DDCID,
@@ -168,7 +168,7 @@ export class MovieService {
           repRatDate: value?.repRatDate,
           repRlsDate: value?.repRlsDate,
           posters: [posters ? posters + '.jpg' : null],
-          stlls: [stlls ? stlls + '.jpg' : null],
+          stills: [stills ? stills + '.jpg' : null],
         },
       }
     })

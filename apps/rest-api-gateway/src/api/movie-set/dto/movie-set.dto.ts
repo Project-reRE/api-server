@@ -5,6 +5,9 @@ export class MovieSetDto {
   @ApiProperty({ example: '마동석이 나온 영화' })
   title: string
 
+  @ApiProperty({ example: 'action' })
+  genre: string
+
   @ApiProperty({ example: 'scroll_view' })
   template: string
 

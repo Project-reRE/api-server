@@ -21,7 +21,8 @@ export class MovieSetController {
 
     const dummyResponse: MovieSetDto[] = [
       {
-        title: '범죄자 때려 뿌시기 TOP 3',
+        title: '가장 많은 재평가를 받은 영화 Top3',
+        genre: '액션',
         template: 'scroll_view',
         displayOrder: 0,
         condition: 'most_revaluation',
@@ -116,8 +117,9 @@ export class MovieSetController {
         ],
       },
       {
-        title: '느와르 TOP 3',
+        title: '가장 많은 재평가를 받은 영화 Top3',
         template: 'scroll_view',
+        genre: '느와르',
         displayOrder: 0,
         condition: 'most_revaluation',
         data: [
@@ -211,7 +213,8 @@ export class MovieSetController {
         ],
       },
       {
-        title: '연애 세포를 꺠워줄 영화 TOP 3',
+        title: "가장 많은 재평가를 받은 영화 Top3',",
+        genre: '로맨스',
         template: 'scroll_view',
         displayOrder: 0,
         condition: 'most_revaluation',

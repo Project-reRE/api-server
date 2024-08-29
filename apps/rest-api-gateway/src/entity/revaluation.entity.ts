@@ -5,6 +5,7 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,6 +14,7 @@ import { Transform } from 'class-transformer'
 import { MovieEntity } from './movie.entity'
 import { UserEntity } from './user.entity'
 import { RevaluationStatisticsEntity } from './revaluation-statistics.entity'
+import { RevaluationLikeEntity } from './revaluation-like.entity'
 
 @Entity('revaluations')
 @Index(['movie', 'user', 'createdAt'])
@@ -28,6 +30,9 @@ export class RevaluationEntity {
 
   @OneToOne(() => RevaluationStatisticsEntity, (statistics) => statistics.revaluation)
   statistics: RevaluationStatisticsEntity
+
+  @OneToMany(() => RevaluationLikeEntity, (revaluationLike) => revaluationLike.revaluation)
+  revaluationLikes: RevaluationLikeEntity[]
 
   @Column({ type: 'decimal', precision: 2, scale: 1, comment: 'Number of Stars' })
   numStars: number

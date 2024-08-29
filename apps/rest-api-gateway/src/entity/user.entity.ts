@@ -11,6 +11,7 @@ import {
 import { Transform } from 'class-transformer'
 import { RevaluationEntity } from './revaluation.entity'
 import { UserStatisticsEntity } from './user-statistics.entity'
+import { RevaluationLikeEntity } from './revaluation-like.entity'
 
 @Entity('users')
 export class UserEntity {
@@ -44,6 +45,9 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 4, nullable: true, default: null })
   @Transform(({ value }) => (value ? value.slice(0, 4) : value))
   birthDate: string
+
+  @OneToMany(() => RevaluationLikeEntity, (revaluationLike) => revaluationLike.revaluation)
+  revaluationLikes: RevaluationLikeEntity[]
 
   @OneToOne(() => UserStatisticsEntity, (statistics) => statistics.user, { cascade: true })
   statistics: UserStatisticsEntity

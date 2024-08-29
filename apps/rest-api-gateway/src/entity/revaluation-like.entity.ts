@@ -15,10 +15,10 @@ export class RevaluationLikeEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: string
 
-  @ManyToOne(() => RevaluationEntity, (revaluation) => revaluation.revaluationLikes)
+  @ManyToOne(() => RevaluationEntity, (revaluation) => revaluation.revaluationLikes, { onDelete: 'CASCADE' })
   revaluation: RevaluationEntity
 
-  @ManyToOne(() => UserEntity, (user) => user.revaluationLikes)
+  @ManyToOne(() => UserEntity, (user) => user.revaluationLikes, { onDelete: 'CASCADE' })
   user: UserEntity
 
   @CreateDateColumn()

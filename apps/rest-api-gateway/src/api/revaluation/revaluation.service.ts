@@ -46,9 +46,14 @@ export class RevaluationService {
     }
 
     // 재평가 여부 확인
-    const revaluationThresholdHour = parseInt(process.env.REVALUATION_THRESHOLD_HOUR) ?? 1
+
+    const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
+
+    const revaluationThresholdHour = parseInt(REVALUATION_THRESHOLD_HOUR)
     const revaluationThresholdDate = new Date()
     revaluationThresholdDate.setHours(revaluationThresholdDate.getHours() - revaluationThresholdHour)
+
+    console.log(revaluationThresholdDate, 'createRevaluation', 'revaluationThresholdDate')
 
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
@@ -65,7 +70,7 @@ export class RevaluationService {
         {
           code: 'ALREADY_REVALUATION_MOVIE',
           status: HttpStatus.CONFLICT,
-          message: `이미 평가한 영화(id:${existRevaluation.movie.id}, createdAt : ${existRevaluation.createdAt})`,
+          message: `이미 평가한 영화(movieId :${request.movieId}, createdAt : ${existRevaluation.createdAt})`,
         },
         HttpStatus.CONFLICT,
       )

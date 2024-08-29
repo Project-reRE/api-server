@@ -69,8 +69,8 @@ import { UserStatisticsEntity } from './entity/user-statistics.entity'
         // Set this option as false here and instead sync schema when GrpcUserModule is created to disable foreign key constraint.
         synchronize: true,
         // logging: configService.get('env') === 'development' ? ['query', 'error'] : undefined,
-        logging:
-          configService.get('env') === 'test' ? ['error'] : configService.get('env') === 'development' ?? undefined,
+        logging: true,
+        // configService.get('env') === 'test' ? ['error'] : configService.get('env') === 'development' ?? undefined,
       }),
       inject: [ConfigService],
     }),

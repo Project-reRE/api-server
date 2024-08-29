@@ -16,8 +16,7 @@ export class RevaluationLikeController {
 
   @Post('/revaluations/:revaluationId/likes')
   @ApiOperation({
-    summary: '영화 평가',
-    description: '영화 평가 하기',
+    summary: '평가 좋아요',
   })
   @ApiCreatedResponse({
     type: CreateRevaluationResponseDto,
@@ -33,8 +32,7 @@ export class RevaluationLikeController {
 
   @Delete('/revaluations/:revaluationId/likes')
   @ApiOperation({
-    summary: '영화 평가',
-    description: '영화 평가 하기',
+    summary: '평가 좋아요 취소',
   })
   @ApiCreatedResponse({
     type: RemoveRevaluationResponseDto,

@@ -84,4 +84,6 @@ export class RevaluationEntity {
   @DeleteDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
   deletedAt: Date
+
+  isLiked: boolean
 }

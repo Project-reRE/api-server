@@ -138,8 +138,8 @@ export class UserService {
       }
     }
 
-    const updatedUser = Object.assign(existUserEntity, request)
-    const savedUser = await this.userRepository.save(updatedUser)
+    Object.assign(existUserEntity, request)
+    const savedUser = await this.userRepository.save(existUserEntity)
 
     console.log(savedUser, 'updateUser', 'savedUser')
 

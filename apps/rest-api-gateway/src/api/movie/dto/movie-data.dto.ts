@@ -19,12 +19,12 @@ export class MovieDataDto {
   actors?: MovieDataActorDto[]
 
   @ApiPropertyOptional({
-    type: ['http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
+    example: ['http://file.koreafilm.or.kr/thm/02/99/18/37/tn_DPK021861.jpg'],
   })
   posters?: string[]
 
   @ApiPropertyOptional({
-    type: ['http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
+    example: ['http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg'],
   })
-  stlls?: string[]
+  stills?: string[]
 }

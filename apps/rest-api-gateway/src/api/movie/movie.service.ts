@@ -151,7 +151,7 @@ export class MovieService {
 
     const results = existMovieData.data.Data[0].Result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
-      const stills = value?.stlls?.toLowerCase()?.split('.jpg')[0]
+      const stills = value?.stills?.toLowerCase()?.split('.jpg')[0]
 
       return {
         // DOCID: value?.DDCID,

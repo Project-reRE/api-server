@@ -1,19 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { MovieStatisticsNumRecentDto } from './movie-statistics-numRecent.dto'
 
 export class MovieStatisticsDto {
   @ApiProperty({ example: '1' })
   id: string
 
-  @ApiProperty({
-    example: {
-      '2024-04': 4.0,
-      '2024-05': 3.5,
-      '2024-06': 4.5,
-      '2024-07': 4.2,
-      '2024-08': 5,
-    },
-  })
-  numRecentStars: any
+  @ApiProperty({ type: [MovieStatisticsNumRecentDto] })
+  numRecentStars: MovieStatisticsNumRecentDto[]
 
   @ApiProperty({ example: 4.5 })
   numStars: number

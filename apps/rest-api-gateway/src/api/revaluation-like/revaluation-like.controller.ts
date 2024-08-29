@@ -8,13 +8,13 @@ import { UserDto } from '../user/dto/user.dto'
 import { RemoveRevaluationResponseDto } from './dto/remove-revaluation-response.dto'
 
 @Controller()
-@ApiTags('revaluations')
+@ApiTags('revaluation-likes')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class RevaluationLikeController {
   constructor(private readonly revaluationLikeService: RevaluationLikeService) {}
 
-  @Post('/revaluations/revaluationId/likes')
+  @Post('/revaluations/:revaluationId/likes')
   @ApiOperation({
     summary: '영화 평가',
     description: '영화 평가 하기',
@@ -31,7 +31,7 @@ export class RevaluationLikeController {
     return this.revaluationLikeService.createRevaluationLike({ revaluationId: revaluationId, requestUserId: user.id })
   }
 
-  @Delete('/revaluations/revaluationId/likes')
+  @Delete('/revaluations/:revaluationId/likes')
   @ApiOperation({
     summary: '영화 평가',
     description: '영화 평가 하기',

@@ -18,7 +18,7 @@ export class MovieStatisticsEntity {
   id: string
 
   @ManyToOne(() => MovieEntity, (movie) => movie.statistics, { onDelete: 'CASCADE' })
-  movie?: MovieEntity
+  movie: MovieEntity
 
   @Column({
     type: 'decimal',

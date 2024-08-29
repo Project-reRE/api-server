@@ -9,6 +9,7 @@ import { status as GrpcStatus } from '@grpc/grpc-js'
 import { UserEntity } from '../../entity/user.entity'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
+import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
 
 @Injectable()
 export class RevaluationService {
@@ -21,6 +22,8 @@ export class RevaluationService {
     private movieRepository: Repository<MovieEntity>,
     @InjectRepository(UserStatisticsEntity)
     private userStatisticsRepository: Repository<UserStatisticsEntity>,
+    @InjectRepository(RevaluationStatisticsEntity)
+    private revaluationStatisticsRepository: Repository<RevaluationStatisticsEntity>,
   ) {}
 
   async createRevaluation(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
@@ -90,6 +93,8 @@ export class RevaluationService {
 
     await this.increaseUserStatistics(existUserEntity.id)
 
+    await this.createRevaluationStatistics(createdRevaluation.id)
+
     console.log(createdRevaluation, 'createRevaluation')
 
     return createdRevaluation
@@ -100,6 +105,7 @@ export class RevaluationService {
       where: {
         movie: { id: movieId },
       },
+      relations: { statistics: true, user: true },
     })
 
     if (!revaluation) {
@@ -126,6 +132,7 @@ export class RevaluationService {
       .createQueryBuilder('revaluation')
       .innerJoinAndSelect('revaluation.movie', 'movie')
       .innerJoinAndSelect('revaluation.user', 'user')
+      .leftJoinAndSelect('revaluation.statistics', 'statistics')
       .where(`revaluation.createdAt between :startDate and :endDate`, { startDate: startDate, endDate: endDate })
 
     if (request.userId) {
@@ -136,7 +143,15 @@ export class RevaluationService {
       queryBuilder.andWhere(`movie.id = :movieId`, { movieId: request.movieId })
     }
 
-    return queryBuilder.getMany()
+    const existRevaluations = await queryBuilder.getMany()
+
+    for (let i = 0; i < existRevaluations.length; i++) {
+      if (!existRevaluations[i].statistics) {
+        existRevaluations[i].statistics = await this.createRevaluationStatistics(existRevaluations[i].id)
+      }
+    }
+
+    return existRevaluations
   }
 
   private async increaseUserStatistics(userId: string) {
@@ -147,6 +162,17 @@ export class RevaluationService {
 
     const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
     console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+  }
+
+  private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {
+    console.log({ revaluationId }, 'createRevaluationStatistics')
+    const creatableRevaluationStatistics = await this.revaluationStatisticsRepository.create({
+      revaluation: { id: revaluationId },
+    })
+
+    const createRevaluationStatistics = await this.revaluationStatisticsRepository.save(creatableRevaluationStatistics)
+
+    return createRevaluationStatistics
   }
 
   //TODO MOVIE STATISTICS UPDATE 추가

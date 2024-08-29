@@ -5,12 +5,14 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
 import { Transform } from 'class-transformer'
 import { MovieEntity } from './movie.entity'
 import { UserEntity } from './user.entity'
+import { RevaluationStatisticsEntity } from './revaluation-statistics.entity'
 
 @Entity('revaluations')
 @Index(['movie', 'user', 'createdAt'])
@@ -23,6 +25,9 @@ export class RevaluationEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.revaluations)
   user: UserEntity
+
+  @OneToOne(() => RevaluationStatisticsEntity, (statistics) => statistics.revaluation)
+  statistics: RevaluationStatisticsEntity
 
   @Column({ type: 'decimal', precision: 2, scale: 1, comment: 'Number of Stars' })
   numStars: number

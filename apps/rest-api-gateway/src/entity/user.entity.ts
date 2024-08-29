@@ -41,8 +41,8 @@ export class UserEntity {
   @Column({ type: 'boolean' })
   gender: boolean
 
-  @Column({ type: 'date', nullable: true, default: null })
-  @Transform(({ value }) => (value ? value.split('T')[0] : value))
+  @Column({ type: 'varchar', length: 4, nullable: true, default: null })
+  @Transform(({ value }) => (value ? value.slice(0, 4) : value))
   birthDate: string
 
   @OneToOne(() => UserStatisticsEntity, (statistics) => statistics.user, { cascade: true })

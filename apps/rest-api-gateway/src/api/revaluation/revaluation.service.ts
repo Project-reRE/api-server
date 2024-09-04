@@ -178,6 +178,8 @@ export class RevaluationService {
     const now = dayjs()
     const currentDate = now.format('YYYY-MM')
 
+    console.log({ currentDate }, 'increaseMovieStatistics')
+
     let existMovieStatistics = await this.movieStatisticsRepository.findOne({
       where: {
         movie: { id: movieId },
@@ -194,7 +196,7 @@ export class RevaluationService {
       existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
     }
 
-    console.log({ beforeUpdate: existMovieStatistics })
+    console.log({ beforeUpdate: existMovieStatistics }, 'increaseMovieStatistics')
 
     existMovieStatistics.numStarsParticipants++
 
@@ -202,17 +204,27 @@ export class RevaluationService {
 
     existMovieStatistics.numStars = existMovieStatistics.numStarsTotal / existMovieStatistics.numStarsParticipants
 
+    console.log('DOING # 1', 'increaseMovieStatistics')
+
     // numSpecialPoint가 null일 경우 객체로 초기화
     if (!existMovieStatistics.numSpecialPoint) {
+      console.log('DOING # 1-1', 'increaseMovieStatistics')
+
       existMovieStatistics.numSpecialPoint = {}
     }
 
+    console.log('DOING # 2', 'increaseMovieStatistics')
+
     // 이후 존재하는 값이 있는지 확인하고 업데이트
     if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]) {
+      console.log('DOING # 2-1', 'increaseMovieStatistics')
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]++
     } else {
+      console.log('DOING # 2-2', 'increaseMovieStatistics')
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] = 1
     }
+
+    console.log('DOING # 3', 'increaseMovieStatistics')
 
     // numSpecialPoint가 null일 경우 객체로 초기화
     if (!existMovieStatistics.numPastValuation) {
@@ -238,8 +250,11 @@ export class RevaluationService {
       existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] = 1
     }
 
+    console.log('DOING # 4', 'increaseMovieStatistics')
+
     const updatedUserStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
-    console.log({ afterUpdate: updatedUserStatistics })
+
+    console.log({ afterUpdate: updatedUserStatistics }, 'increaseMovieStatistics')
   }
 
   private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {

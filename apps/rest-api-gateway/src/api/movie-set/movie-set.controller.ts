@@ -33,6 +33,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -62,6 +63,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -91,6 +93,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -129,6 +132,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -158,6 +162,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -187,6 +192,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -225,6 +231,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -254,6 +261,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',
@@ -283,6 +291,7 @@ export class MovieSetController {
               title: '범죄도시4',
               genre: '액션,범죄,스릴러,느와르,코메디',
               repRlsDate: '20240424',
+              prodYear: 2024,
               directors: [
                 {
                   directorNm: '류승완',

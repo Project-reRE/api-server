@@ -89,8 +89,8 @@ export class RevaluationEntity {
   isLiked: boolean
 
   @AfterLoad()
-  updateUserId?() {
-    if (this.revaluationLikes.length > 0) {
+  updateIsLiked?() {
+    if (this.revaluationLikes?.length > 0) {
       this.isLiked = true
     } else {
       this.isLiked = false

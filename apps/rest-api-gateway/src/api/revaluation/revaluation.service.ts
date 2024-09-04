@@ -39,8 +39,6 @@ export class RevaluationService {
       },
     })
 
-    console.log(existMovie.id, 'createRevaluation', 'existMovie')
-
     if (!existMovie) {
       throw new HttpException(
         {
@@ -51,6 +49,8 @@ export class RevaluationService {
         HttpStatus.NOT_FOUND,
       )
     }
+
+    console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     // 재평가 여부 확인
 
@@ -69,8 +69,6 @@ export class RevaluationService {
         createdAt: Between(revaluationThresholdDate, new Date()),
       },
     })
-
-    console.log(existRevaluation.id, 'createRevaluation', 'existRevaluation')
 
     if (existRevaluation) {
       throw new HttpException(

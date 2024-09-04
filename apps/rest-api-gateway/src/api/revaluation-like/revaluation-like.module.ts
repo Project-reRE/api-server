@@ -7,6 +7,7 @@ import { RevaluationLikeService } from './revaluation-like.service'
 import { UserEntity } from '../../entity/user.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
 import { RevaluationLikeEntity } from '../../entity/revaluation-like.entity'
+import { RevaluationEntity } from '../../entity/revaluation.entity'
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { RevaluationLikeEntity } from '../../entity/revaluation-like.entity'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([UserEntity, RevaluationStatisticsEntity, RevaluationLikeEntity]),
+    TypeOrmModule.forFeature([UserEntity, RevaluationStatisticsEntity, RevaluationLikeEntity, RevaluationEntity]),
   ],
   controllers: [RevaluationLikeController],
   providers: [RevaluationLikeService],

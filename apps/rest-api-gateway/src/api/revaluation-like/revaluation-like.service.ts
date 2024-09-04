@@ -6,10 +6,13 @@ import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.
 import { RevaluationLikeEntity } from '../../entity/revaluation-like.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
 import { status as GrpcStatus } from '@grpc/grpc-js'
+import { RevaluationEntity } from '../../entity/revaluation.entity'
 
 @Injectable()
 export class RevaluationLikeService {
   constructor(
+    @InjectRepository(RevaluationEntity)
+    private revaluationRepository: Repository<RevaluationEntity>,
     @InjectRepository(RevaluationLikeEntity)
     private revaluationLikeRepository: Repository<RevaluationLikeEntity>,
     @InjectRepository(RevaluationStatisticsEntity)
@@ -28,8 +31,21 @@ export class RevaluationLikeService {
       return { id: existRevaluationLike.id }
     }
 
-    const creatableRevaluationLike = await this.revaluationLikeRepository.create({
-      revaluation: { id: request.revaluationId },
+    const existRevaluation = await this.revaluationRepository.findOne({ where: { id: request.revaluationId } })
+
+    if (!existRevaluation) {
+      throw new HttpException(
+        {
+          code: 'REVALUATION_NOTFOUND',
+          status: GrpcStatus.NOT_FOUND,
+          message: `평가 내역이 없음 `,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+
+    const creatableRevaluationLike = this.revaluationLikeRepository.create({
+      revaluation: { id: existRevaluation.id },
       user: { id: request.requestUserId },
     })
 

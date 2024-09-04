@@ -30,6 +30,7 @@ export class MovieService {
       const now = dayjs()
       const currentDate = now.format('YYYY-MM')
 
+      // currentDate 기준으로 앞에 5달 statistics 가져오기 + numStars 채워놓기
       const creatableMovie = this.movieRepository.create({ ...request, statistics: [{ currentDate: currentDate }] })
 
       await this.movieRepository.save(creatableMovie)

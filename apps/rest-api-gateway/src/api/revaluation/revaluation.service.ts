@@ -177,7 +177,7 @@ export class RevaluationService {
     revaluationEntity: RevaluationEntity,
     existUserEntity: UserEntity,
   ) {
-    console.log({ movieId }, 'increaseMovieStatistics')
+    console.log({ movieId, version: '20240905_1' }, 'increaseMovieStatistics')
 
     const now = dayjs()
     const currentDate = now.format('YYYY-MM')
@@ -209,7 +209,11 @@ export class RevaluationService {
 
     // decimal 은 string 으로 데이터가 자동으로 파싱됨
     existMovieStatistics.numStars =
-      parseFloat(existMovieStatistics.numStarsTotal.toString()) / existMovieStatistics.numStarsParticipants ?? 0
+      parseFloat(existMovieStatistics.numStarsTotal.toString()) / existMovieStatistics.numStarsParticipants
+
+    if (!existMovieStatistics.numStars) {
+      existMovieStatistics.numStars = 0
+    }
 
     console.log('DOING # 1', 'increaseMovieStatistics')
 
@@ -279,7 +283,7 @@ export class RevaluationService {
       }
     }
 
-    // 현재 날짜를 'YYYY-MM' 형식으로 사용 (이전에 정의한 부분)
+    // TODO 위에 currentDate 로 변경 필요
     const nowDate = dayjs()
     const currentYear = nowDate.year() // 현재 연도만 가져옴
 
@@ -317,6 +321,8 @@ export class RevaluationService {
     }
 
     console.log('DOING # 4', 'increaseMovieStatistics')
+
+    console.log(existMovieStatistics, 'increaseMovieStatistics', 'updatableMovieStatistics')
 
     const updatedUserStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
 

@@ -21,7 +21,10 @@ export class UserService {
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
     console.log(request, 'findOneUserExternal')
-    const existUserEntity = await this.userRepository.findOne({ where: { externalId: request.externalId } })
+    const existUserEntity = await this.userRepository.findOne({
+      where: { externalId: request.externalId },
+      relations: { statistics: true },
+    })
 
     if (!existUserEntity) {
       throw new HttpException(

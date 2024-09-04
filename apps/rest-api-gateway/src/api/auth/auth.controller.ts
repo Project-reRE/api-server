@@ -55,6 +55,7 @@ export class AuthController {
       email: existUser.email,
       birthDate: existUser.birthDate,
       createdAt: existUser.createdAt,
+      statistics: existUser.statistics,
     }
 
     console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })

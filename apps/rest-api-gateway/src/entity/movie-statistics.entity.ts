@@ -32,9 +32,9 @@ export class MovieStatisticsEntity {
     precision: 2,
     scale: 1,
     default: 0,
-    comment: '해당월 Movie Total 평점(별점의 총점 / 별점 부여자 수)',
+    comment: '해당월 Movie Total (기록용)',
   })
-  numStarsTotal: number
+  numStarsTotal?: number
 
   @Column({
     type: 'json',

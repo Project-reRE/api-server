@@ -28,6 +28,15 @@ export class MovieStatisticsEntity {
   numStars: number
 
   @Column({
+    type: 'decimal',
+    precision: 2,
+    scale: 1,
+    default: 0,
+    comment: '해당월 Movie Total 평점(별점의 총점 / 별점 부여자 수)',
+  })
+  numStarsTotal: number
+
+  @Column({
     type: 'json',
     nullable: true,
     comment: '최근(5달) Movie 평균 평점(별점의 총점 / 별점 부여자 수)',

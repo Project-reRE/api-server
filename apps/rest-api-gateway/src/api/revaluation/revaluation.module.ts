@@ -9,6 +9,7 @@ import { MovieEntity } from '../../entity/movie.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
+import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics
       MovieEntity,
       UserStatisticsEntity,
       RevaluationStatisticsEntity,
+      MovieStatisticsEntity,
     ]),
   ],
   controllers: [RevaluationController],

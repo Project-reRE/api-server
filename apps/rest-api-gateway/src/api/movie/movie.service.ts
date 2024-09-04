@@ -9,6 +9,7 @@ import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { CreateMovieRequestDto } from './dto/create-movie-request.dto'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import { status as GrpcStatus } from '@grpc/grpc-js'
+import dayjs from 'dayjs'
 
 @Injectable()
 export class MovieService {
@@ -26,7 +27,10 @@ export class MovieService {
     })
 
     if (!existMovie) {
-      const creatableMovie = this.movieRepository.create({ ...request, statistics: [{}] })
+      const now = dayjs()
+      const currentDate = now.format('YYYY-MM')
+
+      const creatableMovie = this.movieRepository.create({ ...request, statistics: [{ currentDate: currentDate }] })
 
       await this.movieRepository.save(creatableMovie)
     }

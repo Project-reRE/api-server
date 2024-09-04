@@ -5,14 +5,12 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique,
   UpdateDateColumn,
 } from 'typeorm'
 import { Transform } from 'class-transformer'
 import { MovieEntity } from './movie.entity'
 
 @Entity('movie_statistics')
-@Unique('INDEX_MovieTargetMonth', ['movie', 'targetDate'])
 export class MovieStatisticsEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: string
@@ -55,7 +53,7 @@ export class MovieStatisticsEntity {
   numAge: any
 
   @Column({ type: 'varchar', comment: '재평가 기준 일' })
-  targetDate: string
+  currentDate: string
 
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))

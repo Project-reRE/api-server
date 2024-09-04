@@ -58,23 +58,23 @@ export class MovieService {
         id: '1',
         numRecentStars: [
           {
-            targetDate: '2024-04',
+            currentDate: '2024-04',
             numStars: 4,
           },
           {
-            targetDate: '2024-05',
+            currentDate: '2024-05',
             numStars: 3.5,
           },
           {
-            targetDate: '2024-06',
+            currentDate: '2024-06',
             numStars: 4.5,
           },
           {
-            targetDate: '2024-07',
+            currentDate: '2024-07',
             numStars: 4.2,
           },
           {
-            targetDate: '2024-08',
+            currentDate: '2024-08',
             numStars: 5,
           },
         ],
@@ -111,7 +111,7 @@ export class MovieService {
           FORTIES: 1,
           FIFTIES_PLUS: 5,
         },
-        targetDate: '2024-09',
+        currentDate: '2024-09',
         movie: null,
       },
     ]

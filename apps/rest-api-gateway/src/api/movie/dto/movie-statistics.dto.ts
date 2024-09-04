@@ -70,5 +70,5 @@ export class MovieStatisticsDto {
   numAge: any
 
   @ApiProperty({ example: '2024-09' })
-  targetDate: string
+  currentDate: string
 }

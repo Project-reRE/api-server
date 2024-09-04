@@ -25,7 +25,7 @@ export class MovieStatisticsEntity {
     default: 0,
     comment: '해당월 Movie 평균 평점(별점의 총점 / 별점 부여자 수)',
   })
-  numStars: string // decimal 은 string으로 변환됨
+  numStars: number
 
   @Column({
     type: 'decimal',
@@ -34,7 +34,7 @@ export class MovieStatisticsEntity {
     default: 0,
     comment: '해당월 Movie Total (기록용)',
   })
-  numStarsTotal?: string
+  numStarsTotal?: number
 
   @Column({
     type: 'json',

@@ -93,7 +93,7 @@ export class RevaluationService {
 
     await this.increaseUserStatistics(existUserEntity.id)
 
-    await this.increaseMovieStatistics(request.movieId, createdRevaluation)
+    await this.increaseMovieStatistics(request.movieId, createdRevaluation, existUserEntity)
 
     await this.createRevaluationStatistics(createdRevaluation.id)
 
@@ -172,7 +172,11 @@ export class RevaluationService {
     console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
   }
 
-  private async increaseMovieStatistics(movieId: string, revaluationEntity: RevaluationEntity) {
+  private async increaseMovieStatistics(
+    movieId: string,
+    revaluationEntity: RevaluationEntity,
+    existUserEntity: UserEntity,
+  ) {
     console.log({ movieId }, 'increaseMovieStatistics')
 
     const now = dayjs()
@@ -200,13 +204,12 @@ export class RevaluationService {
 
     existMovieStatistics.numStarsParticipants++
 
-    existMovieStatistics.numStarsTotal = (
-      parseFloat(existMovieStatistics.numStarsTotal) + parseFloat(revaluationEntity.numStars.toString())
-    ).toString()
+    existMovieStatistics.numStarsTotal =
+      parseFloat(existMovieStatistics.numStarsTotal.toString()) + parseFloat(revaluationEntity.numStars.toString())
 
     // decimal 은 string 으로 데이터가 자동으로 파싱됨
     existMovieStatistics.numStars =
-      (parseFloat(existMovieStatistics.numStarsTotal) / existMovieStatistics.numStarsParticipants).toString() ?? '0'
+      parseFloat(existMovieStatistics.numStarsTotal.toString()) / existMovieStatistics.numStarsParticipants ?? 0
 
     console.log('DOING # 1', 'increaseMovieStatistics')
 
@@ -252,6 +255,65 @@ export class RevaluationService {
       existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]++
     } else {
       existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] = 1
+    }
+
+    // numGender가 null일 경우 객체로 초기화
+    if (!existMovieStatistics.numGender) {
+      existMovieStatistics.numGender = {} // 빈 객체로 초기화
+    }
+
+    // 성별에 따른 처리
+    if (existUserEntity.gender === true) {
+      // MALE 값이 없는 경우 1로 초기화, 있으면 값 증가
+      if (existMovieStatistics.numGender['MALE']) {
+        existMovieStatistics.numGender['MALE']++
+      } else {
+        existMovieStatistics.numGender['MALE'] = 1
+      }
+    } else {
+      // FEMALE 값이 없는 경우 1로 초기화, 있으면 값 증가
+      if (existMovieStatistics.numGender['FEMALE']) {
+        existMovieStatistics.numGender['FEMALE']++
+      } else {
+        existMovieStatistics.numGender['FEMALE'] = 1
+      }
+    }
+
+    // 현재 날짜를 'YYYY-MM' 형식으로 사용 (이전에 정의한 부분)
+    const nowDate = dayjs()
+    const currentYear = nowDate.year() // 현재 연도만 가져옴
+
+    // 사용자의 출생 연도를 숫자로 변환
+    const birthYear = parseInt(existUserEntity.birthDate, 10) // 'yyyy' 형식의 birthDate를 정수로 변환
+
+    // 나이 계산
+    const age = currentYear - birthYear
+
+    // numAge가 null일 경우 객체로 초기화
+    if (!existMovieStatistics.numAge) {
+      existMovieStatistics.numAge = {} // 빈 객체로 초기화
+    }
+
+    // 나이대에 따라 numAge 업데이트
+    let ageGroup
+
+    if (age >= 10 && age < 20) {
+      ageGroup = 'TEENS'
+    } else if (age >= 20 && age < 30) {
+      ageGroup = 'TWENTIES'
+    } else if (age >= 30 && age < 40) {
+      ageGroup = 'THIRTIES'
+    } else if (age >= 40 && age < 50) {
+      ageGroup = 'FORTIES'
+    } else {
+      ageGroup = 'FIFTIES_PLUS'
+    }
+
+    // 해당 나이대의 값이 있는지 확인하고, 없으면 초기화
+    if (existMovieStatistics.numAge[ageGroup]) {
+      existMovieStatistics.numAge[ageGroup]++
+    } else {
+      existMovieStatistics.numAge[ageGroup] = 1
     }
 
     console.log('DOING # 4', 'increaseMovieStatistics')

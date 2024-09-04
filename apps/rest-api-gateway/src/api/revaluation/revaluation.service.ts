@@ -39,7 +39,7 @@ export class RevaluationService {
       },
     })
 
-    console.log(existMovie, 'createRevaluation', 'existMovie')
+    console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     if (!existMovie) {
       throw new HttpException(
@@ -70,7 +70,7 @@ export class RevaluationService {
       },
     })
 
-    console.log(existRevaluation, 'createRevaluation', 'existRevaluation')
+    console.log(existRevaluation.id, 'createRevaluation', 'existRevaluation')
 
     if (existRevaluation) {
       throw new HttpException(
@@ -91,8 +91,6 @@ export class RevaluationService {
       movie: existMovie,
     })
 
-    console.log(creatableRevaluation, 'createRevaluation', 'creatableRevaluation')
-
     const createdRevaluation = await this.revaluationRepository.save(creatableRevaluation)
 
     await this.increaseUserStatistics(existUserEntity.id)
@@ -101,7 +99,7 @@ export class RevaluationService {
 
     await this.createRevaluationStatistics(createdRevaluation.id)
 
-    console.log(createdRevaluation, 'createRevaluation')
+    console.log(createdRevaluation.id, 'createRevaluation')
 
     return createdRevaluation
   }

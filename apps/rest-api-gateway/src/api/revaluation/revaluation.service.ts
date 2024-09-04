@@ -11,7 +11,7 @@ import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 
 @Injectable()
 export class RevaluationService {

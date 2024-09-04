@@ -9,7 +9,7 @@ import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { CreateMovieRequestDto } from './dto/create-movie-request.dto'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import { status as GrpcStatus } from '@grpc/grpc-js'
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 
 @Injectable()
 export class MovieService {

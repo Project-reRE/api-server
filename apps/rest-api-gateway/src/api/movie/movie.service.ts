@@ -57,68 +57,70 @@ export class MovieService {
       )
     }
 
-    existMovie.statistics = [
-      {
-        id: '1',
-        numRecentStars: [
-          {
-            currentDate: '2024-04',
-            numStars: 4,
+    if (!existMovie.statistics) {
+      existMovie.statistics = [
+        {
+          id: '1',
+          numRecentStars: [
+            {
+              currentDate: '2024-04',
+              numStars: 4,
+            },
+            {
+              currentDate: '2024-05',
+              numStars: 3.5,
+            },
+            {
+              currentDate: '2024-06',
+              numStars: 4.5,
+            },
+            {
+              currentDate: '2024-07',
+              numStars: 4.2,
+            },
+            {
+              currentDate: '2024-08',
+              numStars: 5,
+            },
+          ],
+          numStars: 4.5,
+          numStarsParticipants: 5,
+          numSpecialPoint: {
+            PLANNING_INTENT: 3,
+            DIRECTORS_DIRECTION: 6,
+            ACTING_SKILLS: 1,
+            SCENARIO: 20,
+            OST: 10,
+            SOCIAL_ISSUES: 4,
+            VISUAL_ELEMENT: 5,
+            SOUND_ELEMENT: 5,
           },
-          {
-            currentDate: '2024-05',
-            numStars: 3.5,
+          numPastValuation: {
+            POSITIVE: 2,
+            NEGATIVE: 6,
+            NOT_SURE: 5,
           },
-          {
-            currentDate: '2024-06',
-            numStars: 4.5,
+          numPresentValuation: {
+            POSITIVE: 5,
+            NEGATIVE: 3,
+            NOT_SURE: 6,
           },
-          {
-            currentDate: '2024-07',
-            numStars: 4.2,
+          numGender: {
+            MALE: 1,
+            FEMALE: 2,
           },
-          {
-            currentDate: '2024-08',
-            numStars: 5,
+          numAge: {
+            TEENS: 24,
+            TWENTIES: 148,
+            THIRTIES: 34,
+            FORTIES: 1,
+            FIFTIES_PLUS: 5,
           },
-        ],
-        numStars: 4.5,
-        numStarsParticipants: 5,
-        numSpecialPoint: {
-          PLANNING_INTENT: 3,
-          DIRECTORS_DIRECTION: 6,
-          ACTING_SKILLS: 1,
-          SCENARIO: 20,
-          OST: 10,
-          SOCIAL_ISSUES: 4,
-          VISUAL_ELEMENT: 5,
-          SOUND_ELEMENT: 5,
+          currentDate: '2024-09',
+          movie: null,
         },
-        numPastValuation: {
-          POSITIVE: 2,
-          NEGATIVE: 6,
-          NOT_SURE: 5,
-        },
-        numPresentValuation: {
-          POSITIVE: 5,
-          NEGATIVE: 3,
-          NOT_SURE: 6,
-        },
-        numGender: {
-          MALE: 1,
-          FEMALE: 2,
-        },
-        numAge: {
-          TEENS: 24,
-          TWENTIES: 148,
-          THIRTIES: 34,
-          FORTIES: 1,
-          FIFTIES_PLUS: 5,
-        },
-        currentDate: '2024-09',
-        movie: null,
-      },
-    ]
+      ]
+    }
 
     console.log(existMovie, 'findOneMovie')
 
@@ -180,9 +182,8 @@ export class MovieService {
       }
     })
 
-    // 비동기로 영화 데이터 생성
     for (let i = 0; i < results.length; i++) {
-      this.createMovie({ id: results[i].id, data: results[i].data })
+      await this.createMovie({ id: results[i].id, data: results[i].data })
     }
 
     return {

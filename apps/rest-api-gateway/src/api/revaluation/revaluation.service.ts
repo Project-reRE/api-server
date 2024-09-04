@@ -200,9 +200,13 @@ export class RevaluationService {
 
     existMovieStatistics.numStarsParticipants++
 
-    existMovieStatistics.numStarsTotal += revaluationEntity.numStars
+    existMovieStatistics.numStarsTotal = (
+      parseFloat(existMovieStatistics.numStarsTotal) + parseFloat(revaluationEntity.numStars.toString())
+    ).toString()
 
-    existMovieStatistics.numStars = existMovieStatistics.numStarsTotal / existMovieStatistics.numStarsParticipants
+    // decimal 은 string 으로 데이터가 자동으로 파싱됨
+    existMovieStatistics.numStars =
+      (parseFloat(existMovieStatistics.numStarsTotal) / existMovieStatistics.numStarsParticipants).toString() ?? '0'
 
     console.log('DOING # 1', 'increaseMovieStatistics')
 

@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -86,4 +87,13 @@ export class RevaluationEntity {
   deletedAt: Date
 
   isLiked: boolean
+
+  @AfterLoad()
+  updateUserId?() {
+    if (this.revaluationLikes.length > 0) {
+      this.isLiked = true
+    } else {
+      this.isLiked = false
+    }
+  }
 }

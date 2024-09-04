@@ -49,7 +49,7 @@ export class RevaluationController {
     @AuthUser() user: UserDto,
     @Query() query: FindRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations(query)
+    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }
@@ -68,9 +68,9 @@ export class RevaluationController {
     @AuthUser() user: UserDto,
     @Query() query: FindMyRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
-    query.userId = user.id // TOKEN 에 있는 USER ID
+    query.userId = user.id
 
-    const existRevaluations = await this.revaluationService.findRevaluations(query)
+    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }

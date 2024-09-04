@@ -133,6 +133,12 @@ export class RevaluationService {
       .innerJoinAndSelect('revaluation.movie', 'movie')
       .innerJoinAndSelect('revaluation.user', 'user')
       .leftJoinAndSelect('revaluation.statistics', 'statistics')
+      .leftJoinAndSelect(
+        'revaluation.revaluationLikes',
+        'revaluationLikes',
+        'revaluationLikes.user.id = :requestUserId',
+        { requestUserId: request.requestUserId },
+      )
       .where(`revaluation.createdAt between :startDate and :endDate`, { startDate: startDate, endDate: endDate })
 
     if (request.userId) {

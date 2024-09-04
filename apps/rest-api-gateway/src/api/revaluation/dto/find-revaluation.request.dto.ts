@@ -37,4 +37,6 @@ export class FindRevaluationRequestDto {
   @IsOptional()
   @IsString()
   page: string
+
+  requestUserId?: string
 }

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, serialize } from 'typeorm'
 import { UserEntity } from '../../entity/user.entity'
 import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/proto/user.service'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
@@ -37,7 +37,9 @@ export class UserService {
       )
     }
 
-    return Object.assign(existUserEntity)
+    console.log(existUserEntity, 'findOneUserExternal')
+
+    return Object.assign(serialize(existUserEntity))
   }
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {

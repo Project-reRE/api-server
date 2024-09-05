@@ -58,7 +58,7 @@ export class MovieService {
       )
     }
 
-    if (!existMovie.statistics) {
+    if (existMovie.statistics?.length < 1) {
       existMovie.statistics = [
         {
           id: '1',

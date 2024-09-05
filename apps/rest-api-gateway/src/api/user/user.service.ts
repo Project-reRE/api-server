@@ -141,7 +141,23 @@ export class UserService {
       }
     }
 
-    Object.assign(existUserEntity, request)
+    if (request.nickName) {
+      const existUserNickNameEntity = await this.userRepository.findOne({ where: { nickName: request.nickName } })
+
+      if (existUserNickNameEntity) {
+        throw new HttpException(
+          {
+            code: 'ALREADY_EXIST_NICK_NAME',
+            status: HttpStatus.CONFLICT,
+            message: `이미 사용중인 NickN ame `,
+          },
+          HttpStatus.CONFLICT,
+        )
+      }
+    }
+
+    const updatableUserEntity = this.userRepository.merge(existUserEntity, request)
+
     const savedUser = await this.userRepository.save(existUserEntity)
 
     console.log(savedUser, 'updateUser', 'savedUser')

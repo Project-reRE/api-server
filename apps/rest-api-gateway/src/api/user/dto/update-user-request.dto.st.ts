@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator'
+import { IsBoolean, IsEmail, IsOptional, IsString, Length, Matches } from 'class-validator'
 
 export class UpdateUserRequestDto {
   id: string
@@ -27,12 +27,12 @@ export class UpdateUserRequestDto {
     default: true,
     description: '남자 : true , 여자 : false',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
   readonly gender?: boolean
 
   @ApiProperty({ example: '1997' })
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(/^\d{4}$/, { message: 'birthDate must be a valid year (yyyy)' })
   readonly birthDate?: string
 
@@ -45,5 +45,7 @@ export class UpdateUserRequestDto {
   readonly email?: string
 
   @ApiPropertyOptional({ example: 'tester1' })
+  @IsOptional()
+  @IsString()
   nickName?: string
 }

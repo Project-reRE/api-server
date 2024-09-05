@@ -160,7 +160,7 @@ export class UserService {
 
     const updatableUserEntity = this.userRepository.merge(existUserEntity, request)
 
-    const savedUser = await this.userRepository.save(existUserEntity)
+    const savedUser = await this.userRepository.save(updatableUserEntity)
 
     console.log(savedUser, 'updateUser', 'savedUser')
 

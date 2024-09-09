@@ -177,8 +177,8 @@ export class MovieService {
           genre: value?.genre,
           repRatDate: value?.repRatDate,
           repRlsDate: value?.repRlsDate,
-          posters: [posters ? posters + '.jpg' : null],
-          stills: [stills ? stills + '.jpg' : null],
+          posters: posters ? posters + '.jpg' : [],
+          stills: stills ? stills + '.jpg ' : [],
         },
       }
     })

@@ -1,14 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class CreateRevaluationRequestDto {
   @ApiProperty({ example: 'F-0000', description: 'MOVIE ID + MOVIE SEQ' })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   movieId: string
 
   @ApiPropertyOptional({ example: 4.5, description: 'Number of Stars', type: Number })
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   @Min(0.5)
   @Max(5.0)
@@ -28,7 +28,7 @@ export class CreateRevaluationRequestDto {
       'SOUND_ELEMENT',
     ],
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum([
     'PLANNING_INTENT',
     'DIRECTORS_DIRECTION',
@@ -46,7 +46,7 @@ export class CreateRevaluationRequestDto {
     description: 'Past Valuation',
     enum: ['POSITIVE', 'NEGATIVE', 'NOT_SURE'],
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum(['POSITIVE', 'NEGATIVE', 'NOT_SURE'])
   pastValuation: string
 
@@ -55,7 +55,7 @@ export class CreateRevaluationRequestDto {
     description: 'Present Valuation',
     enum: ['POSITIVE', 'NEGATIVE', 'NOT_SURE'],
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum(['POSITIVE', 'NEGATIVE', 'NOT_SURE'])
   presentValuation: string
 

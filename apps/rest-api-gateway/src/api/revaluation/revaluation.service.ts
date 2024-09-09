@@ -283,7 +283,6 @@ export class RevaluationService {
       }
     }
 
-    // TODO 위에 currentDate 로 변경 필요
     const nowDate = dayjs()
     const currentYear = nowDate.year() // 현재 연도만 가져옴
 

@@ -61,7 +61,7 @@ export class UserService {
 
     if (!existUserEntity.statistics) {
       existUserEntity.statistics = {
-        id: '1',
+        id: '999',
         numRevaluations: 48,
       }
     }

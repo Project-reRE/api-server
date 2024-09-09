@@ -183,13 +183,13 @@ export class MovieService {
       }
     })
 
-    for (let i = 0; i < results.length; i++) {
+    for (let i = 0; i < results?.length; i++) {
       await this.createMovie({ id: results[i].id, data: results[i].data })
     }
 
     return {
-      totalRecords: results.length,
-      results: results,
+      totalRecords: results?.length ?? 0,
+      results: results ?? [],
     }
   }
 }

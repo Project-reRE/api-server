@@ -106,7 +106,7 @@ export class UserController {
   })
   @ApiOkResponse({
     type: UpdateUserResponseDto,
-    description: '유저 정보 업데이트 성공',
+    description: '[ADMIN] 유저 정보 업데이트로 변경',
   })
   @ApiResponse({
     status: 404,
@@ -153,6 +153,35 @@ export class UserController {
   async removeUser(@Param('userId') userId: string, @AuthUser() user: UserDto): Promise<RemoveUserResponseDto> {
     // ROLE GUARD 추가 필요
     return this.userService.removeUser({ id: userId })
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('my/users')
+  @ApiOperation({
+    summary: '내 유저 정보 업데이트',
+  })
+  @ApiOkResponse({
+    type: UpdateUserResponseDto,
+    description: '유저 정보 업데이트 성공',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'USER_NOTFOUND - 가입 되지 않은 사용자',
+    schema: {
+      example: {
+        statusCode: 404,
+        code: 'USER_NOTFOUND',
+        message: '가입 되지 않은 사용자(id : 12345)',
+      },
+    },
+  })
+  @Header('Content-Type', 'application/json')
+  async updateMyUser(
+    @AuthUser() user: UserDto,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    request: UpdateUserRequestDto,
+  ): Promise<UpdateUserResponseDto> {
+    return this.userService.updateUser({ ...request, id: user.id })
   }
 
   @UseGuards(JwtAuthGuard)

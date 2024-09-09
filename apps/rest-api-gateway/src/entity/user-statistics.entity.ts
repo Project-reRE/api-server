@@ -18,7 +18,7 @@ export class UserStatisticsEntity {
 
   @OneToOne(() => UserEntity, (user) => user.statistics, { onDelete: 'CASCADE' })
   @JoinColumn()
-  user?: UserEntity
+  user: UserEntity
 
   @Column({ type: 'integer', default: 0, comment: '재평가 Count' })
   numRevaluations: number

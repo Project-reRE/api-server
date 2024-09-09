@@ -166,8 +166,8 @@ export class RevaluationService {
 
   private async increaseUserStatistics(userId: string) {
     console.log({ userId }, 'increaseUserStatistics')
+
     let existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
-    console.log({ beforeUpdate: existUserStatistics.numRevaluations })
 
     if (!existUserStatistics) {
       const creatableUserStatistics = this.userStatisticsRepository.create({
@@ -176,6 +176,8 @@ export class RevaluationService {
 
       existUserStatistics = await this.userStatisticsRepository.save(creatableUserStatistics)
     }
+
+    console.log({ beforeUpdate: existUserStatistics }, 'increaseUserStatistics')
 
     existUserStatistics.numRevaluations++
 
@@ -188,7 +190,7 @@ export class RevaluationService {
     revaluationEntity: RevaluationEntity,
     existUserEntity: UserEntity,
   ) {
-    console.log({ movieId, version: '20240905_1' }, 'increaseMovieStatistics')
+    console.log({ movieId }, 'increaseMovieStatistics')
 
     const now = dayjs()
     const currentDate = now.format('YYYY-MM')
@@ -226,27 +228,17 @@ export class RevaluationService {
       existMovieStatistics.numStars = 0
     }
 
-    console.log('DOING # 1', 'increaseMovieStatistics')
-
     // numSpecialPoint가 null일 경우 객체로 초기화
     if (!existMovieStatistics.numSpecialPoint) {
-      console.log('DOING # 1-1', 'increaseMovieStatistics')
-
       existMovieStatistics.numSpecialPoint = {}
     }
 
-    console.log('DOING # 2', 'increaseMovieStatistics')
-
     // 이후 존재하는 값이 있는지 확인하고 업데이트
     if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]) {
-      console.log('DOING # 2-1', 'increaseMovieStatistics')
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]++
     } else {
-      console.log('DOING # 2-2', 'increaseMovieStatistics')
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] = 1
     }
-
-    console.log('DOING # 3', 'increaseMovieStatistics')
 
     // numSpecialPoint가 null일 경우 객체로 초기화
     if (!existMovieStatistics.numPastValuation) {

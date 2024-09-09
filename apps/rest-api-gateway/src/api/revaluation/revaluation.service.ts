@@ -75,7 +75,9 @@ export class RevaluationService {
         {
           code: 'ALREADY_REVALUATION_MOVIE',
           status: HttpStatus.CONFLICT,
-          message: `이미 평가한 영화(movieId :${request.movieId}, createdAt : ${existRevaluation.createdAt})`,
+          message: `이미 평가한 영화(movieId :${
+            request.movieId
+          }, 마지막 평가 시간 : ${existRevaluation.createdAt?.toISOString()})`,
         },
         HttpStatus.CONFLICT,
       )

@@ -166,8 +166,17 @@ export class RevaluationService {
 
   private async increaseUserStatistics(userId: string) {
     console.log({ userId }, 'increaseUserStatistics')
-    const existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
+    let existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
     console.log({ beforeUpdate: existUserStatistics.numRevaluations })
+
+    if (!existUserStatistics) {
+      const creatableUserStatistics = this.userStatisticsRepository.create({
+        user: { id: userId },
+      })
+
+      existUserStatistics = await this.userStatisticsRepository.save(creatableUserStatistics)
+    }
+
     existUserStatistics.numRevaluations++
 
     const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)

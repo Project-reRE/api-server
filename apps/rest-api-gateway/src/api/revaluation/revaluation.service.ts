@@ -70,18 +70,18 @@ export class RevaluationService {
       },
     })
 
-    if (existRevaluation) {
-      throw new HttpException(
-        {
-          code: 'ALREADY_REVALUATION_MOVIE',
-          status: HttpStatus.CONFLICT,
-          message: `이미 평가한 영화(movieId :${
-            request.movieId
-          }, 마지막 평가 시간 : ${existRevaluation.createdAt?.toISOString()})`,
-        },
-        HttpStatus.CONFLICT,
-      )
-    }
+    // if (existRevaluation) {
+    //   throw new HttpException(
+    //     {
+    //       code: 'ALREADY_REVALUATION_MOVIE',
+    //       status: HttpStatus.CONFLICT,
+    //       message: `이미 평가한 영화(movieId :${
+    //         request.movieId
+    //       }, 마지막 평가 시간 : ${existRevaluation.createdAt?.toISOString()})`,
+    //     },
+    //     HttpStatus.CONFLICT,
+    //   )
+    // }
 
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
 
@@ -251,12 +251,16 @@ export class RevaluationService {
 
     console.log({ beforeUpdate: existMovieStatistics }, 'increaseMovieStatistics')
 
+    const beforeTotal = existMovieStatistics.numStars * existMovieStatistics.numStarsParticipants
+
     existMovieStatistics.numStarsParticipants++
 
-    existMovieStatistics.numStarsTotal = existMovieStatistics.numStarsTotal + revaluationEntity.numStars
+    const afterTotal = beforeTotal + revaluationEntity.numStars
+
+    existMovieStatistics.numStarsTotal = afterTotal
 
     // decimal 은 string 으로 데이터가 자동으로 파싱됨
-    existMovieStatistics.numStars = existMovieStatistics.numStarsTotal / existMovieStatistics.numStarsParticipants
+    existMovieStatistics.numStars = afterTotal / existMovieStatistics.numStarsParticipants
 
     if (!existMovieStatistics.numStars) {
       existMovieStatistics.numStars = 0

@@ -33,7 +33,7 @@ export class MovieStatisticsEntity {
 
   @Column({
     type: 'decimal',
-    precision: 2,
+    precision: 10,
     scale: 1,
     default: 0,
     comment: '해당월 Movie Total (기록용)',

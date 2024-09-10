@@ -35,7 +35,16 @@ export class RevaluationEntity {
   @OneToMany(() => RevaluationLikeEntity, (revaluationLike) => revaluationLike.revaluation)
   revaluationLikes: RevaluationLikeEntity[]
 
-  @Column({ type: 'decimal', precision: 2, scale: 1, comment: 'Number of Stars' })
+  @Column({
+    type: 'decimal',
+    precision: 2,
+    scale: 1,
+    comment: 'Number of Stars',
+    transformer: {
+      to: (value: number) => value, // DB에 저장될 때는 그대로 저장
+      from: (value: string) => parseFloat(value), // DB에서 가져올 때 문자열을 숫자로 변환
+    },
+  })
   numStars: number
 
   @Column({

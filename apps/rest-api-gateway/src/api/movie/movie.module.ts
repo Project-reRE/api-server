@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config'
 import configurations from '../../config/configurations'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
+import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { MovieEntity } from '../../entity/movie.entity'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([MovieEntity]),
+    TypeOrmModule.forFeature([MovieEntity, MovieStatisticsEntity]),
   ],
   controllers: [MovieController],
   providers: [MovieService],

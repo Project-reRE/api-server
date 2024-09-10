@@ -24,6 +24,10 @@ export class MovieStatisticsEntity {
     scale: 1,
     default: 0,
     comment: '해당월 Movie 평균 평점(별점의 총점 / 별점 부여자 수)',
+    transformer: {
+      to: (value: number) => value, // DB에 저장될 때는 그대로 저장
+      from: (value: string) => parseFloat(value), // DB에서 가져올 때 문자열을 숫자로 변환
+    },
   })
   numStars: number
 
@@ -33,6 +37,10 @@ export class MovieStatisticsEntity {
     scale: 1,
     default: 0,
     comment: '해당월 Movie Total (기록용)',
+    transformer: {
+      to: (value: number) => value, // DB에 저장될 때는 그대로 저장
+      from: (value: string) => parseFloat(value), // DB에서 가져올 때 문자열을 숫자로 변환
+    },
   })
   numStarsTotal?: number
 

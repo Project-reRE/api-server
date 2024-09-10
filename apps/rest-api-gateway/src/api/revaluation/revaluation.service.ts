@@ -185,6 +185,22 @@ export class RevaluationService {
     console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
   }
 
+  private async getPreviousMonths(currentDate: string): Promise<string[]> {
+    const [year, month] = currentDate.split('-').map(Number)
+    const dates: string[] = []
+
+    let date = new Date(year, month - 1) // JavaScript Date는 0부터 11까지로 월을 표현하므로, -1을 해줌
+
+    for (let i = 0; i < 5; i++) {
+      const year = date.getFullYear()
+      const month = (date.getMonth() + 1).toString().padStart(2, '0') // 월을 2자리 숫자로 변환
+      dates.push(`${year}-${month}`)
+      date.setMonth(date.getMonth() - 1) // 한 달 전으로 이동
+    }
+
+    return dates
+  }
+
   private async increaseMovieStatistics(
     movieId: string,
     revaluationEntity: RevaluationEntity,
@@ -210,6 +226,26 @@ export class RevaluationService {
         currentDate: currentDate,
       })
 
+      const previousMonths = await this.getPreviousMonths(currentDate)
+
+      const numRecentStars = []
+
+      for (let i = 0; i < previousMonths.length; i++) {
+        const existMovieStatistics = await this.movieStatisticsRepository.findOne({
+          where: {
+            movie: { id: movieId },
+            currentDate: previousMonths[i],
+          },
+        })
+
+        numRecentStars.push({
+          numStars: existMovieStatistics?.numStars ?? 0,
+          currentDate: previousMonths[i],
+        })
+      }
+
+      creatableMovieStatistics.numRecentStars = numRecentStars
+
       existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
     }
 
@@ -217,15 +253,23 @@ export class RevaluationService {
 
     existMovieStatistics.numStarsParticipants++
 
-    existMovieStatistics.numStarsTotal =
-      parseFloat(existMovieStatistics.numStarsTotal.toString()) + parseFloat(revaluationEntity.numStars.toString())
+    existMovieStatistics.numStarsTotal = existMovieStatistics.numStarsTotal + revaluationEntity.numStars
 
     // decimal 은 string 으로 데이터가 자동으로 파싱됨
-    existMovieStatistics.numStars =
-      parseFloat(existMovieStatistics.numStarsTotal.toString()) / existMovieStatistics.numStarsParticipants
+    existMovieStatistics.numStars = existMovieStatistics.numStarsTotal / existMovieStatistics.numStarsParticipants
 
     if (!existMovieStatistics.numStars) {
       existMovieStatistics.numStars = 0
+    }
+
+    // 배열에서 currentDate가 일치하는 객체 찾기
+    const targetStat = existMovieStatistics.numRecentStars.find(
+      (stat: { numStars: number; currentDate: string }) => stat.currentDate === currentDate,
+    )
+
+    if (targetStat) {
+      // currentDate가 일치하는 객체가 있을 때, numStars 업데이트
+      targetStat.numStars = existMovieStatistics.numStars?.toFixed(1) ?? 0
     }
 
     // numSpecialPoint가 null일 경우 객체로 초기화
@@ -322,13 +366,11 @@ export class RevaluationService {
       existMovieStatistics.numAge[ageGroup] = 1
     }
 
-    console.log('DOING # 4', 'increaseMovieStatistics')
-
     console.log(existMovieStatistics, 'increaseMovieStatistics', 'updatableMovieStatistics')
 
-    const updatedUserStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
+    const updatedMovieStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
 
-    console.log({ afterUpdate: updatedUserStatistics }, 'increaseMovieStatistics')
+    console.log({ afterUpdate: updatedMovieStatistics }, 'increaseMovieStatistics')
   }
 
   private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {

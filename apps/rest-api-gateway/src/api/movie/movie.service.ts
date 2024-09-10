@@ -10,12 +10,15 @@ import { CreateMovieRequestDto } from './dto/create-movie-request.dto'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import { status as GrpcStatus } from '@grpc/grpc-js'
 import * as dayjs from 'dayjs'
+import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 
 @Injectable()
 export class MovieService {
   constructor(
     @InjectRepository(MovieEntity)
     private movieRepository: Repository<MovieEntity>,
+    @InjectRepository(MovieStatisticsEntity)
+    private movieStatisticsRepository: Repository<MovieStatisticsEntity>,
   ) {}
 
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
@@ -44,7 +47,6 @@ export class MovieService {
 
     const existMovie = await this.movieRepository.findOne({
       where: { id: request.id },
-      relations: { statistics: true },
     })
 
     if (!existMovie) {
@@ -58,70 +60,43 @@ export class MovieService {
       )
     }
 
-    if (existMovie.statistics?.length < 1) {
-      existMovie.statistics = [
-        {
-          id: '1',
-          numRecentStars: [
-            {
-              currentDate: '2024-04',
-              numStars: 4,
-            },
-            {
-              currentDate: '2024-05',
-              numStars: 3.5,
-            },
-            {
-              currentDate: '2024-06',
-              numStars: 4.5,
-            },
-            {
-              currentDate: '2024-07',
-              numStars: 4.2,
-            },
-            {
-              currentDate: '2024-08',
-              numStars: 5,
-            },
-          ],
-          numStars: 4.5,
-          numStarsParticipants: 5,
-          numSpecialPoint: {
-            PLANNING_INTENT: 3,
-            DIRECTORS_DIRECTION: 6,
-            ACTING_SKILLS: 1,
-            SCENARIO: 20,
-            OST: 10,
-            SOCIAL_ISSUES: 4,
-            VISUAL_ELEMENT: 5,
-            SOUND_ELEMENT: 5,
+    let existMovieStatistics = await this.movieStatisticsRepository.findOne({
+      where: {
+        movie: { id: existMovie.id },
+        currentDate: request.currentDate,
+      },
+    })
+
+    if (!existMovieStatistics) {
+      const creatableMovieStatistics = this.movieStatisticsRepository.create({
+        movie: { id: existMovie.id },
+        currentDate: request.currentDate,
+      })
+
+      const previousMonths = await this.getPreviousMonths(request.currentDate)
+
+      const numRecentStars = []
+
+      for (let i = 0; i < previousMonths.length; i++) {
+        const existMovieStatistics = await this.movieStatisticsRepository.findOne({
+          where: {
+            movie: { id: existMovie.id },
+            currentDate: previousMonths[i],
           },
-          numPastValuation: {
-            POSITIVE: 2,
-            NEGATIVE: 6,
-            NOT_SURE: 5,
-          },
-          numPresentValuation: {
-            POSITIVE: 5,
-            NEGATIVE: 3,
-            NOT_SURE: 6,
-          },
-          numGender: {
-            MALE: 1,
-            FEMALE: 2,
-          },
-          numAge: {
-            TEENS: 24,
-            TWENTIES: 148,
-            THIRTIES: 34,
-            FORTIES: 1,
-            FIFTIES_PLUS: 5,
-          },
-          currentDate: '2024-09',
-          movie: null,
-        },
-      ]
+        })
+
+        numRecentStars.push({
+          numStars: existMovieStatistics?.numStars ?? 0,
+          currentDate: previousMonths[i],
+        })
+      }
+
+      creatableMovieStatistics.numRecentStars = numRecentStars
+
+      existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
     }
+
+    existMovie.statistics = existMovieStatistics ? [existMovieStatistics] : []
 
     console.log(existMovie, 'findOneMovie')
 
@@ -191,5 +166,21 @@ export class MovieService {
       totalRecords: results?.length ?? 0,
       results: results ?? [],
     }
+  }
+
+  private async getPreviousMonths(currentDate: string): Promise<string[]> {
+    const [year, month] = currentDate.split('-').map(Number)
+    const dates: string[] = []
+
+    let date = new Date(year, month - 1) // JavaScript Date는 0부터 11까지로 월을 표현하므로, -1을 해줌
+
+    for (let i = 0; i < 5; i++) {
+      const year = date.getFullYear()
+      const month = (date.getMonth() + 1).toString().padStart(2, '0') // 월을 2자리 숫자로 변환
+      dates.push(`${year}-${month}`)
+      date.setMonth(date.getMonth() - 1) // 한 달 전으로 이동
+    }
+
+    return dates
   }
 }

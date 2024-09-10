@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swa
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieService } from './movie.service'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
+import { FindOneMovieQueryDto } from './dto/find-one-movie-query.dto'
 
 @Controller()
 @ApiTags('movies')
@@ -36,7 +37,16 @@ export class MovieController {
     description: '영화 상세 정보 검색',
   })
   @ApiOkResponse({ type: FindOneMovieResponseDto })
-  async findOneMovie(@Param('movieId') movieId: string): Promise<FindOneMovieResponseDto> {
-    return this.movieService.findOneMovie({ id: movieId })
+  async findOneMovie(
+    @Param('movieId') movieId: string,
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+      }),
+    )
+    request: FindOneMovieQueryDto,
+  ): Promise<FindOneMovieResponseDto> {
+    return this.movieService.findOneMovie({ id: movieId, currentDate: request.currentDate })
   }
 }

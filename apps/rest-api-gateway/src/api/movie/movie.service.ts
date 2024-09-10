@@ -96,7 +96,54 @@ export class MovieService {
       existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
     }
 
-    existMovie.statistics = existMovieStatistics ? [existMovieStatistics] : []
+    // 최상위 3개의 값을 추출하는 함수
+    const getTopThree = (obj: any) => {
+      return Object.entries(obj)
+        .map(([type, value]) => ({ type, value: parseFloat(value as string) })) // 문자열을 숫자로 변환
+        .sort((a, b) => b.value - a.value) // 값(value)을 기준으로 내림차순 정렬
+        .slice(0, 3) // 상위 3개 추출
+        .map((item, index) => ({
+          rank: index + 1,
+          type: item.type,
+          value: item.value,
+        }))
+    }
+
+    const getPercentage = (obj: any) => {
+      // Step 1: 각 항목을 숫자로 변환
+      const items = Object.entries(obj)
+        .map(([type, value]) => ({ type, value: parseFloat(value as string) }))
+        .sort((a, b) => b.value - a.value) // 값(value)을 기준으로 내림차순 정렬
+
+      // Step 2: 값의 총합을 계산
+      const totalValue = items.reduce((sum, item) => sum + item.value, 0)
+
+      // Step 3: 각 값의 비율을 100 기준으로 재조정
+      return items.map((item, index) => ({
+        rank: index + 1,
+        type: item.type,
+        value: ((item.value / totalValue) * 100).toFixed(1), // 백분율 계산 후 소수점 첫째자리까지 표현
+      }))
+    }
+
+    // 사용자에게 노출할 데이터 변환
+    const transformedStatistics = {
+      ...existMovieStatistics,
+      numSpecialPointTopThree: existMovieStatistics.numSpecialPoint
+        ? getTopThree(existMovieStatistics.numSpecialPoint)
+        : [],
+      numPastValuationPercent: existMovieStatistics.numPastValuation
+        ? getPercentage(existMovieStatistics.numPastValuation)
+        : [],
+      numPresentValuationPercent: existMovieStatistics.numPresentValuation
+        ? getPercentage(existMovieStatistics.numPresentValuation)
+        : [],
+      numGenderPercent: existMovieStatistics.numGender ? getPercentage(existMovieStatistics.numGender) : [],
+      numAgePercent: existMovieStatistics.numAge ? getPercentage(existMovieStatistics.numAge) : [],
+    }
+
+    // 모든 값이 노출되어야 하는 데이터는 그대로 전달
+    existMovie.statistics = [transformedStatistics]
 
     console.log(existMovie, 'findOneMovie')
 

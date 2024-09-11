@@ -47,6 +47,6 @@ export class MovieController {
     )
     request: FindOneMovieQueryDto,
   ): Promise<FindOneMovieResponseDto> {
-    return this.movieService.findOneMovie({ id: movieId, currentDate: request.currentDate })
+    return this.movieService.findOneMovie({ id: movieId, currentDate: request.currentDate ?? '2024-09' })
   }
 }

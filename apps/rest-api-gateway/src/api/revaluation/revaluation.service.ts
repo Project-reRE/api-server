@@ -186,7 +186,7 @@ export class RevaluationService {
   }
 
   private async getPreviousMonths(currentDate: string): Promise<string[]> {
-    const [year, month] = currentDate.split('-').map(Number)
+    const [year, month] = currentDate?.split('-').map(Number)
     const dates: string[] = []
 
     let date = new Date(year, month - 1) // JavaScript Date는 0부터 11까지로 월을 표현하므로, -1을 해줌

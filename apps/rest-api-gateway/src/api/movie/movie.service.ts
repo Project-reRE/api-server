@@ -186,10 +186,8 @@ export class MovieService {
         // DOCID: value?.DDCID,
         id: `${value?.movieId}-${value?.movieSeq}`,
         data: {
-          title: value?.title
-            ?.replace(/!HS|!HE/g, '')
-            .replace(/\s+/g, ' ')
-            .trim(),
+          title: value?.title?.replace(/!HS|!HE/g, '').trim(),
+          titleValue: value?.title,
           prodYear: value?.prodYear,
           directors: Array.isArray(value?.directors?.director)
             ? value.directors.director.slice(0, 10)

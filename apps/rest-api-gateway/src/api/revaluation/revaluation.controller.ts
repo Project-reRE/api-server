@@ -1,4 +1,17 @@
-import { Body, Controller, Get, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RevaluationService } from './revaluation.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
@@ -10,6 +23,8 @@ import { UserDto } from '../user/dto/user.dto'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 import { FindMyRevaluationRequestDto } from './dto/find-my-revaluation.request.dto'
 import { getLimit, getPage, getTake } from '../../../../../libs/query/query'
+import { UpdateRevaluationRequestDto } from './dto/update-revaluation-request.dto'
+import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -21,7 +36,6 @@ export class RevaluationController {
   @Post('/revaluations')
   @ApiOperation({
     summary: '영화 평가',
-    description: '영화 평가 하기',
   })
   @ApiCreatedResponse({
     type: CreateRevaluationResponseDto,
@@ -34,6 +48,43 @@ export class RevaluationController {
     user: UserDto,
   ): Promise<CreateRevaluationResponseDto> {
     return this.revaluationService.createRevaluation({ ...request, requestUserId: user.id })
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/revaluations/:revaluationId')
+  @ApiOperation({
+    summary: '영화 평가 수정',
+  })
+  @ApiCreatedResponse({
+    type: UpdateRevaluationRequestDto,
+    description: 'application/json.',
+  })
+  async updateRevaluation(
+    @Param('revaluationId') revaluationId: string,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    request: UpdateRevaluationRequestDto,
+    @AuthUser()
+    user: UserDto,
+  ): Promise<UpdateRevaluationResponseDto> {
+    return this.revaluationService.updateRevaluation({
+      ...request,
+      revaluationId: revaluationId,
+      requestUserId: user.id,
+    })
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/revaluations/:revaluationId')
+  @ApiOperation({
+    summary: '영화 평가 삭제',
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async removeRevaluation(
+    @Param('revaluationId') revaluationId: string,
+    @AuthUser()
+    user: UserDto,
+  ): Promise<void> {
+    return this.revaluationService.removeRevaluation({ revaluationId: revaluationId, requestUserId: user.id })
   }
 
   @UseGuards(JwtAuthGuard)

@@ -13,6 +13,9 @@ import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 import * as dayjs from 'dayjs'
 import { getOrder, getSkip, getTake } from '../../../../../libs/query/query'
+import { UpdateRevaluationRequestDto } from './dto/update-revaluation-request.dto'
+import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.dto'
+import { RemoveRevaluationRequestDto } from './dto/remove-revaluation-request.dto'
 
 @Injectable()
 export class RevaluationService {
@@ -30,6 +33,77 @@ export class RevaluationService {
     @InjectRepository(RevaluationStatisticsEntity)
     private revaluationStatisticsRepository: Repository<RevaluationStatisticsEntity>,
   ) {}
+
+  async updateRevaluation(request: UpdateRevaluationRequestDto): Promise<UpdateRevaluationResponseDto> {
+    console.log(request, 'updateRevaluation')
+
+    const existRevaluation = await this.revaluationRepository.findOne({
+      where: {
+        id: request.revaluationId,
+        user: { id: request.requestUserId },
+      },
+      relations: { movie: true },
+    })
+
+    if (!existRevaluation) {
+      throw new HttpException(
+        {
+          code: 'REVALUATION_NOTFOUND',
+          status: GrpcStatus.NOT_FOUND,
+          message: `존재 하지 않은 평가 정보(id : ${request.revaluationId})`,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+
+    console.log(existRevaluation.id, 'updateRevaluation', 'existRevaluation')
+    const beforeRevaluation = this.revaluationRepository.create(existRevaluation)
+    const updatableRevaluation = this.revaluationRepository.merge(existRevaluation, request)
+
+    const updatedRevaluation = await this.revaluationRepository.save(updatableRevaluation)
+    const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
+
+    await this.decreaseMovieStatistics(existRevaluation.movie.id, existRevaluation, existUserEntity)
+    await this.increaseMovieStatistics(existRevaluation.movie.id, updatedRevaluation, existUserEntity)
+
+    console.log(updatedRevaluation.id, 'updatedRevaluation')
+
+    return updatedRevaluation
+  }
+
+  async removeRevaluation(request: RemoveRevaluationRequestDto): Promise<void> {
+    console.log(request, 'removeRevaluation')
+
+    const existRevaluation = await this.revaluationRepository.findOne({
+      where: {
+        id: request.revaluationId,
+        user: { id: request.requestUserId },
+      },
+      relations: { movie: true },
+    })
+
+    if (!existRevaluation) {
+      throw new HttpException(
+        {
+          code: 'REVALUATION_NOTFOUND',
+          status: GrpcStatus.NOT_FOUND,
+          message: `존재 하지 않은 평가 정보(id : ${request.revaluationId})`,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+
+    const removedRevaluation = await this.revaluationRepository.softRemove(existRevaluation)
+
+    const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
+
+    await this.decreaseUserStatistics(request.requestUserId)
+    await this.decreaseMovieStatistics(existRevaluation.movie.id, removedRevaluation, existUserEntity)
+
+    console.log(removedRevaluation.id, 'removeRevaluation')
+
+    return
+  }
 
   async createRevaluation(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
     console.log(request, 'createRevaluation')
@@ -54,7 +128,6 @@ export class RevaluationService {
     console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     // 재평가 여부 확인
-
     const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
 
     const revaluationThresholdHour = parseInt(REVALUATION_THRESHOLD_HOUR)
@@ -193,6 +266,23 @@ export class RevaluationService {
     console.log({ beforeUpdate: existUserStatistics }, 'increaseUserStatistics')
 
     existUserStatistics.numRevaluations++
+
+    const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
+    console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+  }
+
+  private async decreaseUserStatistics(userId: string) {
+    console.log({ userId }, 'decreaseUserStatistics')
+
+    let existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
+
+    if (!existUserStatistics) {
+      return
+    }
+
+    console.log({ beforeUpdate: existUserStatistics }, 'decreaseUserStatistics')
+
+    existUserStatistics.numRevaluations--
 
     const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
     console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
@@ -388,6 +478,143 @@ export class RevaluationService {
     const updatedMovieStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
 
     console.log({ afterUpdate: updatedMovieStatistics }, 'increaseMovieStatistics')
+  }
+
+  private async decreaseMovieStatistics(
+    movieId: string,
+    revaluationEntity: RevaluationEntity,
+    existUserEntity: UserEntity,
+  ) {
+    console.log({ movieId }, 'decreaseMovieStatistics')
+
+    const now = dayjs()
+    const currentDate = now.format('YYYY-MM')
+
+    console.log({ currentDate }, 'decreaseMovieStatistics')
+
+    let existMovieStatistics = await this.movieStatisticsRepository.findOne({
+      where: {
+        movie: { id: movieId },
+        currentDate: currentDate,
+      },
+    })
+
+    if (!existMovieStatistics) {
+      console.log('No statistics found for this movie and date.')
+      return // 데이터가 없으면 반환
+    }
+
+    console.log({ beforeUpdate: existMovieStatistics }, 'decreaseMovieStatistics')
+
+    // 총합 계산 전 기존 참가자 수가 0인지 확인
+    if (existMovieStatistics.numStarsParticipants > 0) {
+      const beforeTotal = existMovieStatistics.numStars * existMovieStatistics.numStarsParticipants
+
+      existMovieStatistics.numStarsParticipants--
+
+      const afterTotal = beforeTotal - revaluationEntity.numStars
+
+      existMovieStatistics.numStarsTotal = afterTotal
+
+      // 참가자 수가 0일 때 나누지 않도록 처리
+      if (existMovieStatistics.numStarsParticipants > 0) {
+        existMovieStatistics.numStars = afterTotal / existMovieStatistics.numStarsParticipants
+      } else {
+        existMovieStatistics.numStars = 0
+      }
+    }
+
+    // 배열에서 currentDate가 일치하는 객체 찾기
+    const targetStat = existMovieStatistics.numRecentStars.find(
+      (stat: { numStars: number; currentDate: string }) => stat.currentDate === currentDate,
+    )
+
+    if (targetStat) {
+      // currentDate가 일치하는 객체가 있을 때, numStars 업데이트
+      targetStat.numStars = existMovieStatistics.numStars?.toFixed(1) ?? 0
+    }
+
+    // numSpecialPoint 감소 처리
+    if (existMovieStatistics.numSpecialPoint && existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]) {
+      existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]--
+      if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] < 0) {
+        existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] = 0 // 0 미만 방지
+      }
+    }
+
+    // numPastValuation 감소 처리
+    if (
+      existMovieStatistics.numPastValuation &&
+      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]
+    ) {
+      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]--
+      if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] < 0) {
+        existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] = 0 // 0 미만 방지
+      }
+    }
+
+    // numPresentValuation 감소 처리
+    if (
+      existMovieStatistics.numPresentValuation &&
+      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]
+    ) {
+      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]--
+      if (existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] < 0) {
+        existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] = 0 // 0 미만 방지
+      }
+    }
+
+    // 성별에 따른 감소 처리
+    if (existUserEntity.gender === true) {
+      if (existMovieStatistics.numGender['MALE']) {
+        existMovieStatistics.numGender['MALE']--
+        if (existMovieStatistics.numGender['MALE'] < 0) {
+          existMovieStatistics.numGender['MALE'] = 0 // 0 미만 방지
+        }
+      }
+    } else {
+      if (existMovieStatistics.numGender['FEMALE']) {
+        existMovieStatistics.numGender['FEMALE']--
+        if (existMovieStatistics.numGender['FEMALE'] < 0) {
+          existMovieStatistics.numGender['FEMALE'] = 0 // 0 미만 방지
+        }
+      }
+    }
+
+    const nowDate = dayjs()
+    const currentYear = nowDate.year()
+
+    const birthYear = parseInt(existUserEntity.birthDate, 10)
+
+    const age = currentYear - birthYear
+
+    let ageGroup
+
+    if (age >= 10 && age < 20) {
+      ageGroup = 'TEENS'
+    } else if (age >= 20 && age < 30) {
+      ageGroup = 'TWENTIES'
+    } else if (age >= 30 && age < 40) {
+      ageGroup = 'THIRTIES'
+    } else if (age >= 40 && age < 50) {
+      ageGroup = 'FORTIES'
+    } else {
+      ageGroup = 'FIFTIES_PLUS'
+    }
+
+    // 나이대에 따른 감소 처리
+    if (existMovieStatistics.numAge[ageGroup]) {
+      existMovieStatistics.numAge[ageGroup]--
+      if (existMovieStatistics.numAge[ageGroup] < 0) {
+        existMovieStatistics.numAge[ageGroup] = 0 // 0 미만 방지
+      }
+    }
+
+    console.log(existMovieStatistics, 'decreaseMovieStatistics', 'updatableMovieStatistics')
+
+    const updatedMovieStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
+
+    console.log({ afterUpdate: updatedMovieStatistics }, 'decreaseMovieStatistics')
   }
 
   private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {

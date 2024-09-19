@@ -162,12 +162,26 @@ export class MovieService {
 
     const detail = 'Y'
 
+    // 오늘 날짜에서 5년 전 날짜를 YYYYMMDD 형식으로 반환하는 함수
+    const getFiveYearsAgo = (): string => {
+      const today = new Date()
+      const fiveYearsAgo = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate())
+
+      const year = fiveYearsAgo.getFullYear()
+      const month = (fiveYearsAgo.getMonth() + 1).toString().padStart(2, '0') // 월을 2자리로 맞춤
+      const day = fiveYearsAgo.getDate().toString().padStart(2, '0') // 일을 2자리로 맞춤
+
+      return `${year}${month}${day}`
+    }
+
+    // 오늘부터 5년 전의 날짜를 releaseDte에 삽입
     const URL =
       KMDB_API_URL +
       `&ServiceKey=${KMDB_API_KEY}` +
       `${title ? `&title=${title}` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
-      `${listCount ? `&listCount=${listCount}` : ``}`
+      `${listCount ? `&listCount=${listCount}` : ``}` +
+      `&releaseDte=${getFiveYearsAgo()}`
 
     console.log({ methodName: 'findMovies', data: URL, context: 'URL' })
 

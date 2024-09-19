@@ -5,7 +5,6 @@ import { CreateRevaluationRequestDto } from './dto/create-revaluation-request.dt
 import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.dto'
 import { RevaluationLikeEntity } from '../../entity/revaluation-like.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
-import { status as GrpcStatus } from '@grpc/grpc-js'
 import { RevaluationEntity } from '../../entity/revaluation.entity'
 
 @Injectable()
@@ -38,7 +37,7 @@ export class RevaluationLikeService {
       throw new HttpException(
         {
           code: 'REVALUATION_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `평가 내역이 없음 `,
         },
         HttpStatus.NOT_FOUND,
@@ -70,7 +69,7 @@ export class RevaluationLikeService {
       throw new HttpException(
         {
           code: 'REVALUATION_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `평가에 대한 좋아요 내역이 없음 `,
         },
         HttpStatus.NOT_FOUND,

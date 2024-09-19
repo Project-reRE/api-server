@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { status as GrpcStatus } from '@grpc/grpc-js'
 import { MovieSetEntity } from '../../entity/movie-set.entity'
 
 @Injectable()
@@ -20,7 +19,7 @@ export class MovieSetService {
       throw new HttpException(
         {
           code: 'MOVIE_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 영화 정보(id : ${request.id})`,
         },
         HttpStatus.NOT_FOUND,
@@ -41,7 +40,7 @@ export class MovieSetService {
       throw new HttpException(
         {
           code: 'MOVIE_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 영화 정보(id : ${request.id})`,
         },
         HttpStatus.NOT_FOUND,

@@ -1,11 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Between, Repository } from 'typeorm'
 import { CreateRevaluationRequestDto } from './dto/create-revaluation-request.dto'
 import { RevaluationEntity } from '../../entity/revaluation.entity'
 import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.dto'
 import { MovieEntity } from '../../entity/movie.entity'
-import { status as GrpcStatus } from '@grpc/grpc-js'
+import { status as HttpStatus } from '@grpc/grpc-js'
 import { UserEntity } from '../../entity/user.entity'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
@@ -49,7 +49,7 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'REVALUATION_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 평가 정보(id : ${request.revaluationId})`,
         },
         HttpStatus.NOT_FOUND,
@@ -65,10 +65,10 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'MONTH_MISMATCH',
-          status: GrpcStatus.FAILED_PRECONDITION,
+          status: HttpStatus.FAILED_PRECONDITION,
           message: `평가한 월에만 수정이 가능합니다.`,
         },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.INVALID_ARGUMENT,
       )
     }
 
@@ -102,7 +102,7 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'REVALUATION_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 평가 정보(id : ${request.revaluationId})`,
         },
         HttpStatus.NOT_FOUND,
@@ -134,7 +134,7 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'MOVIE_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 영화 정보(id : ${request.movieId})`,
         },
         HttpStatus.NOT_FOUND,
@@ -164,12 +164,12 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'ALREADY_REVALUATION_MOVIE',
-          status: HttpStatus.CONFLICT,
+          status: HttpStatus.INVALID_ARGUMENT,
           message: `이미 평가한 영화(movieId :${
             request.movieId
           }, 마지막 평가 시간 : ${existRevaluation.createdAt?.toISOString()})`,
         },
-        HttpStatus.CONFLICT,
+        HttpStatus.INVALID_ARGUMENT,
       )
     }
 
@@ -206,7 +206,7 @@ export class RevaluationService {
       throw new HttpException(
         {
           code: 'REVALUATION_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `영화에 대한 평가 내역이 없음 (movieId : ${movieId})`,
         },
         HttpStatus.NOT_FOUND,

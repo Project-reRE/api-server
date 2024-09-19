@@ -8,7 +8,6 @@ import axios from 'axios'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { CreateMovieRequestDto } from './dto/create-movie-request.dto'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
-import { status as GrpcStatus } from '@grpc/grpc-js'
 import * as dayjs from 'dayjs'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 
@@ -53,7 +52,7 @@ export class MovieService {
       throw new HttpException(
         {
           code: 'MOVIE_NOTFOUND',
-          status: GrpcStatus.NOT_FOUND,
+          status: HttpStatus.NOT_FOUND,
           message: `존재 하지 않은 영화 정보(id : ${request.id})`,
         },
         HttpStatus.NOT_FOUND,

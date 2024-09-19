@@ -211,7 +211,7 @@ export class RevaluationService {
       date.setMonth(date.getMonth() - 1) // 한 달 전으로 이동
     }
 
-    return dates
+    return dates.reverse()
   }
 
   private async increaseMovieStatistics(

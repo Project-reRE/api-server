@@ -39,7 +39,7 @@ export class RevaluationLikeController {
     description: 'application/json.',
   })
   async removeRevaluationLikes(
-    @Param('movieId') revaluationId: string,
+    @Param('revaluationId') revaluationId: string,
     @AuthUser()
     user: UserDto,
   ): Promise<RemoveRevaluationResponseDto> {

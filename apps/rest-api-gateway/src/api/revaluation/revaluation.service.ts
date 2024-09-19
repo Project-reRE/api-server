@@ -56,6 +56,22 @@ export class RevaluationService {
       )
     }
 
+    // 현재 시점과 평가 생성 시점의 월 비교
+    const now = dayjs() // 현재 시점
+    const createdAtMonth = dayjs(existRevaluation.createdAt).month() // 평가 생성 시점의 월
+    const nowMonth = now.month() // 현재 시점의 월
+
+    if (createdAtMonth !== nowMonth) {
+      throw new HttpException(
+        {
+          code: 'MONTH_MISMATCH',
+          status: GrpcStatus.FAILED_PRECONDITION,
+          message: `평가한 월에만 수정이 가능합니다.`,
+        },
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
     console.log(existRevaluation.id, 'updateRevaluation', 'existRevaluation')
     const beforeRevaluation = this.revaluationRepository.create(existRevaluation)
     const updatableRevaluation = this.revaluationRepository.merge(existRevaluation, request)

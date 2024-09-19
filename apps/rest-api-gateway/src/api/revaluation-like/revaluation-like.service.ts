@@ -20,6 +20,7 @@ export class RevaluationLikeService {
   ) {}
 
   async createRevaluationLike(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
+    console.log(request, 'createRevaluationLike')
     const existRevaluationLike = await this.revaluationLikeRepository.findOne({
       where: {
         revaluation: { id: request.revaluationId },
@@ -57,6 +58,7 @@ export class RevaluationLikeService {
   }
 
   async removeRevaluationLike(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
+    console.log(request, 'removeRevaluationLike')
     const existRevaluationLike = await this.revaluationLikeRepository.findOne({
       where: {
         revaluation: { id: request.revaluationId },
@@ -83,6 +85,7 @@ export class RevaluationLikeService {
   }
 
   private async increaseRevaluationStatistics(revaluationId: string) {
+    console.log({ revaluationId }, 'increaseRevaluationStatistics')
     const existRevaluationStatistics = await this.revaluationStatisticsRepository.findOne({
       where: { revaluation: { id: revaluationId } },
       relations: { revaluation: true },
@@ -94,6 +97,7 @@ export class RevaluationLikeService {
   }
 
   private async decreaseRevaluationStatistics(revaluationId: string) {
+    console.log({ revaluationId }, 'decreaseRevaluationStatistics')
     const existRevaluationStatistics = await this.revaluationStatisticsRepository.findOne({
       where: { revaluation: { id: revaluationId } },
       relations: { revaluation: true },

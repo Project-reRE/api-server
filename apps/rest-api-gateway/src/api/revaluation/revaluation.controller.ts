@@ -9,6 +9,7 @@ import { AuthUser } from '../../../../../libs/decorator/auth-user.decorator'
 import { UserDto } from '../user/dto/user.dto'
 import { FindRevaluationRequestDto } from './dto/find-revaluation.request.dto'
 import { FindMyRevaluationRequestDto } from './dto/find-my-revaluation.request.dto'
+import { getLimit, getPage, getTake } from '../../../../../libs/query/query'
 
 @Controller()
 @ApiTags('revaluations')
@@ -54,7 +55,13 @@ export class RevaluationController {
       requestUserId: user.id,
     })
 
-    return { totalRecords: existRevaluations.length, results: existRevaluations }
+    return {
+      totalRecords: existRevaluations.length,
+      results: existRevaluations,
+      totalPages: Math.ceil(existRevaluations.length / getTake(query.limit)),
+      page: getPage(query.page),
+      limit: getLimit(query.limit),
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -75,6 +82,12 @@ export class RevaluationController {
 
     const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
 
-    return { totalRecords: existRevaluations.length, results: existRevaluations }
+    return {
+      totalRecords: existRevaluations.length,
+      results: existRevaluations,
+      totalPages: Math.ceil(existRevaluations.length / getTake(query.limit)),
+      page: getPage(query.page),
+      limit: getLimit(query.limit),
+    }
   }
 }

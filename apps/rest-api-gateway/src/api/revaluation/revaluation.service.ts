@@ -12,6 +12,7 @@ import { UserStatisticsEntity } from '../../entity/user-statistics.entity'
 import { RevaluationStatisticsEntity } from '../../entity/revaluation-statistics.entity'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 import * as dayjs from 'dayjs'
+import { getOrder, getSkip, getTake } from '../../../../../libs/query/query'
 
 @Injectable()
 export class RevaluationService {
@@ -129,6 +130,10 @@ export class RevaluationService {
   async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[]> {
     console.log(request, 'findRevaluations')
 
+    const skip = getSkip(request.page, request.limit)
+    const take = getTake(request.limit)
+    const order = getOrder(request.order, 'revaluation')
+
     const startDate = request.startDate ?? '2024-01-01 00:00:00'
     const endDate = request.endDate ?? '2099-01-01 00:00:00'
 
@@ -144,6 +149,14 @@ export class RevaluationService {
         { requestUserId: request.requestUserId },
       )
       .where(`revaluation.createdAt between :startDate and :endDate`, { startDate: startDate, endDate: endDate })
+      .skip(skip)
+      .take(take)
+
+    if (order) {
+      Object.keys(order).forEach((key, index) =>
+        index === 0 ? queryBuilder.orderBy(key, order[key]) : queryBuilder.addOrderBy(key, order[key]),
+      )
+    }
 
     if (request.userId) {
       queryBuilder.andWhere(`user.id = :userId`, { userId: request.userId })

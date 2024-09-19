@@ -1,7 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsOptional, IsString } from 'class-validator'
+import { QueryParamsDto } from '../../../../../../libs/query/query-params.dto'
 
-export class FindMyRevaluationRequestDto {
+export class FindMyRevaluationRequestDto extends QueryParamsDto {
   userId: string
 
   @ApiPropertyOptional({ example: 'F-0000', description: '영화 ID' })
@@ -18,14 +19,4 @@ export class FindMyRevaluationRequestDto {
   @IsOptional()
   @IsString()
   endDate?: string
-
-  @ApiPropertyOptional({ example: '25', description: 'Page nation' })
-  @IsOptional()
-  @IsString()
-  limit: string
-
-  @ApiPropertyOptional({ example: '1', description: 'Page nation' })
-  @IsOptional()
-  @IsString()
-  page: string
 }

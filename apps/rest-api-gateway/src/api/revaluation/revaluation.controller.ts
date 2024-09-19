@@ -49,7 +49,10 @@ export class RevaluationController {
     @AuthUser() user: UserDto,
     @Query() query: FindRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
+    const existRevaluations = await this.revaluationService.findRevaluations({
+      ...query,
+      requestUserId: user.id,
+    })
 
     return { totalRecords: existRevaluations.length, results: existRevaluations }
   }

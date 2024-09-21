@@ -143,9 +143,9 @@ export class RevaluationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('my/revaluations/enable')
+  @Get('my/revaluations/id')
   @ApiOperation({
-    summary: '특정 영화에 대한 내 재평가 리스트 조회',
+    summary: '특정 영화에 대한 내 재평가 리스트 ID 값 조회',
     description: '특정 영화에 대한 내 재평가 리스트를 조회합니다.',
   })
   @ApiResponse({
@@ -155,11 +155,11 @@ export class RevaluationController {
   async findMyRevaluationsEnable(
     @AuthUser() user: UserDto,
     @Query() query: FindMyRevaluationRequestDto,
-  ): Promise<boolean> {
+  ): Promise<string> {
     query.userId = user.id
 
     const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
 
-    return existRevaluations.length > 0 ? true : false
+    return existRevaluations[0].id
   }
 }

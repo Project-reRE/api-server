@@ -107,7 +107,9 @@ export class UserController {
       default:
         authUser = null
     }
-
+    console.log('########START CREATE USER######')
+    console.log(authUser)
+    console.log('########END CREATE USER######')
     externalId = authUser.id
 
     return this.userService.createUser({ ...request, externalId: externalId })

@@ -99,10 +99,10 @@ export class UserController {
         authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
         break
       case 'kakao':
-        authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        authUser = await this.authService.getUserInfoForKakao(oAuthToken)
         break
       case 'apple':
-        authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        authUser = await this.authService.getUserInfoForApple(oAuthToken)
         break
       default:
         authUser = null

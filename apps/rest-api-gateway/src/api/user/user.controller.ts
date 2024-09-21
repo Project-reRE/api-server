@@ -114,7 +114,6 @@ export class UserController {
       case 'apple':
         authUser = await this.authService.getUserInfoForApple(oAuthToken)
         externalId = authUser.sub
-        request.email = request.email ? request.email : authUser.email
         break
       default:
         throw new HttpException(

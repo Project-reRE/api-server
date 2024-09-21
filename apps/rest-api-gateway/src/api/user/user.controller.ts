@@ -97,12 +97,15 @@ export class UserController {
     switch (request.provider) {
       case 'google':
         authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        externalId = authUser.sub
         break
       case 'kakao':
         authUser = await this.authService.getUserInfoForKakao(oAuthToken)
+        externalId = authUser.id
         break
       case 'apple':
         authUser = await this.authService.getUserInfoForApple(oAuthToken)
+        externalId = authUser.sub
         break
       default:
         authUser = null
@@ -110,7 +113,6 @@ export class UserController {
     console.log('########START CREATE USER######')
     console.log(authUser)
     console.log('########END CREATE USER######')
-    externalId = authUser.id
 
     return this.userService.createUser({ ...request, externalId: externalId })
   }

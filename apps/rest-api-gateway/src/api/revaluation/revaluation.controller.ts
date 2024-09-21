@@ -141,4 +141,25 @@ export class RevaluationController {
       limit: getLimit(query.limit),
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my/revaluations/enable')
+  @ApiOperation({
+    summary: '특정 영화에 대한 내 재평가 리스트 조회',
+    description: '특정 영화에 대한 내 재평가 리스트를 조회합니다.',
+  })
+  @ApiResponse({
+    type: FindRevaluationResponseDto,
+    description: 'application/json.',
+  })
+  async findMyRevaluationsEnable(
+    @AuthUser() user: UserDto,
+    @Query() query: FindMyRevaluationRequestDto,
+  ): Promise<boolean> {
+    query.userId = user.id
+
+    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
+
+    return existRevaluations.length > 0 ? true : false
+  }
 }

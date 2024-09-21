@@ -26,12 +26,18 @@ import { UserDto } from './dto/user.dto'
 import { UpdateUserResponseDto } from './dto/update-user-response.dto.st'
 import { UpdateUserRequestDto } from './dto/update-user-request.dto.st'
 import { RemoveUserResponseDto } from './dto/remove-user-response.dto.st'
+import { jwtConstants } from '../../constants/jwt'
+import { JwtService } from '@nestjs/jwt'
 
 @Controller()
 @ApiTags('users')
 @ApiBearerAuth()
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('users/:userId')
@@ -123,7 +129,12 @@ export class UserController {
 
     const createdUser = await this.userService.createUser({ ...request, externalId: externalId })
 
-    return createdUser as CreateUserResponseDto
+    const payload = {
+      id: createdUser.id,
+    }
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+
+    return { jwt }
   }
 
   @UseGuards(JwtAuthGuard)

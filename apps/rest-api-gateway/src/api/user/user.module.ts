@@ -6,6 +6,7 @@ import { UserEntity } from '../../entity/user.entity'
 import { UserService } from './user.service'
 import configurations from '../../config/configurations'
 import { AuthModule } from '../auth/auth.module'
+import { JwtService } from '@nestjs/jwt'
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { AuthModule } from '../auth/auth.module'
   ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService],
+  exports: [UserService, JwtService],
 })
 export class UserModule {}

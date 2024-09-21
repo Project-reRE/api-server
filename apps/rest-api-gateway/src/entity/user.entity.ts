@@ -18,7 +18,7 @@ export class UserEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: string
 
-  @Column({ type: 'uuid', unique: true, comment: 'oAuth UID' })
+  @Column({ type: 'uuid', comment: 'oAuth UID' })
   externalId: string
 
   @Column({ type: 'varchar', unique: true, length: 16 })

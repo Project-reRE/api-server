@@ -65,26 +65,7 @@ export class AuthService {
         )
       }
 
-      // Apple의 Public Key로 서명 검증
-      const appleKeys = await this.getApplePublicKeys()
-      const key = appleKeys.keys.find((k) => k.kid === decodedToken.header.kid)
-
-      if (!key) {
-        throw new HttpException(
-          {
-            code: 'INVALID_APPLE_TOKEN',
-            status: HttpStatus.UNAUTHORIZED,
-            message: 'Apple token verification failed',
-          },
-          HttpStatus.UNAUTHORIZED,
-        )
-      }
-
-      // JWT 서명 검증
-      const publicKey = this.getPublicKeyFromJwk(key)
-      const verifiedToken = jwt.verify(appleToken, publicKey, { algorithms: ['RS256'] })
-
-      return verifiedToken
+      return decodedToken
     } catch (error) {
       throw new HttpException(
         {
@@ -95,20 +76,5 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       )
     }
-  }
-
-  // Apple Public Keys 가져오기
-  async getApplePublicKeys(): Promise<any> {
-    const response = await axios.get('https://appleid.apple.com/auth/keys')
-    return response.data
-  }
-
-  // JWK에서 Public Key 추출하기
-  getPublicKeyFromJwk(jwk): string {
-    // RSA Public Key로 변환
-    const { e, n } = jwk
-    const exponent = Buffer.from(e, 'base64')
-    const modulus = Buffer.from(n, 'base64')
-    return `-----BEGIN PUBLIC KEY-----\n${modulus}\n${exponent}\n-----END PUBLIC KEY-----`
   }
 }

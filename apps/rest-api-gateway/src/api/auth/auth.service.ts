@@ -52,7 +52,7 @@ export class AuthService {
     try {
       const response = await axios.get('https://appleid.apple.com/auth/keys') // Apple의 공개 키 요청
       console.log('#####START#######')
-      console.log(response)
+      console.log(response.data)
       console.log('#####END########')
       // 이 부분에서 Apple의 JWT 토큰을 해석하여 사용자 정보 추출
       const userInfo = this.verifyAppleToken(appleToken, response.data) // 토큰 검증 및 사용자 정보 추출 함수

@@ -1,4 +1,9 @@
-import { UserDto } from './user.dto'
-import { PartialType, PickType } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateUserResponseDto extends PickType(PartialType(UserDto), ['id']) {}
+export class CreateUserResponseDto {
+  @ApiProperty({ example: 'asdasd' })
+  jwt: string
+
+  id?: string
+  email?: string
+}

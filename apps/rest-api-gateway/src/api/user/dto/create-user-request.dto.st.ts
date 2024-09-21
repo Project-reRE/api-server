@@ -49,5 +49,5 @@ export class CreateUserRequestDto {
     type: String,
     example: 'tester@rere.com',
   })
-  readonly email?: string
+  email?: string
 }

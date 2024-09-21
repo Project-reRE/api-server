@@ -6,7 +6,8 @@ import { UserEntity } from '../../entity/user.entity'
 import { UserService } from './user.service'
 import configurations from '../../config/configurations'
 import { AuthModule } from '../auth/auth.module'
-import { JwtService } from '@nestjs/jwt'
+import { JwtModule } from '@nestjs/jwt'
+import { jwtConstants } from '../../constants/jwt'
 
 @Module({
   imports: [
@@ -16,9 +17,14 @@ import { JwtService } from '@nestjs/jwt'
     }),
     TypeOrmModule.forFeature([UserEntity]),
     forwardRef(() => AuthModule),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60m' },
+    }),
+    forwardRef(() => UserModule),
   ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService, JwtService],
+  exports: [UserService],
 })
 export class UserModule {}

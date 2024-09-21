@@ -358,7 +358,7 @@ export class RevaluationService {
         })
 
         numRecentStars.push({
-          numStars: existMovieStatistics?.numStars ?? 0,
+          numStars: existMovieStatistics?.numStars ?? '0',
           currentDate: previousMonths[i],
         })
       }

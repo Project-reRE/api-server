@@ -106,15 +106,15 @@ export class UserController {
       case 'apple':
         authUser = await this.authService.getUserInfoForApple(oAuthToken)
         externalId = authUser.sub
+        request.email = request.email ? request.email : authUser.email
         break
       default:
         authUser = null
     }
-    console.log('########START CREATE USER######')
-    console.log(authUser)
-    console.log('########END CREATE USER######')
 
-    return this.userService.createUser({ ...request, externalId: externalId })
+    const createdUser = await this.userService.createUser({ ...request, externalId: externalId })
+
+    return createdUser as CreateUserResponseDto
   }
 
   @UseGuards(JwtAuthGuard)

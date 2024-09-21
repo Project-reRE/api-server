@@ -85,7 +85,7 @@ export class MovieService {
         })
 
         numRecentStars.push({
-          numStars: existMovieStatistics?.numStars ?? 0,
+          numStars: existMovieStatistics?.numStars ?? '0',
           currentDate: previousMonths[i],
         })
       }
@@ -242,6 +242,6 @@ export class MovieService {
       date.setMonth(date.getMonth() - 1) // 한 달 전으로 이동
     }
 
-    return dates
+    return dates.reverse()
   }
 }

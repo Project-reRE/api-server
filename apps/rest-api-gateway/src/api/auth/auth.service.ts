@@ -65,7 +65,7 @@ export class AuthService {
         )
       }
 
-      return decodedToken
+      return decodedToken.payload
     } catch (error) {
       throw new HttpException(
         {

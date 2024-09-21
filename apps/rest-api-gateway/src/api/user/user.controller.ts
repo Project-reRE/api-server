@@ -106,14 +106,17 @@ export class UserController {
       case 'google':
         authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
         externalId = authUser.sub
+        request.email = request.email ? request.email : authUser.email
         break
       case 'kakao':
         authUser = await this.authService.getUserInfoForKakao(oAuthToken)
         externalId = authUser.id
+        request.email = request.email ? request.email : authUser.email
         break
       case 'apple':
         authUser = await this.authService.getUserInfoForApple(oAuthToken)
         externalId = authUser.sub
+        request.email = request.email ? request.email : authUser.email
         break
       default:
         break

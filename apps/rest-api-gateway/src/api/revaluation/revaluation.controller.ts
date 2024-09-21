@@ -25,6 +25,7 @@ import { FindMyRevaluationRequestDto } from './dto/find-my-revaluation.request.d
 import { getLimit, getPage, getTake } from '../../../../../libs/query/query'
 import { UpdateRevaluationRequestDto } from './dto/update-revaluation-request.dto'
 import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.dto'
+import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-response.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -113,6 +114,26 @@ export class RevaluationController {
       page: getPage(query.page),
       limit: getLimit(query.limit),
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/revaluations/:revaluationId')
+  @ApiOperation({
+    summary: ' 영화에 전체에 대한 상세 조회',
+    description: '특정 영화에 대한  재평가를 상세 조회합니다.',
+  })
+  @ApiResponse({
+    type: FindRevaluationResponseDto,
+    description: 'application/json.',
+  })
+  async findOneRevaluations(
+    @AuthUser() user: UserDto,
+    @Query() query: FindRevaluationRequestDto,
+    @Param('revaluationId') revaluationId: string,
+  ): Promise<FindOneRevaluationResponseDto> {
+    const existRevaluations = await this.revaluationService.findOneRevaluation(revaluationId)
+
+    return existRevaluations
   }
 
   @UseGuards(JwtAuthGuard)

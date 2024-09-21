@@ -194,10 +194,10 @@ export class RevaluationService {
     return createdRevaluation
   }
 
-  async findOneRevaluation(movieId: string): Promise<RevaluationEntity> {
+  async findOneRevaluation(id: string): Promise<RevaluationEntity> {
     const revaluation = await this.revaluationRepository.findOne({
       where: {
-        movie: { id: movieId },
+        movie: { id: id },
       },
       relations: { statistics: true, user: true },
     })
@@ -207,7 +207,7 @@ export class RevaluationService {
         {
           code: 'REVALUATION_NOTFOUND',
           status: HttpStatus.NOT_FOUND,
-          message: `영화에 대한 평가 내역이 없음 (movieId : ${movieId})`,
+          message: `영화에 대한 평가 내역이 없음 (id : ${id})`,
         },
         HttpStatus.NOT_FOUND,
       )

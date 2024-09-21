@@ -255,6 +255,10 @@ export class UserController {
   })
   @ApiOkResponse({ type: FindOneUserResponseDto })
   async getProfile(@Request() request): Promise<FindOneUserResponseDto> {
+    if (!request.user?.id) {
+      return null
+    }
+
     return this.userService.findOneUser(request.user.id)
   }
 }

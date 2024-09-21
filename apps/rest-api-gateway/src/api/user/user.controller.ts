@@ -92,9 +92,23 @@ export class UserController {
     request: CreateUserRequestDto,
   ): Promise<CreateUserResponseDto> {
     let externalId = null
+    let authUser = null
 
-    const kakaoUser = await this.authService.getUserInfoForKakao(oAuthToken)
-    externalId = kakaoUser.id
+    switch (request.provider) {
+      case 'google':
+        authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        break
+      case 'kakao':
+        authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        break
+      case 'apple':
+        authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
+        break
+      default:
+        authUser = null
+    }
+
+    externalId = authUser.id
 
     return this.userService.createUser({ ...request, externalId: externalId })
   }

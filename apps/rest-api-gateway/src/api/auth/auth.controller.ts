@@ -117,17 +117,20 @@ export class AuthController {
   @Get('apple')
   async appleLogin(@Headers('apple-token') appleToken: string) {
     console.log({ methodName: 'appleLogin', data: appleToken, context: 'appleToken' })
+
+    // Apple 토큰으로 사용자 정보 가져오기
     const appleUser = await this.authService.getUserInfoForApple(appleToken)
 
     console.log({ methodName: 'appleLogin', data: appleUser, context: 'appleUser' })
 
+    // DB에서 사용자가 존재하는지 확인
     const existUser = await this.userService.findOneUserExternal({ externalId: appleUser.sub }).catch((e) => {
       if (e.response.code) {
         throw new HttpException(
           {
             code: 'NOT_YET_RERE_USER',
             status: HttpStatus.NOT_FOUND,
-            message: `not yet rere user`,
+            message: 'not yet rere user',
           },
           HttpStatus.NOT_FOUND,
         )
@@ -136,7 +139,7 @@ export class AuthController {
           {
             code: 'UNKNOWN_ERROR',
             status: HttpStatus.INTERNAL_SERVER_ERROR,
-            message: `INTERNAL_SERVER_ERROR`,
+            message: 'INTERNAL_SERVER_ERROR',
           },
           HttpStatus.INTERNAL_SERVER_ERROR,
         )

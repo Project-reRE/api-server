@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import axios from 'axios'
+import * as jwt from 'jsonwebtoken'
 
 @Injectable()
 export class AuthService {
@@ -50,13 +51,40 @@ export class AuthService {
 
   async getUserInfoForApple(appleToken: string): Promise<any> {
     try {
-      const response = await axios.get('https://appleid.apple.com/auth/keys') // Apple의 공개 키 요청
-      console.log('#####START#######')
-      console.log(response.data)
-      console.log('#####END########')
-      // 이 부분에서 Apple의 JWT 토큰을 해석하여 사용자 정보 추출
-      const userInfo = this.verifyAppleToken(appleToken, response.data) // 토큰 검증 및 사용자 정보 추출 함수
-      return userInfo
+      // Apple의 Public Key를 사용해 Apple Token(JWT) 검증
+      const decodedToken: any = jwt.decode(appleToken, { complete: true })
+
+      if (!decodedToken) {
+        throw new HttpException(
+          {
+            code: 'INVALID_APPLE_TOKEN',
+            status: HttpStatus.UNAUTHORIZED,
+            message: 'Invalid Apple token',
+          },
+          HttpStatus.UNAUTHORIZED,
+        )
+      }
+
+      // Apple의 Public Key로 서명 검증
+      const appleKeys = await this.getApplePublicKeys()
+      const key = appleKeys.keys.find((k) => k.kid === decodedToken.header.kid)
+
+      if (!key) {
+        throw new HttpException(
+          {
+            code: 'INVALID_APPLE_TOKEN',
+            status: HttpStatus.UNAUTHORIZED,
+            message: 'Apple token verification failed',
+          },
+          HttpStatus.UNAUTHORIZED,
+        )
+      }
+
+      // JWT 서명 검증
+      const publicKey = this.getPublicKeyFromJwk(key)
+      const verifiedToken = jwt.verify(appleToken, publicKey, { algorithms: ['RS256'] })
+
+      return verifiedToken
     } catch (error) {
       throw new HttpException(
         {
@@ -69,9 +97,18 @@ export class AuthService {
     }
   }
 
-  // Apple 토큰 검증 (JWT 해석)
-  verifyAppleToken(token: string, applePublicKeys: any) {
-    // Apple 공개 키를 사용하여 토큰 검증 후 사용자 정보 반환
-    // JWT 토큰 파싱 및 검증 로직 추가 필요 (라이브러리 사용 가능)
+  // Apple Public Keys 가져오기
+  async getApplePublicKeys(): Promise<any> {
+    const response = await axios.get('https://appleid.apple.com/auth/keys')
+    return response.data
+  }
+
+  // JWK에서 Public Key 추출하기
+  getPublicKeyFromJwk(jwk): string {
+    // RSA Public Key로 변환
+    const { e, n } = jwk
+    const exponent = Buffer.from(e, 'base64')
+    const modulus = Buffer.from(n, 'base64')
+    return `-----BEGIN PUBLIC KEY-----\n${modulus}\n${exponent}\n-----END PUBLIC KEY-----`
   }
 }

@@ -116,14 +116,18 @@ export class UserController {
         externalId = authUser.sub
         break
       default:
-        throw new HttpException(
-          {
-            code: 'NOT_EXIST_PROVIDER',
-            status: HttpStatus.NOT_FOUND,
-            message: `NOT_EXIST_PROVIDER(provider : ${request.provider})`,
-          },
-          HttpStatus.NOT_FOUND,
-        )
+        break
+    }
+
+    if (!externalId) {
+      throw new HttpException(
+        {
+          code: 'NOT_EXIST_PROVIDER',
+          status: HttpStatus.NOT_FOUND,
+          message: `NOT_EXIST_PROVIDER(provider : ${request.provider})`,
+        },
+        HttpStatus.NOT_FOUND,
+      )
     }
 
     const createdUser = await this.userService.createUser({ ...request, externalId: externalId })

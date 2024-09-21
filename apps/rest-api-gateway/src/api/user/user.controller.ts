@@ -5,6 +5,8 @@ import {
   Get,
   Header,
   Headers,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -94,7 +96,7 @@ export class UserController {
     let externalId = null
     let authUser = null
 
-    switch (request.provider) {
+    switch (request.provider?.toLowerCase()) {
       case 'google':
         authUser = await this.authService.getUserInfoForGoogle(oAuthToken)
         externalId = authUser.sub
@@ -109,7 +111,14 @@ export class UserController {
         request.email = request.email ? request.email : authUser.email
         break
       default:
-        authUser = null
+        throw new HttpException(
+          {
+            code: 'NOT_EXIST_PROVIDER',
+            status: HttpStatus.NOT_FOUND,
+            message: `NOT_EXIST_PROVIDER(provider : ${request.provider})`,
+          },
+          HttpStatus.NOT_FOUND,
+        )
     }
 
     const createdUser = await this.userService.createUser({ ...request, externalId: externalId })

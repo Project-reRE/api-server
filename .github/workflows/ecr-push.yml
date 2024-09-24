@@ -3,14 +3,25 @@ name: Build and Push Docker images to ECR
 on:
   push:
     branches:
-      - main
-      - development
+      - prod
+      - dev
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  IMAGE_TAG: ${{ github.sha }}
+  ECS_SERVICE_NAME: ${{ secrets.ECS_SERVICE_NAME }}
+  TASK_DEFINITION: ${{ secrets.TASK_DEFINITION }}-${{ github.head_ref || github.ref_name }}
 
 jobs:
   build-rest-api-gateway:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Convert ref_name to uppercase
+        run: |
+          UPPER_REF_NAME=$(echo "${{ github.ref_name }}" | tr '[:lower:]' '[:upper:]')
+          echo "ECS_CLUSTER_NAME=RERE_${UPPER_REF_NAME}_CLUSTER" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -30,7 +41,7 @@ jobs:
 
       - name: Build and push Docker image for rest-api-gateway
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway-dev
+          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway:${{ env.IMAGE_TAG }}
           docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 
@@ -40,4 +51,4 @@ jobs:
       - name: Update ECS service with new image
         run: |
           # Update the service with the new task definition
-          aws ecs update-service --cluster ${{ secrets.ECS_CLUSTER_NAME }} --service ${{ secrets.ECS_SERVICE_NAME }} --task-definition rest-api-gateway-dev --force-new-deployment --region ap-northeast-2
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER_NAME }} --service ${{ env.ECS_SERVICE_NAME }} --task-definition "rest-api-gateway-${{ env.BRANCH_NAME }}" --force-new-deployment --region ap-northeast-2

@@ -21,7 +21,7 @@ export class UserEntity {
   @Column({ type: 'uuid', comment: 'oAuth UID' })
   externalId: string
 
-  @Column({ type: 'varchar', unique: true, length: 16 })
+  @Column({ type: 'varchar', unique: true, length: 32 })
   nickName: string
 
   @Column({ length: 255, default: '' })

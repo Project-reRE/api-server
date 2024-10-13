@@ -35,7 +35,7 @@ export class RevaluationService {
   ) {}
 
   async updateRevaluation(request: UpdateRevaluationRequestDto): Promise<UpdateRevaluationResponseDto> {
-    console.log(request, 'updateRevaluation')
+    // console.log(request, 'updateRevaluation')
 
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
@@ -72,7 +72,7 @@ export class RevaluationService {
       )
     }
 
-    console.log(existRevaluation.id, 'updateRevaluation', 'existRevaluation')
+    // console.log(existRevaluation.id, 'updateRevaluation', 'existRevaluation')
     const beforeRevaluation = this.revaluationRepository.create(existRevaluation)
     const updatableRevaluation = this.revaluationRepository.merge(existRevaluation, request)
 
@@ -82,13 +82,13 @@ export class RevaluationService {
     await this.decreaseMovieStatistics(existRevaluation.movie.id, existRevaluation, existUserEntity)
     await this.increaseMovieStatistics(existRevaluation.movie.id, updatedRevaluation, existUserEntity)
 
-    console.log(updatedRevaluation.id, 'updatedRevaluation')
+    // console.log(updatedRevaluation.id, 'updatedRevaluation')
 
     return updatedRevaluation
   }
 
   async removeRevaluation(request: RemoveRevaluationRequestDto): Promise<void> {
-    console.log(request, 'removeRevaluation')
+    // console.log(request, 'removeRevaluation')
 
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
@@ -116,13 +116,13 @@ export class RevaluationService {
     await this.decreaseUserStatistics(request.requestUserId)
     await this.decreaseMovieStatistics(existRevaluation.movie.id, removedRevaluation, existUserEntity)
 
-    console.log(removedRevaluation.id, 'removeRevaluation')
+    // console.log(removedRevaluation.id, 'removeRevaluation')
 
     return
   }
 
   async createRevaluation(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
-    console.log(request, 'createRevaluation')
+    // console.log(request, 'createRevaluation')
 
     const existMovie = await this.movieRepository.findOne({
       where: {
@@ -141,7 +141,7 @@ export class RevaluationService {
       )
     }
 
-    console.log(existMovie.id, 'createRevaluation', 'existMovie')
+    // console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     // 재평가 여부 확인
     const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
@@ -150,7 +150,7 @@ export class RevaluationService {
     const revaluationThresholdDate = new Date()
     revaluationThresholdDate.setHours(revaluationThresholdDate.getHours() - revaluationThresholdHour)
 
-    console.log(revaluationThresholdDate, 'createRevaluation', 'revaluationThresholdDate')
+    // console.log(revaluationThresholdDate, 'createRevaluation', 'revaluationThresholdDate')
 
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
@@ -189,7 +189,7 @@ export class RevaluationService {
 
     await this.createRevaluationStatistics(createdRevaluation.id)
 
-    console.log(createdRevaluation.id, 'createRevaluation')
+    // console.log(createdRevaluation.id, 'createRevaluation')
 
     return createdRevaluation
   }
@@ -217,7 +217,7 @@ export class RevaluationService {
   }
 
   async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[]> {
-    console.log(request, 'findRevaluations')
+    // console.log(request, 'findRevaluations')
 
     const skip = getSkip(request.page, request.limit)
     const take = getTake(request.limit)
@@ -267,7 +267,7 @@ export class RevaluationService {
   }
 
   private async increaseUserStatistics(userId: string) {
-    console.log({ userId }, 'increaseUserStatistics')
+    // console.log({ userId }, 'increaseUserStatistics')
 
     let existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
 
@@ -279,16 +279,16 @@ export class RevaluationService {
       existUserStatistics = await this.userStatisticsRepository.save(creatableUserStatistics)
     }
 
-    console.log({ beforeUpdate: existUserStatistics }, 'increaseUserStatistics')
+    // console.log({ beforeUpdate: existUserStatistics }, 'increaseUserStatistics')
 
     existUserStatistics.numRevaluations++
 
     const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
-    console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+    // console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
   }
 
   private async decreaseUserStatistics(userId: string) {
-    console.log({ userId }, 'decreaseUserStatistics')
+    // console.log({ userId }, 'decreaseUserStatistics')
 
     let existUserStatistics = await this.userStatisticsRepository.findOne({ where: { user: { id: userId } } })
 
@@ -296,12 +296,12 @@ export class RevaluationService {
       return
     }
 
-    console.log({ beforeUpdate: existUserStatistics }, 'decreaseUserStatistics')
+    // console.log({ beforeUpdate: existUserStatistics }, 'decreaseUserStatistics')
 
     existUserStatistics.numRevaluations--
 
     const updatedUserStatistics = await this.userStatisticsRepository.save(existUserStatistics)
-    console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
+    // console.log({ afterUpdate: updatedUserStatistics.numRevaluations })
   }
 
   private async getPreviousMonths(currentDate: string): Promise<string[]> {
@@ -325,12 +325,12 @@ export class RevaluationService {
     revaluationEntity: RevaluationEntity,
     existUserEntity: UserEntity,
   ) {
-    console.log({ movieId }, 'increaseMovieStatistics')
+    // console.log({ movieId }, 'increaseMovieStatistics')
 
     const now = dayjs()
     const currentDate = now.format('YYYY-MM')
 
-    console.log({ currentDate }, 'increaseMovieStatistics')
+    // console.log({ currentDate }, 'increaseMovieStatistics')
 
     let existMovieStatistics = await this.movieStatisticsRepository.findOne({
       where: {
@@ -368,7 +368,7 @@ export class RevaluationService {
       existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
     }
 
-    console.log({ beforeUpdate: existMovieStatistics }, 'increaseMovieStatistics')
+    // console.log({ beforeUpdate: existMovieStatistics }, 'increaseMovieStatistics')
 
     const beforeTotal = existMovieStatistics.numStars * existMovieStatistics.numStarsParticipants
 
@@ -489,11 +489,11 @@ export class RevaluationService {
       existMovieStatistics.numAge[ageGroup] = 1
     }
 
-    console.log(existMovieStatistics, 'increaseMovieStatistics', 'updatableMovieStatistics')
+    // console.log(existMovieStatistics, 'increaseMovieStatistics', 'updatableMovieStatistics')
 
     const updatedMovieStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
 
-    console.log({ afterUpdate: updatedMovieStatistics }, 'increaseMovieStatistics')
+    // console.log({ afterUpdate: updatedMovieStatistics }, 'increaseMovieStatistics')
   }
 
   private async decreaseMovieStatistics(
@@ -501,12 +501,12 @@ export class RevaluationService {
     revaluationEntity: RevaluationEntity,
     existUserEntity: UserEntity,
   ) {
-    console.log({ movieId }, 'decreaseMovieStatistics')
+    // console.log({ movieId }, 'decreaseMovieStatistics')
 
     const now = dayjs()
     const currentDate = now.format('YYYY-MM')
 
-    console.log({ currentDate }, 'decreaseMovieStatistics')
+    // console.log({ currentDate }, 'decreaseMovieStatistics')
 
     let existMovieStatistics = await this.movieStatisticsRepository.findOne({
       where: {
@@ -516,11 +516,11 @@ export class RevaluationService {
     })
 
     if (!existMovieStatistics) {
-      console.log('No statistics found for this movie and date.')
+      // console.log('No statistics found for this movie and date.')
       return // 데이터가 없으면 반환
     }
 
-    console.log({ beforeUpdate: existMovieStatistics }, 'decreaseMovieStatistics')
+    // console.log({ beforeUpdate: existMovieStatistics }, 'decreaseMovieStatistics')
 
     // 총합 계산 전 기존 참가자 수가 0인지 확인
     if (existMovieStatistics.numStarsParticipants > 0) {
@@ -626,15 +626,15 @@ export class RevaluationService {
       }
     }
 
-    console.log(existMovieStatistics, 'decreaseMovieStatistics', 'updatableMovieStatistics')
+    // console.log(existMovieStatistics, 'decreaseMovieStatistics', 'updatableMovieStatistics')
 
     const updatedMovieStatistics = await this.movieStatisticsRepository.save(existMovieStatistics)
 
-    console.log({ afterUpdate: updatedMovieStatistics }, 'decreaseMovieStatistics')
+    // console.log({ afterUpdate: updatedMovieStatistics }, 'decreaseMovieStatistics')
   }
 
   private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {
-    console.log({ revaluationId }, 'createRevaluationStatistics')
+    // console.log({ revaluationId }, 'createRevaluationStatistics')
     const creatableRevaluationStatistics = await this.revaluationStatisticsRepository.create({
       revaluation: { id: revaluationId },
     })

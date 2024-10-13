@@ -17,10 +17,10 @@ export class AuthController {
 
   @Get('kakao')
   async kakaoLogin(@Headers('kakao-token') kakaoToken: string) {
-    console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
+    // console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
     const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
 
-    console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
+    // console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
 
     const existUser = await this.userService.findOneUserExternal({ externalId: kakaoUser.id }).catch((e) => {
       if (e.response.code) {
@@ -44,7 +44,7 @@ export class AuthController {
       }
     })
 
-    console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
+    // console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
 
     const payload = {
       id: existUser.id,
@@ -59,20 +59,20 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
+    // console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
     const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
 
-    console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
+    // console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
 
     return { jwt }
   }
 
   @Get('google')
   async googleLogin(@Headers('google-token') googleToken: string) {
-    console.log({ methodName: 'googleLogin', data: googleToken, context: 'googleToken' })
+    // console.log({ methodName: 'googleLogin', data: googleToken, context: 'googleToken' })
     const googleUser = await this.authService.getUserInfoForGoogle(googleToken)
 
-    console.log({ methodName: 'googleLogin', data: googleUser, context: 'googleUser' })
+    // console.log({ methodName: 'googleLogin', data: googleUser, context: 'googleUser' })
 
     const existUser = await this.userService.findOneUserExternal({ externalId: googleUser.sub }).catch((e) => {
       if (e.response.code) {
@@ -116,12 +116,12 @@ export class AuthController {
 
   @Get('apple')
   async appleLogin(@Headers('apple-token') appleToken: string) {
-    console.log({ methodName: 'appleLogin', data: appleToken, context: 'appleToken' })
+    // console.log({ methodName: 'appleLogin', data: appleToken, context: 'appleToken' })
 
     // Apple 토큰으로 사용자 정보 가져오기
     const appleUser = await this.authService.getUserInfoForApple(appleToken)
 
-    console.log({ methodName: 'appleLogin', data: appleUser, context: 'appleUser' })
+    // console.log({ methodName: 'appleLogin', data: appleUser, context: 'appleUser' })
 
     // DB에서 사용자가 존재하는지 확인
     const existUser = await this.userService.findOneUserExternal({ externalId: appleUser.sub }).catch((e) => {

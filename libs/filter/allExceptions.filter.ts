@@ -21,11 +21,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       // gRPC 서버에서 전달된 에러 처리
       const error = exception.getError() as any
 
-      console.log('@@@@@@@@@@@')
       const httpStatus = status ? this.convertGrpcErrorCodeToHttpStatusCode(error.code) : 500
-      console.log('@@@@@@@@@@@')
-      console.log(httpStatus)
-      console.log('@@@@@@@@@@@')
+
       if (error && typeof error === 'object') {
         errorResponse = {
           statusCode: httpStatus,
@@ -37,9 +34,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const errorMessage = exception.message
         const [grpcCode, ...messageParts] = errorMessage.split(':')
         const httpStatus = status ? this.convertGrpcErrorCodeToHttpStatusCode(status).valueOf() : 500
-        console.log('############')
-        console.log(httpStatus)
-        console.log('############')
+
         errorResponse = {
           statusCode: httpStatus,
           code: grpcCode.trim() || 'INTERNAL_ERROR',

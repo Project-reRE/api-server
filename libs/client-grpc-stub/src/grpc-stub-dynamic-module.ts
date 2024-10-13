@@ -1,4 +1,4 @@
-import { ModuleMetadata, Provider } from '@nestjs/common'
+import { ModuleMetadata } from '@nestjs/common'
 import { GrpcStubConfiguration } from '@client/client-grpc-stub/interface/grpc-stub-configuration.interface'
 import { ClientGrpcProxy, ClientProxyFactory, Transport } from '@nestjs/microservices'
 import { join } from 'path'
@@ -16,7 +16,7 @@ export const createGrpcStubClientFactory = (
 ) => ({
   provide: provideName,
   useFactory: (configuration: GrpcStubConfiguration): ClientGrpcProxy => {
-    console.log(`GRPC_STUB_MODULE_CONFIG: ${JSON.stringify(configuration)}`)
+    // console.log(`GRPC_STUB_MODULE_CONFIG: ${JSON.stringify(configuration)}`)
 
     return ClientProxyFactory.create({
       transport: Transport.GRPC,

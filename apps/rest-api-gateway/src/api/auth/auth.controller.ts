@@ -64,6 +64,9 @@ export class AuthController {
 
     // console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
 
+    //TODO Prod 배포하기전에 삭제
+    console.log(jwt, 'kakao')
+
     return { jwt }
   }
 
@@ -110,6 +113,9 @@ export class AuthController {
     }
 
     const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+
+    //TODO Prod 배포하기전에 삭제
+    console.log(jwt, 'goggle')
 
     return { jwt }
   }
@@ -160,6 +166,9 @@ export class AuthController {
     }
 
     const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+
+    //TODO Prod 배포하기전에 삭제
+    console.log(jwt, 'apple')
 
     return { jwt }
   }

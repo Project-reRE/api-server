@@ -187,9 +187,9 @@ export class UserService {
 
     existUserEntity.deletedAt = new Date()
 
-    existUserEntity.externalId += 'DELETE_'
-    existUserEntity.nickName += 'DELETE_'
-    existUserEntity.email += 'DELETE_'
+    existUserEntity.externalId += 'DELETED_'
+    existUserEntity.nickName += 'DELETED_'
+    existUserEntity.email += 'DELETED_'
 
     await this.userRepository.save(existUserEntity)
 

@@ -183,7 +183,15 @@ export class UserService {
       )
     }
 
-    await this.userRepository.softRemove(existUserEntity)
+    // 회원 탈퇴시, 재회원가입 허용을 위해 Unique 처리된 Nickname, externalId, email Key값을 변경해줘야함
+
+    existUserEntity.deletedAt = new Date()
+
+    existUserEntity.externalId += 'DELETE_'
+    existUserEntity.nickName += 'DELETE_'
+    existUserEntity.email += 'DELETE_'
+
+    await this.userRepository.save(existUserEntity)
 
     return { id: request.id }
   }

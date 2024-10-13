@@ -13,6 +13,9 @@ import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 
 @Injectable()
 export class MovieService {
+  KMDB_API_KEY = process.env.KMDB_API_KEY
+  KMDB_API_URL = process.env.KMDB_API_URL
+
   constructor(
     @InjectRepository(MovieEntity)
     private movieRepository: Repository<MovieEntity>,
@@ -152,12 +155,11 @@ export class MovieService {
   async findMovies(request: FindMovieQueryDto): Promise<FindMovieResponseDto> {
     // console.log({ methodName: 'findMovies', data: request })
 
-    const KMDB_API_KEY = process.env.KMDB_API_KEY
-    const KMDB_API_URL = process.env.KMDB_API_URL
-
     const title = request.title
 
     const listCount = request.limit ?? 25
+
+    const startCount = request.page ? (request.page - 1) * listCount : 0
 
     const detail = 'Y'
 
@@ -175,11 +177,12 @@ export class MovieService {
 
     // 오늘부터 5년 전의 날짜를 releaseDte에 삽입
     const URL =
-      KMDB_API_URL +
-      `&ServiceKey=${KMDB_API_KEY}` +
+      this.KMDB_API_URL +
+      `&ServiceKey=${this.KMDB_API_KEY}` +
       `${title ? `&title=${title}` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
       `${listCount ? `&listCount=${listCount}` : ``}` +
+      `${startCount ? `&startCount=${startCount}` : ``}` +
       `&releaseDte=${getFiveYearsAgo()}`
 
     // console.log({ methodName: 'findMovies', data: URL, context: 'URL' })

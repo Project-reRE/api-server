@@ -100,19 +100,28 @@ export class RevaluationController {
   })
   async findRevaluations(
     @AuthUser() user: UserDto,
-    @Query() query: FindRevaluationRequestDto,
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+      }),
+    )
+    query: FindRevaluationRequestDto,
   ): Promise<FindRevaluationResponseDto> {
-    const existRevaluations = await this.revaluationService.findRevaluations({
+    query.page = query.page ? Number(query.page) : query.page
+    query.limit = query.limit ? Number(query.limit) : query.limit
+
+    const [existRevaluations, count] = await this.revaluationService.findRevaluations({
       ...query,
       requestUserId: user?.id ?? '0',
     })
 
     return {
-      totalRecords: existRevaluations.length,
-      results: existRevaluations,
-      totalPages: Math.ceil(existRevaluations.length / getTake(query.limit)),
+      totalRecords: count,
+      totalPages: Math.ceil(count / getTake(query.limit)),
       page: getPage(query.page),
       limit: getLimit(query.limit),
+      results: existRevaluations,
     }
   }
 
@@ -152,14 +161,17 @@ export class RevaluationController {
   ): Promise<FindRevaluationResponseDto> {
     query.userId = user.id
 
-    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
+    const [existRevaluations, count] = await this.revaluationService.findRevaluations({
+      ...query,
+      requestUserId: user.id,
+    })
 
     return {
-      totalRecords: existRevaluations.length,
-      results: existRevaluations,
-      totalPages: Math.ceil(existRevaluations.length / getTake(query.limit)),
+      totalRecords: count,
+      totalPages: Math.ceil(count / getTake(query.limit)),
       page: getPage(query.page),
       limit: getLimit(query.limit),
+      results: existRevaluations,
     }
   }
 
@@ -179,7 +191,10 @@ export class RevaluationController {
   ): Promise<string> {
     query.userId = user.id
 
-    const existRevaluations = await this.revaluationService.findRevaluations({ ...query, requestUserId: user.id })
+    const [existRevaluations, count] = await this.revaluationService.findRevaluations({
+      ...query,
+      requestUserId: user.id,
+    })
 
     return existRevaluations[0].id
   }

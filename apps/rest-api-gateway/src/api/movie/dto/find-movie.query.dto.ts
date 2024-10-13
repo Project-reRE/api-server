@@ -13,4 +13,11 @@ export class FindMovieQueryDto {
   @IsString()
   @IsOptional()
   limit?: number
+
+  @ApiPropertyOptional({
+    example: 25,
+  })
+  @IsString()
+  @IsOptional()
+  page?: number
 }

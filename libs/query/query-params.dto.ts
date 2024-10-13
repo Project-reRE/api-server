@@ -5,12 +5,12 @@ export class QueryParamsDto {
   @ApiPropertyOptional({ description: 'The page number to return (defaults to 1)' })
   @IsOptional()
   @IsNumberString()
-  readonly page?: number
+  page?: number
 
   @ApiPropertyOptional({ description: 'The number of returned items per page (defaults to 25)' })
   @IsOptional()
   @IsNumberString()
-  readonly limit?: number
+  limit?: number
 
   @ApiPropertyOptional({
     description:
@@ -18,5 +18,5 @@ export class QueryParamsDto {
   })
   @IsOptional()
   @IsString()
-  readonly order?: string
+  order?: string
 }

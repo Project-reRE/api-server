@@ -216,7 +216,8 @@ export class RevaluationService {
     return revaluation
   }
 
-  async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[]> {
+  // @ts-ignore
+  async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[], number> {
     // console.log(request, 'findRevaluations')
 
     const skip = getSkip(request.page, request.limit)
@@ -255,7 +256,7 @@ export class RevaluationService {
       queryBuilder.andWhere(`movie.id = :movieId`, { movieId: request.movieId })
     }
 
-    const existRevaluations = await queryBuilder.getMany()
+    const [existRevaluations, count] = await queryBuilder.getManyAndCount()
 
     for (let i = 0; i < existRevaluations.length; i++) {
       if (!existRevaluations[i].statistics) {
@@ -263,7 +264,7 @@ export class RevaluationService {
       }
     }
 
-    return existRevaluations
+    return [existRevaluations, count]
   }
 
   private async increaseUserStatistics(userId: string) {

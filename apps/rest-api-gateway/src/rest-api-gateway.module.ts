@@ -80,7 +80,7 @@ import { RevaluationLikeModule } from './api/revaluation-like/revaluation-like.m
         // Set this option as false here and instead sync schema when GrpcUserModule is created to disable foreign key constraint.
         synchronize: true,
         // logging: configService.get('env') === 'development' ? ['query', 'error'] : undefined,
-        logging: true,
+        logging: false,
         // configService.get('env') === 'test' ? ['error'] : configService.get('env') === 'development' ?? undefined,
       }),
       inject: [ConfigService],

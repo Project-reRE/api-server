@@ -21,7 +21,7 @@ export class MovieService {
   ) {}
 
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
-    console.log(request, 'createMovie')
+    // console.log(request, 'createMovie')
 
     const existMovie = await this.movieRepository.findOne({
       where: { id: request.id },
@@ -42,7 +42,7 @@ export class MovieService {
   }
 
   async findOneMovie(request: FindOneMovieRequestDto): Promise<FindOneMovieResponseDto> {
-    console.log(request, 'findOneMovie')
+    // console.log(request, 'findOneMovie')
 
     const existMovie = await this.movieRepository.findOne({
       where: { id: request.id },
@@ -144,13 +144,13 @@ export class MovieService {
     // 모든 값이 노출되어야 하는 데이터는 그대로 전달
     existMovie.statistics = [transformedStatistics]
 
-    console.log(existMovie, 'findOneMovie')
+    // console.log(existMovie, 'findOneMovie')
 
     return existMovie
   }
 
   async findMovies(request: FindMovieQueryDto): Promise<FindMovieResponseDto> {
-    console.log({ methodName: 'findMovies', data: request })
+    // console.log({ methodName: 'findMovies', data: request })
 
     const KMDB_API_KEY = process.env.KMDB_API_KEY
     const KMDB_API_URL = process.env.KMDB_API_URL
@@ -182,14 +182,14 @@ export class MovieService {
       `${listCount ? `&listCount=${listCount}` : ``}` +
       `&releaseDte=${getFiveYearsAgo()}`
 
-    console.log({ methodName: 'findMovies', data: URL, context: 'URL' })
+    // console.log({ methodName: 'findMovies', data: URL, context: 'URL' })
 
     const existMovieData: any = await axios({
       url: URL,
       method: 'GET',
     })
 
-    console.log(existMovieData.data.Data[0].Result, 'findMovies')
+    // console.log(existMovieData.data.Data[0].Result, 'findMovies')
 
     const results = existMovieData.data.Data[0].Result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]

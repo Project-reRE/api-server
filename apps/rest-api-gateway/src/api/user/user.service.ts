@@ -20,7 +20,7 @@ export class UserService {
   ) {}
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
-    console.log(request, 'findOneUserExternal')
+    // console.log(request, 'findOneUserExternal')
     const existUserEntity = await this.userRepository.findOne({
       where: { externalId: request.externalId },
       relations: { statistics: true },
@@ -37,13 +37,13 @@ export class UserService {
       )
     }
 
-    console.log(existUserEntity, 'findOneUserExternal')
+    // console.log(existUserEntity, 'findOneUserExternal')
 
     return Object.assign(existUserEntity)
   }
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {
-    console.log(request, 'findOneUser')
+    // console.log(request, 'findOneUser')
     const existUserEntity = await this.userRepository.findOne({
       where: { id: request.id },
       relations: { statistics: true },
@@ -70,7 +70,7 @@ export class UserService {
   }
 
   async createUser(request: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    console.log(request, 'createUser')
+    // console.log(request, 'createUser')
 
     const existUserEntity = await this.userRepository.findOne({ where: { externalId: request.externalId } })
 
@@ -107,13 +107,13 @@ export class UserService {
 
     const createdUser = await this.userRepository.save(creatableUser)
 
-    console.log(createdUser, 'createUser', 'createdUser')
+    // console.log(createdUser, 'createUser', 'createdUser')
 
     return Object.assign(createdUser)
   }
 
   async updateUser(request: UpdateUserRequestDto): Promise<UpdateUserResponseDto> {
-    console.log(request, 'updateUser')
+    // console.log(request, 'updateUser')
 
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 
@@ -162,13 +162,13 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(updatableUserEntity)
 
-    console.log(savedUser, 'updateUser', 'savedUser')
+    // console.log(savedUser, 'updateUser', 'savedUser')
 
     return Object.assign(savedUser)
   }
 
   async removeUser(request: FindOneUserRequest): Promise<RemoveUserResponseDto> {
-    console.log(request, 'removeUser')
+    // console.log(request, 'removeUser')
 
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 

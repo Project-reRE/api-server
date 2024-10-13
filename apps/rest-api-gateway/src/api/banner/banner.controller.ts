@@ -14,7 +14,7 @@ export class BannerController {
   })
   @ApiOkResponse({ type: FindOpenBannerResponseDto })
   async findOpenBanner(): Promise<FindOpenBannerResponseDto> {
-    console.log({ methodName: 'findOpenBanner', data: '', context: 'request' })
+    // console.log({ methodName: 'findOpenBanner', data: '', context: 'request' })
     // home service 개발 완료 전 까지 Dummy Data return
     const dummyResponse = [
       {

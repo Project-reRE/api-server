@@ -41,7 +41,7 @@ jobs:
 
       - name: Build and push Docker image for rest-api-gateway
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway:${{ env.IMAGE_TAG }}
+          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway
           docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 

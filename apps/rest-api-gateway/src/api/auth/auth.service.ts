@@ -16,8 +16,6 @@ export class AuthService {
       })
       return response.data
     } catch (error) {
-      // console.log({ methodName: 'getUserInfo', data: error, context: 'error' })
-
       throw new HttpException(
         {
           code: 'KAKAO_TOKEN_NOT_VERIFYED',

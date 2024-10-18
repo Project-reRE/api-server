@@ -20,7 +20,6 @@ export class UserService {
   ) {}
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
-    // console.log(request, 'findOneUserExternal')
     const existUserEntity = await this.userRepository.findOne({
       where: { externalId: request.externalId },
       relations: { statistics: true },
@@ -37,13 +36,10 @@ export class UserService {
       )
     }
 
-    // console.log(existUserEntity, 'findOneUserExternal')
-
     return Object.assign(existUserEntity)
   }
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {
-    // console.log(request, 'findOneUser')
     const existUserEntity = await this.userRepository.findOne({
       where: { id: request.id },
       relations: { statistics: true },
@@ -70,8 +66,6 @@ export class UserService {
   }
 
   async createUser(request: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    // console.log(request, 'createUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { externalId: request.externalId } })
 
     if (existUserEntity) {
@@ -107,14 +101,10 @@ export class UserService {
 
     const createdUser = await this.userRepository.save(creatableUser)
 
-    // console.log(createdUser, 'createUser', 'createdUser')
-
     return Object.assign(createdUser)
   }
 
   async updateUser(request: UpdateUserRequestDto): Promise<UpdateUserResponseDto> {
-    // console.log(request, 'updateUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 
     if (!existUserEntity) {
@@ -162,14 +152,10 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(updatableUserEntity)
 
-    // console.log(savedUser, 'updateUser', 'savedUser')
-
     return Object.assign(savedUser)
   }
 
   async removeUser(request: FindOneUserRequest): Promise<RemoveUserResponseDto> {
-    // console.log(request, 'removeUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 
     if (!existUserEntity) {
@@ -194,5 +180,9 @@ export class UserService {
     await this.userRepository.save(existUserEntity)
 
     return { id: request.id }
+  }
+
+  async findUserByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email } })
   }
 }

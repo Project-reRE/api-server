@@ -7,7 +7,7 @@ export class MovieDataDto {
   title?: string
 
   @ApiPropertyOptional({ example: '액션,범죄,스릴러,느와르,코메디' })
-  genre?: string
+  genre: string[]
 
   @ApiPropertyOptional({ example: 2011 })
   prodYear?: number

@@ -185,18 +185,14 @@ export class MovieService {
       `${startCount ? `&startCount=${startCount}` : ``}` +
       `&releaseDte=${getFiveYearsAgo()}`
 
-    // console.log({ methodName: 'findMovies', data: URL, context: 'URL' })
-
     const existMovieData: any = await axios({
       url: URL,
       method: 'GET',
     })
-
-    // console.log(existMovieData.data.Data[0].Result, 'findMovies')
-
     const results = existMovieData.data.Data[0].Result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
       const stills = value?.stills?.toLowerCase()?.split('.jpg')[0]
+      const genre = value?.genre === '' ? [] : value?.genre.split(',')
 
       return {
         // DOCID: value?.DDCID,
@@ -213,7 +209,7 @@ export class MovieService {
             : value?.directors?.director, // 최대 10명
           actors: Array.isArray(value?.actors?.actor) ? value.actors.actor.slice(0, 10) : value?.actors?.actor, // 최대 10명
           rating: value?.rating,
-          genre: value?.genre,
+          genre: genre,
           repRatDate: value?.repRatDate,
           repRlsDate: value?.repRlsDate,
           posters: posters ? [posters + '.jpg'] : [],

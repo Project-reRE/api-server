@@ -149,7 +149,13 @@ export class MovieService {
 
     // console.log(existMovie, 'findOneMovie')
 
-    return existMovie
+    return {
+      ...existMovie,
+      data: {
+        ...existMovie.data,
+        genre: existMovie.data.genre === '' ? [] : existMovie.data.genre.split(','),
+      },
+    }
   }
 
   async findMovies(request: FindMovieQueryDto): Promise<FindMovieResponseDto> {

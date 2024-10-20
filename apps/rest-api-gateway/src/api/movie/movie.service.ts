@@ -149,11 +149,16 @@ export class MovieService {
 
     // console.log(existMovie, 'findOneMovie')
 
+    let genre = []
+    if (typeof existMovie.data.genre === 'object') {
+      genre = existMovie.data.genre
+    } else if (existMovie.data.genre !== '') genre = existMovie.data.genre.split(',')
+
     return {
       ...existMovie,
       data: {
         ...existMovie.data,
-        genre: existMovie.data.genre === '' ? [] : existMovie.data.genre.split(','),
+        genre,
       },
     }
   }
@@ -198,7 +203,11 @@ export class MovieService {
     const results = existMovieData.data.Data[0].Result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
       const stills = value?.stills?.toLowerCase()?.split('.jpg')[0]
-      const genre = value?.genre === '' ? [] : value?.genre.split(',')
+
+      let genre = []
+      if (typeof value?.genre === 'object') {
+        genre = value?.genre
+      } else if (value?.genre !== '') genre = value?.genre.split(',')
 
       return {
         // DOCID: value?.DDCID,

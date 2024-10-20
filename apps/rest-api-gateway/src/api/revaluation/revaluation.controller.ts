@@ -121,7 +121,23 @@ export class RevaluationController {
       totalPages: Math.ceil(count / getTake(query.limit)),
       page: getPage(query.page),
       limit: getLimit(query.limit),
-      results: existRevaluations,
+      results: existRevaluations.map((revaluation) => {
+        let genre = []
+        if (typeof revaluation.movie.data.genre === 'object') {
+          genre = revaluation.movie.data.genre
+        } else if (revaluation.movie.data.genre !== '') genre = revaluation.movie.data.genre.split(',')
+
+        return {
+          ...revaluation,
+          movie: {
+            ...revaluation.movie,
+            data: {
+              ...revaluation.movie.data,
+              genre: genre,
+            },
+          },
+        }
+      }),
     }
   }
 
@@ -171,7 +187,23 @@ export class RevaluationController {
       totalPages: Math.ceil(count / getTake(query.limit)),
       page: getPage(query.page),
       limit: getLimit(query.limit),
-      results: existRevaluations,
+      results: existRevaluations.map((revaluation) => {
+        let genre = []
+        if (typeof revaluation.movie.data.genre === 'object') {
+          genre = revaluation.movie.data.genre
+        } else if (revaluation.movie.data.genre !== '') genre = revaluation.movie.data.genre.split(',')
+
+        return {
+          ...revaluation,
+          movie: {
+            ...revaluation.movie,
+            data: {
+              ...revaluation.movie.data,
+              genre: genre,
+            },
+          },
+        }
+      }),
     }
   }
 

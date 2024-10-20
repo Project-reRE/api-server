@@ -216,10 +216,7 @@ export class RevaluationService {
     return revaluation
   }
 
-  // @ts-ignore
-  async findRevaluations(request: FindRevaluationRequestDto): Promise<RevaluationEntity[], number> {
-    // console.log(request, 'findRevaluations')
-
+  async findRevaluations(request: FindRevaluationRequestDto): Promise<[RevaluationEntity[], number]> {
     const skip = getSkip(request.page, request.limit)
     const take = getTake(request.limit)
     const order = getOrder(request.order, 'revaluation')

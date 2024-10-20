@@ -24,8 +24,6 @@ export class MovieService {
   ) {}
 
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
-    // console.log(request, 'createMovie')
-
     const existMovie = await this.movieRepository.findOne({
       where: { id: request.id },
       relations: { statistics: true },
@@ -45,8 +43,6 @@ export class MovieService {
   }
 
   async findOneMovie(request: FindOneMovieRequestDto): Promise<FindOneMovieResponseDto> {
-    // console.log(request, 'findOneMovie')
-
     const existMovie = await this.movieRepository.findOne({
       where: { id: request.id },
     })
@@ -88,14 +84,18 @@ export class MovieService {
         })
 
         numRecentStars.push({
-          numStars: existMovieStatistics?.numStars ?? '0',
+          numStars: Number(existMovieStatistics?.numStars) ?? 0,
           currentDate: previousMonths[i],
         })
       }
 
       creatableMovieStatistics.numRecentStars = numRecentStars
-
       existMovieStatistics = await this.movieStatisticsRepository.save(creatableMovieStatistics)
+    } else {
+      existMovieStatistics.numRecentStars = existMovieStatistics.numRecentStars.map((numRecentStart) => ({
+        ...numRecentStart,
+        numStars: Number(numRecentStart.numStars),
+      }))
     }
 
     // 최상위 3개의 값을 추출하는 함수
@@ -147,8 +147,6 @@ export class MovieService {
     // 모든 값이 노출되어야 하는 데이터는 그대로 전달
     existMovie.statistics = [transformedStatistics]
 
-    // console.log(existMovie, 'findOneMovie')
-
     let genre = []
     if (typeof existMovie.data.genre === 'object') {
       genre = existMovie.data.genre
@@ -164,8 +162,6 @@ export class MovieService {
   }
 
   async findMovies(request: FindMovieQueryDto): Promise<FindMovieResponseDto> {
-    // console.log({ methodName: 'findMovies', data: request })
-
     const title = request.title
 
     const listCount = request.limit ?? 25

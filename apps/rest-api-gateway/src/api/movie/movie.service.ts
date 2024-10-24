@@ -83,8 +83,14 @@ export class MovieService {
           },
         })
 
+        /*
+         * decimal type 은 number 로 변수를 선언하지만, typeORM 을 통해 DB 에서 데이터 가져올 경우 소숫점이 있는 경우 string 형식으로 저장됨
+         * 관련 stackOverflow : https://stackoverflow.com/questions/69872250/typeorm-decimal-column-values-returned-as-strings-instead-of-decimal-numbers
+         * 그래서 값 형식은 number 여도 소숫점/ 정수값 모두 String 형식으로 값을 넣어줘야 데이터의 정합성이 유지됨
+         *
+         * */
         numRecentStars.push({
-          numStars: Number(existMovieStatistics?.numStars) ?? 0,
+          numStars: existMovieStatistics?.numStars ?? '0',
           currentDate: previousMonths[i],
         })
       }

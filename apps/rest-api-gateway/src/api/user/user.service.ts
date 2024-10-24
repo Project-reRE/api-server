@@ -13,6 +13,14 @@ import { UpdateUserResponseDto } from './dto/update-user-response.dto.st'
 import { RemoveUserResponseDto } from './dto/remove-user-response.dto.st'
 import { DummyNickNameEntity } from '../../entity/dummy.entity'
 
+const USER_PROFILE = [
+  'https://rere-profile.s3.ap-northeast-2.amazonaws.com/Ch_Profile1.png',
+  'https://rere-profile.s3.ap-northeast-2.amazonaws.com/Ch_Profile2.png',
+  'https://rere-profile.s3.ap-northeast-2.amazonaws.com/Ch_Profile2-1.png',
+  'https://rere-profile.s3.ap-northeast-2.amazonaws.com/Ch_Profile3.png',
+  'https://rere-profile.s3.ap-northeast-2.amazonaws.com/Ch_Profile4.png',
+]
+
 @Injectable()
 export class UserService {
   constructor(
@@ -120,7 +128,9 @@ export class UserService {
       )
     }
 
+    // random profile setup
     creatableUser.nickName = dummyNickName.nickName
+    creatableUser.profileUrl = USER_PROFILE[Math.floor(Math.random() * USER_PROFILE.length)]
 
     const createdUser = await this.userRepository.save(creatableUser)
 

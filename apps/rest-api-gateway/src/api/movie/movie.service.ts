@@ -192,12 +192,12 @@ export class MovieService {
     const URL =
       this.KMDB_API_URL +
       `&ServiceKey=${this.KMDB_API_KEY}` +
-      `${title ? `&title=${title}` : ``}` +
+      `${title ? `&title="${title}"` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
       `${listCount ? `&listCount=${listCount}` : ``}` +
       `${startCount ? `&startCount=${startCount}` : ``}` +
       `&releaseDte=${getFiveYearsAgo()}`
-
+    console.log(URL)
     const existMovieData: any = await axios({
       url: URL,
       method: 'GET',
@@ -216,7 +216,7 @@ export class MovieService {
         id: `${value?.movieId}-${value?.movieSeq}`,
         data: {
           title: value?.title
-            ?.replace(/!HS|!HE/g, '')
+            ?.replace(/ !HS | !HE /g, '')
             .replace(/\s+/g, ' ')
             .trim(),
           titleValue: value?.title,

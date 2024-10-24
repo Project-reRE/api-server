@@ -8,6 +8,7 @@ import configurations from '../../config/configurations'
 import { AuthModule } from '../auth/auth.module'
 import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../../constants/jwt'
+import { DummyNickNameEntity } from '../../entity/dummy.entity'
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { jwtConstants } from '../../constants/jwt'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, DummyNickNameEntity]),
     forwardRef(() => AuthModule),
     JwtModule.register({
       secret: jwtConstants.secret,

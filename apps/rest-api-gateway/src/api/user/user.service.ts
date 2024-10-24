@@ -11,12 +11,16 @@ import * as moment from 'moment'
 import { UpdateUserRequestDto } from './dto/update-user-request.dto.st'
 import { UpdateUserResponseDto } from './dto/update-user-response.dto.st'
 import { RemoveUserResponseDto } from './dto/remove-user-response.dto.st'
+import { DummyNickNameEntity } from '../../entity/dummy.entity'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+
+    @InjectRepository(DummyNickNameEntity)
+    private readonly dummyNickNameRepository: Repository<DummyNickNameEntity>,
   ) {}
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
@@ -103,7 +107,20 @@ export class UserService {
 
     const creatableUser = this.userRepository.create({ ...request, statistics: {} })
 
-    creatableUser.nickName = `tester_${new Date().getTime()}`
+    const dummyNickName = await this.dummyNickNameRepository
+      .createQueryBuilder()
+      .where('isUsed = :isUsed', { isUsed: 0 })
+      .orderBy('RAND()')
+      .getOne()
+
+    if (dummyNickName == null) {
+      throw new HttpException(
+        { message: 'already used all dummy nickName, plz supply more nickname' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      )
+    }
+
+    creatableUser.nickName = dummyNickName.nickName
 
     const createdUser = await this.userRepository.save(creatableUser)
 

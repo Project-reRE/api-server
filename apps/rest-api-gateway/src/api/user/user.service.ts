@@ -132,7 +132,10 @@ export class UserService {
     creatableUser.nickName = dummyNickName.nickName
     creatableUser.profileUrl = USER_PROFILE[Math.floor(Math.random() * USER_PROFILE.length)]
 
-    const createdUser = await this.userRepository.save(creatableUser)
+    const createdUser = await Promise.all([
+      this.userRepository.save(creatableUser),
+      this.dummyNickNameRepository.update({ id: dummyNickName.id }, { isUsed: 1 }),
+    ])
 
     // console.log(createdUser, 'createUser', 'createdUser')
 

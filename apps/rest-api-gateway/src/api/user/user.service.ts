@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Not, Repository } from 'typeorm'
 import { UserEntity } from '../../entity/user.entity'
 import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/proto/user.service'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
@@ -52,6 +52,13 @@ export class UserService {
     // console.log(existUserEntity, 'findOneUserExternal')
 
     return Object.assign(existUserEntity)
+  }
+
+  async isAlreadyEmailUsedOtherPlatform(externalId: string, email: string): Promise<boolean> {
+    console.log(email, 'isAlreadyEmailUsedOtherPlatform')
+    const existUserEntity = await this.userRepository.findOne({ where: { email, externalId: Not(externalId) } })
+
+    return existUserEntity ? true : false
   }
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {
@@ -132,7 +139,7 @@ export class UserService {
     creatableUser.nickName = dummyNickName.nickName
     creatableUser.profileUrl = USER_PROFILE[Math.floor(Math.random() * USER_PROFILE.length)]
 
-    const createdUser = await Promise.all([
+    const [createdUser] = await Promise.all([
       this.userRepository.save(creatableUser),
       this.dummyNickNameRepository.update({ id: dummyNickName.id }, { isUsed: 1 }),
     ])

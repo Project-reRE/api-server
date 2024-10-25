@@ -22,6 +22,21 @@ export class AuthController {
 
     // console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
 
+    const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
+      kakaoUser.id,
+      kakaoUser.kakao_account.email,
+    )
+
+    if (isAlreadyRegisterEmail)
+      throw new HttpException(
+        {
+          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+          status: HttpStatus.CONFLICT,
+          message: `already registered user by email`,
+        },
+        HttpStatus.CONFLICT,
+      )
+
     const existUser = await this.userService.findOneUserExternal({ externalId: kakaoUser.id }).catch((e) => {
       if (e.response.code) {
         throw new HttpException(
@@ -76,6 +91,19 @@ export class AuthController {
     const googleUser = await this.authService.getUserInfoForGoogle(googleToken)
 
     // console.log({ methodName: 'googleLogin', data: googleUser, context: 'googleUser' })
+    const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
+      googleUser.sub,
+      googleUser.email,
+    )
+    if (isAlreadyRegisterEmail)
+      throw new HttpException(
+        {
+          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+          status: HttpStatus.CONFLICT,
+          message: `already registered user by email`,
+        },
+        HttpStatus.CONFLICT,
+      )
 
     const existUser = await this.userService.findOneUserExternal({ externalId: googleUser.sub }).catch((e) => {
       if (e.response.code) {
@@ -126,6 +154,20 @@ export class AuthController {
 
     // Apple 토큰으로 사용자 정보 가져오기
     const appleUser = await this.authService.getUserInfoForApple(appleToken)
+
+    const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
+      appleUser.sub,
+      appleUser.email,
+    )
+    if (isAlreadyRegisterEmail)
+      throw new HttpException(
+        {
+          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+          status: HttpStatus.CONFLICT,
+          message: `already registered user by email`,
+        },
+        HttpStatus.CONFLICT,
+      )
 
     // console.log({ methodName: 'appleLogin', data: appleUser, context: 'appleUser' })
 

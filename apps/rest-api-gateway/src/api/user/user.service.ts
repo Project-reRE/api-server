@@ -225,4 +225,8 @@ export class UserService {
 
     return { id: request.id }
   }
+
+  async findByUserEmail(email: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ where: { email } })
+  }
 }

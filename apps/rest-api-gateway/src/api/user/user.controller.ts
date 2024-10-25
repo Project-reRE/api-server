@@ -122,6 +122,19 @@ export class UserController {
         break
     }
 
+    const alreadyRegisteredUserByEmail = await this.userService.findByUserEmail(authUser.email)
+
+    if (alreadyRegisteredUserByEmail) {
+      throw new HttpException(
+        {
+          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+          status: HttpStatus.CONFLICT,
+          message: `already registered user by email`,
+        },
+        HttpStatus.CONFLICT,
+      )
+    }
+
     if (!externalId) {
       throw new HttpException(
         {

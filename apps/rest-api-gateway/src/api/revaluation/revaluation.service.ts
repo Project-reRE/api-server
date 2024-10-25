@@ -227,15 +227,13 @@ export class RevaluationService {
     const queryBuilder = await this.revaluationRepository
       .createQueryBuilder('revaluation')
       .innerJoinAndSelect('revaluation.movie', 'movie')
-      .innerJoinAndSelect('revaluation.user', 'user')
+      .leftJoinAndSelect('revaluation.user', 'user')
       .leftJoinAndSelect('revaluation.statistics', 'statistics')
-      .leftJoinAndSelect(
-        'revaluation.revaluationLikes',
-        'revaluationLikes',
-        'revaluationLikes.user.id = :requestUserId',
-        { requestUserId: request.requestUserId },
-      )
-      .where(`revaluation.createdAt between :startDate and :endDate`, { startDate: startDate, endDate: endDate })
+      .leftJoinAndSelect('revaluation.revaluationLikes', 'revaluationLikes', 'revaluationLikes.user.id = user.id')
+      .where(`revaluation.createdAt between :startDate and :endDate`, {
+        startDate: startDate,
+        endDate: endDate,
+      })
       .skip(skip)
       .take(take)
 

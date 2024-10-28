@@ -16,7 +16,10 @@ import { getOrder, getSkip, getTake } from '../../../../../libs/query/query'
 import { UpdateRevaluationRequestDto } from './dto/update-revaluation-request.dto'
 import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.dto'
 import { RemoveRevaluationRequestDto } from './dto/remove-revaluation-request.dto'
-
+import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
+import { UserDto } from '../user/dto/user.dto'
+import moment from 'moment'
+const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
 @Injectable()
 export class RevaluationService {
   constructor(
@@ -144,7 +147,6 @@ export class RevaluationService {
     // console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     // 재평가 여부 확인
-    const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
 
     const revaluationThresholdHour = parseInt(REVALUATION_THRESHOLD_HOUR)
     const revaluationThresholdDate = new Date()
@@ -262,6 +264,24 @@ export class RevaluationService {
     return [existRevaluations, count]
   }
 
+  async findRevaluationInMonth(query: FindRevaluationInMonthDto, user: UserDto) {
+    const today = new Date()
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+
+    // 이번 달 마지막 날 (일자를 다음 달 1일로 설정하고 하루 전으로 변경)
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+
+    const revaluation = await this.revaluationRepository.findOne({
+      where: {
+        createdAt: Between(startOfMonth, endOfMonth),
+        id: query.movieId,
+        user: {
+          id: user.id,
+        },
+      },
+    })
+    return { revaluation }
+  }
   private async increaseUserStatistics(userId: string) {
     // console.log({ userId }, 'increaseUserStatistics')
 

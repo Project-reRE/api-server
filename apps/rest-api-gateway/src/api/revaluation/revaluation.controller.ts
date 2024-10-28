@@ -12,7 +12,7 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common'
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RevaluationService } from './revaluation.service'
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard'
 import { CreateRevaluationResponseDto } from './dto/create-revaluation-response.dto'
@@ -26,6 +26,9 @@ import { getLimit, getPage, getTake } from '../../../../../libs/query/query'
 import { UpdateRevaluationRequestDto } from './dto/update-revaluation-request.dto'
 import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.dto'
 import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-response.dto'
+import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
+import { FindRevaluationInMonthResponse } from './dto/find-revaluation-in-month-response.dto'
+import { plainToInstance } from 'class-transformer'
 
 @Controller()
 @ApiTags('revaluations')
@@ -207,26 +210,13 @@ export class RevaluationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('my/revaluations/id')
+  @Get('my/revaluations/check-in-month')
   @ApiOperation({
-    summary: '특정 영화에 대한 내 재평가 리스트 ID 값 조회',
-    description: '특정 영화에 대한 내 재평가 리스트를 조회합니다.',
+    description: '특정 영화에 대한 내 이번달 재평가 여부 확인',
   })
-  @ApiResponse({
-    type: FindRevaluationResponseDto,
-    description: 'application/json.',
-  })
-  async findMyRevaluationsEnable(
-    @AuthUser() user: UserDto,
-    @Query() query: FindMyRevaluationRequestDto,
-  ): Promise<string> {
-    query.userId = user.id
-
-    const [existRevaluations, count] = await this.revaluationService.findRevaluations({
-      ...query,
-      requestUserId: user.id,
-    })
-
-    return existRevaluations[0].id
+  @ApiOkResponse({ type: FindRevaluationInMonthResponse })
+  async findMyRevaluationCheckerInMonth(@Query() query: FindRevaluationInMonthDto, @AuthUser() user: UserDto) {
+    const result = await this.revaluationService.findRevaluationInMonth(query, user)
+    return plainToInstance(FindRevaluationInMonthResponse, result, { excludeExtraneousValues: true })
   }
 }

@@ -126,7 +126,6 @@ export class RevaluationController {
         if (typeof revaluation.movie.data.genre === 'object') {
           genre = revaluation.movie.data.genre
         } else if (revaluation.movie.data.genre !== '') genre = revaluation.movie.data.genre.split(',')
-
         return {
           ...revaluation,
           movie: {

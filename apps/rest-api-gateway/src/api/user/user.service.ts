@@ -55,7 +55,6 @@ export class UserService {
   }
 
   async isAlreadyEmailUsedOtherPlatform(externalId: string, email: string): Promise<boolean> {
-    console.log(email, 'isAlreadyEmailUsedOtherPlatform')
     const existUserEntity = await this.userRepository.findOne({ where: { email, externalId: Not(externalId) } })
 
     return existUserEntity ? true : false
@@ -226,7 +225,7 @@ export class UserService {
 
     existUserEntity.externalId = 'DELETED_' + existUserEntity.externalId
     existUserEntity.nickName = 'DELETED_' + existUserEntity.nickName
-    existUserEntity.email = 'DELETED_' + existUserEntity.email
+    existUserEntity.email = `DELETED_` + existUserEntity.email
 
     await this.userRepository.save(existUserEntity)
 

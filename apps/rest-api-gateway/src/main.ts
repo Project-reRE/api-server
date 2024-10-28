@@ -6,7 +6,9 @@ import { json, urlencoded } from 'express'
 
 async function bootstrap() {
   console.info(`Rest API Gateway Service BootStrap Doing`)
-  const app = await NestFactory.create(RestApiGatewayModule)
+  const app = await NestFactory.create(RestApiGatewayModule, {
+    logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+  })
 
   app.use(json({ limit: '1mb' }))
   app.use(urlencoded({ extended: true, limit: '1mb' }))

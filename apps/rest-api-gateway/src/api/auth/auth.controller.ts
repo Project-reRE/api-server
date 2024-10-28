@@ -74,15 +74,10 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    // console.log({ methodName: 'kakaoLogin', data: payload, context: 'payload' })
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
-    // console.log({ methodName: 'kakaoLogin', data: jwt, context: 'jwt' })
-
-    //TODO Prod 배포하기전에 삭제
-    console.log(jwt, 'kakao')
-
-    return { jwt }
+    return { jwt, refreshToken }
   }
 
   @Get('google')
@@ -140,12 +135,13 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
     console.log(jwt, 'goggle')
 
-    return { jwt }
+    return { jwt, refreshToken }
   }
 
   @Get('apple')
@@ -207,11 +203,61 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
     console.log(jwt, 'apple')
 
-    return { jwt }
+    return { jwt, refreshToken }
+  }
+
+  @Get('/refresh')
+  async jwtTokenRefresh(@Headers('Authorization') authorization: string) {
+    const { id, exp } = this.jwtService.decode(authorization.replace('Bearer ', '').trim()) as {
+      id: string
+      iat: number
+      exp: number
+    }
+
+    // 만료 시간이 지남
+    if (new Date(exp) < new Date())
+      throw new HttpException(
+        {
+          message: 'refresh token is expired',
+        },
+        HttpStatus.UNAUTHORIZED,
+      )
+
+    const user = await this.userService.findOneUser({ id })
+    if (user == null)
+      throw new HttpException(
+        {
+          message: 'user not found',
+          code: 'USER_NOT_FOUND',
+          status: HttpStatus.NOT_FOUND,
+        },
+        HttpStatus.NOT_FOUND,
+      )
+
+    const payload = {
+      id: user.id,
+      externalId: user.externalId,
+      role: user.role,
+      nickName: user.nickName,
+      profileUrl: user.profileUrl,
+      email: user.email,
+      birthDate: user.birthDate,
+      createdAt: user.createdAt,
+      statistics: user.statistics,
+      provider: user.provider,
+    }
+
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
+    return {
+      jwt,
+      refreshToken,
+    }
   }
 }

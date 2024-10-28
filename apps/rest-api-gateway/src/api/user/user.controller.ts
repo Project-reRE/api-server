@@ -138,9 +138,10 @@ export class UserController {
     const payload = {
       id: createdUser.id,
     }
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret })
+    const accessToken = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
-    return { jwt }
+    return { jwt: accessToken, refreshToken }
   }
 
   @UseGuards(JwtAuthGuard)

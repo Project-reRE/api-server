@@ -18,7 +18,7 @@ import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.
 import { RemoveRevaluationRequestDto } from './dto/remove-revaluation-request.dto'
 import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
 import { UserDto } from '../user/dto/user.dto'
-import moment from 'moment'
+
 const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
 @Injectable()
 export class RevaluationService {
@@ -225,7 +225,7 @@ export class RevaluationService {
 
     const startDate = request.startDate ?? '2024-01-01 00:00:00'
     const endDate = request.endDate ?? '2099-01-01 00:00:00'
-    console.log(order)
+
     const queryBuilder = await this.revaluationRepository
       .createQueryBuilder('revaluation')
       .innerJoinAndSelect('revaluation.movie', 'movie')

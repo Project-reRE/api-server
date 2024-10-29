@@ -219,9 +219,8 @@ export class AuthController {
       iat: number
       exp: number
     }
-
     // 만료 시간이 지남
-    if (new Date(exp) < new Date())
+    if (new Date(exp * 1000) < new Date())
       throw new HttpException(
         {
           message: 'refresh token is expired',

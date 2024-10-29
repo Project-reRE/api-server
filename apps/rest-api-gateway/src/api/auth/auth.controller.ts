@@ -74,7 +74,7 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '1m' })
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     return { jwt, refreshToken }
@@ -135,7 +135,7 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '1m' })
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
@@ -203,7 +203,7 @@ export class AuthController {
       provider: existUser.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '1m' })
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
@@ -253,7 +253,7 @@ export class AuthController {
       provider: user.provider,
     }
 
-    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '3d' })
+    const jwt = this.jwtService.sign(payload, { secret: jwtConstants.secret, expiresIn: '1m' })
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
     return {
       jwt,

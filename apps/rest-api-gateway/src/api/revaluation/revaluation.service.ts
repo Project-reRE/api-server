@@ -274,13 +274,15 @@ export class RevaluationService {
     const revaluation = await this.revaluationRepository.findOne({
       where: {
         createdAt: Between(startOfMonth, endOfMonth),
-        id: query.movieId,
+        movie: {
+          id: query.movieId,
+        },
         user: {
           id: user.id,
         },
       },
     })
-    return { revaluation }
+    return revaluation
   }
   private async increaseUserStatistics(userId: string) {
     // console.log({ userId }, 'increaseUserStatistics')

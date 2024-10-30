@@ -20,6 +20,8 @@ import { RevaluationStatisticsEntity } from './entity/revaluation-statistics.ent
 import { RevaluationLikeEntity } from './entity/revaluation-like.entity'
 import { RevaluationLikeModule } from './api/revaluation-like/revaluation-like.module'
 import { DummyNickNameEntity } from './entity/dummy.entity'
+import { CommonModule } from './api/common/common.module'
+import { VersionEntity } from './entity/version.entity'
 
 @Module({
   imports: [
@@ -77,6 +79,7 @@ import { DummyNickNameEntity } from './entity/dummy.entity'
           RevaluationStatisticsEntity,
           RevaluationLikeEntity,
           DummyNickNameEntity,
+          VersionEntity,
         ],
         timezone: configService.get('database.timezone'),
         // Set this option as false here and instead sync schema when GrpcUserModule is created to disable foreign key constraint.
@@ -99,6 +102,7 @@ import { DummyNickNameEntity } from './entity/dummy.entity'
     BannerModule,
     RevaluationModule,
     RevaluationLikeModule,
+    CommonModule,
   ],
   providers: [RolesGuard],
 })

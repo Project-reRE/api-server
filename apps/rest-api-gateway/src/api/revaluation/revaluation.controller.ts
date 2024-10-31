@@ -30,6 +30,7 @@ import { FindOneRevaluationResponseDto } from './dto/find-one-revaluation-respon
 import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
 import { FindRevaluationInMonthResponse } from './dto/find-revaluation-in-month-response.dto'
 import { plainToInstance } from 'class-transformer'
+import { ReportRevaluationDto } from './dto/report-revaluation.dto'
 
 @Controller()
 @ApiTags('revaluations')
@@ -226,7 +227,11 @@ export class RevaluationController {
   @ApiOperation({
     summary: '영화 평가 신고',
   })
-  async reportRevaluation(@Param('revaluationId', ParseIntPipe) revaluationId: number) {
-    await this.revaluationService.reportRevaluation(revaluationId)
+  async reportRevaluation(
+    @Param('revaluationId', ParseIntPipe) revaluationId: number,
+    @AuthUser() user: UserDto,
+    @Body() body: ReportRevaluationDto,
+  ): Promise<void> {
+    await this.revaluationService.reportRevaluation(revaluationId, Number(user.id), body)
   }
 }

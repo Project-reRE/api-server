@@ -18,6 +18,8 @@ import { UpdateRevaluationResponseDto } from './dto/update-revaluation-response.
 import { RemoveRevaluationRequestDto } from './dto/remove-revaluation-request.dto'
 import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
 import { UserDto } from '../user/dto/user.dto'
+import { ReportEntity } from '../../entity/report.entity'
+import { ReportRevaluationDto } from './dto/report-revaluation.dto'
 
 const REVALUATION_THRESHOLD_HOUR = process.env.REVALUATION_THRESHOLD_HOUR || '24'
 @Injectable()
@@ -35,6 +37,8 @@ export class RevaluationService {
     private movieStatisticsRepository: Repository<MovieStatisticsEntity>,
     @InjectRepository(RevaluationStatisticsEntity)
     private revaluationStatisticsRepository: Repository<RevaluationStatisticsEntity>,
+    @InjectRepository(ReportEntity)
+    private readonly reportRepository: Repository<ReportEntity>,
   ) {}
 
   async updateRevaluation(request: UpdateRevaluationRequestDto): Promise<UpdateRevaluationResponseDto> {
@@ -218,8 +222,10 @@ export class RevaluationService {
     return revaluation
   }
 
-  reportRevaluation(revaluationId: number) {
-    return this.revaluationRepository.update(revaluationId, { isHide: 1 })
+  reportRevaluation(revaluationId: number, userId: number, body: ReportRevaluationDto) {
+    return this.reportRepository.save(
+      this.reportRepository.create({ revaluationId, reporterId: userId, reasonNumber: body.reason }),
+    )
   }
 
   async findRevaluations(request: FindRevaluationRequestDto): Promise<[RevaluationEntity[], number]> {

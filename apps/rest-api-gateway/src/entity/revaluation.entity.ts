@@ -83,6 +83,9 @@ export class RevaluationEntity {
   @Column({ type: 'varchar', length: 100, comment: 'Comment' })
   comment: string
 
+  @Column({ type: 'tinyint', name: 'isHide', default: 0 })
+  isHide: number
+
   @CreateDateColumn()
   @Transform(({ value }) => (typeof value !== 'string' ? value?.toISOString() : value))
   createdAt: Date

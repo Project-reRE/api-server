@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -91,7 +92,7 @@ export class RevaluationController {
     return this.revaluationService.removeRevaluation({ revaluationId: revaluationId, requestUserId: user.id })
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/revaluations')
   @ApiOperation({
     summary: ' 영화에 전체에 대한 모든 재평가 조회',
@@ -218,5 +219,14 @@ export class RevaluationController {
   async findMyRevaluationCheckerInMonth(@Query() query: FindRevaluationInMonthDto, @AuthUser() user: UserDto) {
     const result = await this.revaluationService.findRevaluationInMonth(query, user)
     return plainToInstance(FindRevaluationInMonthResponse, result, { excludeExtraneousValues: true })
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/revaluations/report/:revaluationId')
+  @ApiOperation({
+    summary: '영화 평가 신고',
+  })
+  async reportRevaluation(@Param('revaluationId', ParseIntPipe) revaluationId: number) {
+    await this.revaluationService.reportRevaluation(revaluationId)
   }
 }

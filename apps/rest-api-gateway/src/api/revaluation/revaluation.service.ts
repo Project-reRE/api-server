@@ -218,6 +218,10 @@ export class RevaluationService {
     return revaluation
   }
 
+  reportRevaluation(revaluationId: number) {
+    return this.revaluationRepository.update(revaluationId, { isHide: 1 })
+  }
+
   async findRevaluations(request: FindRevaluationRequestDto): Promise<[RevaluationEntity[], number]> {
     const skip = getSkip(request.page, request.limit)
     const take = getTake(request.limit)
@@ -235,6 +239,7 @@ export class RevaluationService {
       .where(`revaluation.createdAt between :startDate and :endDate`, {
         startDate: startDate,
         endDate: endDate,
+        isHide: 0,
       })
       .skip(skip)
       .take(take)
@@ -284,6 +289,7 @@ export class RevaluationService {
     })
     return revaluation
   }
+
   private async increaseUserStatistics(userId: string) {
     // console.log({ userId }, 'increaseUserStatistics')
 

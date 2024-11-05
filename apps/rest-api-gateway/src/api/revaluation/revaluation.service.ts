@@ -129,7 +129,7 @@ export class RevaluationService {
   }
 
   async createRevaluation(request: CreateRevaluationRequestDto): Promise<CreateRevaluationResponseDto> {
-    // console.log(request, 'createRevaluation')
+    console.log(request, 'createRevaluation')
 
     const existMovie = await this.movieRepository.findOne({
       where: {
@@ -148,7 +148,7 @@ export class RevaluationService {
       )
     }
 
-    // console.log(existMovie.id, 'createRevaluation', 'existMovie')
+    console.log(existMovie.id, 'createRevaluation', 'existMovie')
 
     // 재평가 여부 확인
 
@@ -156,7 +156,7 @@ export class RevaluationService {
     const revaluationThresholdDate = new Date()
     revaluationThresholdDate.setHours(revaluationThresholdDate.getHours() - revaluationThresholdHour)
 
-    // console.log(revaluationThresholdDate, 'createRevaluation', 'revaluationThresholdDate')
+    console.log(revaluationThresholdDate, 'createRevaluation', 'revaluationThresholdDate')
 
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
@@ -195,7 +195,7 @@ export class RevaluationService {
 
     await this.createRevaluationStatistics(createdRevaluation.id)
 
-    // console.log(createdRevaluation.id, 'createRevaluation')
+    console.log(createdRevaluation.id, 'createRevaluation')
 
     return createdRevaluation
   }

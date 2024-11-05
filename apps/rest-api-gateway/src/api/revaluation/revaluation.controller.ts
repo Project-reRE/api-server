@@ -38,7 +38,7 @@ import { ReportRevaluationDto } from './dto/report-revaluation.dto'
 export class RevaluationController {
   constructor(private readonly revaluationService: RevaluationService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('/revaluations')
   @ApiOperation({
     summary: '영화 평가',
@@ -53,7 +53,7 @@ export class RevaluationController {
     @AuthUser()
     user: UserDto,
   ): Promise<CreateRevaluationResponseDto> {
-    return this.revaluationService.createRevaluation({ ...request, requestUserId: '170' })
+    return this.revaluationService.createRevaluation({ ...request, requestUserId: user.id })
   }
 
   @UseGuards(JwtAuthGuard)

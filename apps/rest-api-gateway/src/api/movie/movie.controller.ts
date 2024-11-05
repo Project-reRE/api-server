@@ -5,6 +5,7 @@ import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieService } from './movie.service'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import { FindOneMovieQueryDto } from './dto/find-one-movie-query.dto'
+import { plainToInstance } from 'class-transformer'
 
 @Controller()
 @ApiTags('movies')
@@ -47,6 +48,10 @@ export class MovieController {
     )
     request: FindOneMovieQueryDto,
   ): Promise<FindOneMovieResponseDto> {
-    return this.movieService.findOneMovie({ id: movieId, currentDate: request.currentDate ?? '2024-09' })
+    return plainToInstance(
+      FindOneMovieResponseDto,
+      await this.movieService.findOneMovie({ id: movieId, currentDate: request.currentDate ?? '2024-09' }),
+      { excludeExtraneousValues: true },
+    )
   }
 }

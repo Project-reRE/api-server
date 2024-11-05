@@ -93,7 +93,7 @@ export class RevaluationController {
     return this.revaluationService.removeRevaluation({ revaluationId: revaluationId, requestUserId: user.id })
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/revaluations')
   @ApiOperation({
     summary: ' 영화에 전체에 대한 모든 재평가 조회',
@@ -118,7 +118,7 @@ export class RevaluationController {
 
     const [existRevaluations, count] = await this.revaluationService.findRevaluations({
       ...query,
-      requestUserId: user?.id ?? '0',
+      requestUserId: user?.id,
     })
 
     return {

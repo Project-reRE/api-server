@@ -5,8 +5,6 @@ import { FindOpenBannerResponseDto } from './dto/find-open-banner.response.dto'
 @Controller()
 @ApiTags('banners')
 export class BannerController {
-  constructor() {}
-
   @Get('/open-banners')
   @ApiOperation({
     summary: 'MOVIE Banner',
@@ -14,23 +12,24 @@ export class BannerController {
   })
   @ApiOkResponse({ type: FindOpenBannerResponseDto })
   async findOpenBanner(): Promise<FindOpenBannerResponseDto> {
-    // console.log({ methodName: 'findOpenBanner', data: '', context: 'request' })
-    // home service 개발 완료 전 까지 Dummy Data return
     const dummyResponse = [
       {
-        route: 'http://rerevaludation.com/movie',
+        route: 'https://reevaluation.notion.site/b458446df3b943749fb5b603f7155448',
         displayOrder: 0,
-        imageUrl: 'http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg',
+        imageUrl:
+          'https://rere-banner.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A2%E1%86%B8_%E1%84%87%E1%85%A2%E1%84%82%E1%85%A51.png',
       },
       {
-        route: 'http://rerevaludation.com/movie',
+        route: 'https://reevaluation.notion.site/cafff7657cd44b4991c7ce27cf39b384',
         displayOrder: 1,
-        imageUrl: 'http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840308.jpg',
+        imageUrl:
+          'https://rere-banner.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A2%E1%86%B8_%E1%84%87%E1%85%A2%E1%84%82%E1%85%A52.png',
       },
       {
-        route: 'http://rerevaludation.com/movie',
+        route: 'search',
         displayOrder: 2,
-        imageUrl: 'http://file.koreafilm.or.kr/thm/01/copy/00/66/74/tn_DST840316.jpg',
+        imageUrl:
+          'https://rere-banner.s3.ap-northeast-2.amazonaws.com/%E1%84%8B%E1%85%A2%E1%86%B8_%E1%84%87%E1%85%A2%E1%84%82%E1%85%A53.png',
       },
     ]
     return {

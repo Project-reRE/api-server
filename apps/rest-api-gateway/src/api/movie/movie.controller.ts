@@ -1,11 +1,14 @@
 import { Controller, Get, Param, Query, ValidationPipe } from '@nestjs/common'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger'
 import { FindMovieResponseDto } from './dto/find-movie.response.dto'
 import { MovieService } from './movie.service'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import { FindOneMovieQueryDto } from './dto/find-one-movie-query.dto'
 import { plainToInstance } from 'class-transformer'
+import { MovieEntity } from '../../entity/movie.entity'
+import { RankingEntity } from '../../entity/ranking.entity'
+import { FindRankDto } from './dto/find-rank.dto'
 
 @Controller()
 @ApiTags('movies')
@@ -30,6 +33,12 @@ export class MovieController {
     request: FindMovieQueryDto,
   ): Promise<FindMovieResponseDto> {
     return this.movieService.findMovies(request)
+  }
+
+  @Get('/movies/ranking')
+  @ApiOkResponse({ type: FindRankDto, isArray: true })
+  async rank() {
+    return plainToInstance(FindRankDto, await this.movieService.rank(), { excludeExtraneousValues: true })
   }
 
   @Get('/movies/:movieId')

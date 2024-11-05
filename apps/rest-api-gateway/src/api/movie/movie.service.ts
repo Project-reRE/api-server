@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { MoreThan, Repository } from 'typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
 import { FindOneMovieRequestDto } from './dto/find-one-movie-request.dto'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
@@ -10,6 +10,8 @@ import { CreateMovieRequestDto } from './dto/create-movie-request.dto'
 import { FindOneMovieResponseDto } from './dto/find-one-movie-response.dto'
 import * as dayjs from 'dayjs'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
+import { RankingEntity } from '../../entity/ranking.entity'
+import { RankingItemEntity } from '../../entity/rankingItem.entity'
 
 @Injectable()
 export class MovieService {
@@ -21,6 +23,10 @@ export class MovieService {
     private movieRepository: Repository<MovieEntity>,
     @InjectRepository(MovieStatisticsEntity)
     private movieStatisticsRepository: Repository<MovieStatisticsEntity>,
+    @InjectRepository(RankingEntity)
+    private readonly rankEntityRepository: Repository<RankingEntity>,
+    @InjectRepository(RankingItemEntity)
+    private readonly rankItemEntityRepository: Repository<RankingItemEntity>,
   ) {}
 
   async createMovie(request: CreateMovieRequestDto): Promise<void> {
@@ -249,7 +255,7 @@ export class MovieService {
     const [year, month] = currentDate?.split('-').map(Number)
     const dates: string[] = []
 
-    let date = new Date(year, month - 1) // JavaScript Date는 0부터 11까지로 월을 표현하므로, -1을 해줌
+    const date = new Date(year, month - 1) // JavaScript Date는 0부터 11까지로 월을 표현하므로, -1을 해줌
 
     for (let i = 0; i < 5; i++) {
       const year = date.getFullYear()
@@ -259,5 +265,40 @@ export class MovieService {
     }
 
     return dates.reverse()
+  }
+
+  async rank(): Promise<(RankingEntity & { data: MovieEntity[] })[]> {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const ranking = await this.rankEntityRepository.find({
+      where: {
+        activeAt: MoreThan(today),
+      },
+      order: {
+        displayOrder: 'ASC',
+      },
+    })
+
+    const rankingWithItem = await Promise.all(
+      ranking.map(async (rank) => {
+        const items = await this.rankItemEntityRepository.find({
+          where: {
+            rankId: rank.id,
+          },
+          order: {
+            order: 'ASC',
+          },
+        })
+        const data = await Promise.all(
+          items.map((item) => this.movieRepository.findOne({ where: { id: item.movieId } })),
+        )
+        return {
+          ...rank,
+          data,
+        }
+      }),
+    )
+    return rankingWithItem
   }
 }

@@ -6,6 +6,8 @@ import configurations from '../../config/configurations'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
+import { RankingEntity } from '../../entity/ranking.entity'
+import { RankingItemEntity } from '../../entity/rankingItem.entity'
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
       isGlobal: true,
       load: [configurations],
     }),
-    TypeOrmModule.forFeature([MovieEntity, MovieStatisticsEntity]),
+    TypeOrmModule.forFeature([MovieEntity, MovieStatisticsEntity, RankingEntity, RankingItemEntity]),
   ],
   controllers: [MovieController],
   providers: [MovieService],

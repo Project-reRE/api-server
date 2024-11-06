@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Convert ref_name to uppercase
+      - name: set env
         run: |
           UPPER_REF_NAME=$(echo "${{ github.ref_name }}" | tr '[:lower:]' '[:upper:]')
           echo "ECS_CLUSTER_NAME=RERE_${UPPER_REF_NAME}_CLUSTER" >> $GITHUB_ENV
@@ -41,7 +41,7 @@ jobs:
 
       - name: Build and push Docker image for rest-api-gateway
         run: |
-          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}rest-api-gateway
+          IMAGE_TAG=${{ secrets.ECR_REPOSITORY }}-${{ env.BRANCH_NAME }}:latest
           docker build -t $IMAGE_TAG -f apps/rest-api-gateway/Dockerfile .
           docker push $IMAGE_TAG
 

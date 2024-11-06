@@ -2,6 +2,96 @@ import { Expose, Transform, Type } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { MovieStatisticsNumRecentDto } from './movie-statistics-numRecent.dto'
 
+class numSpecialPoint {
+  @Expose()
+  @Type(() => String)
+  PLANNING_INTENT: string
+  @Expose()
+  @Type(() => String)
+  DIRECTORS_DIRECTION: string
+  @Expose()
+  @Type(() => String)
+  ACTING_SKILLS: string
+  @Expose()
+  @Type(() => String)
+  SCENARIO: string
+  @Expose()
+  @Type(() => String)
+  OST: string
+  @Expose()
+  @Type(() => String)
+  SOCIAL_ISSUES: string
+  @Expose()
+  @Type(() => String)
+  VISUAL_ELEMENT: string
+  @Expose()
+  @Type(() => String)
+  SOUND_ELEMENT: string
+}
+
+class numAge {
+  @Expose()
+  @Type(() => String)
+  TEENS: string
+  @Expose()
+  @Type(() => String)
+  TWENTIES: string
+  @Expose()
+  @Type(() => String)
+  THIRTIES: string
+  @Expose()
+  @Type(() => String)
+  FORTIES: string
+  @Expose()
+  @Type(() => String)
+  FIFTIES: string
+  @Expose()
+  @Type(() => String)
+  SIXTIES: string
+  @Expose()
+  @Type(() => String)
+  SEVENTIES: string
+  @Expose()
+  @Type(() => String)
+  EIGHTIES: string
+  @Expose()
+  @Type(() => String)
+  NINETIES: string
+}
+
+class numPastValuation {
+  @Expose()
+  @Type(() => String)
+  POSITIVE: string
+  @Expose()
+  @Type(() => String)
+  NEGATIVE: string
+  @Expose()
+  @Type(() => String)
+  NOT_SURE: string
+}
+
+class numPresentValuation {
+  @Expose()
+  @Type(() => String)
+  POSITIVE: string
+  @Expose()
+  @Type(() => String)
+  NEGATIVE: string
+  @Expose()
+  @Type(() => String)
+  NOT_SURE: string
+}
+
+class numGender {
+  @Expose()
+  @Type(() => String)
+  MALE: string
+  @Expose()
+  @Type(() => String)
+  FEMALE: string
+}
+
 export class MovieStatisticsDto {
   @Expose()
   @ApiProperty({ example: '1' })
@@ -34,7 +124,8 @@ export class MovieStatisticsDto {
       SOUND_ELEMENT: 5,
     },
   })
-  numSpecialPoint: any
+  @Type(() => numSpecialPoint)
+  numSpecialPoint: numSpecialPoint
 
   @Expose()
   @ApiProperty({
@@ -44,7 +135,8 @@ export class MovieStatisticsDto {
       NOT_SURE: 5,
     },
   })
-  numPastValuation: any
+  @Type(() => numPastValuation)
+  numPastValuation: numPastValuation
 
   @Expose()
   @ApiProperty({
@@ -54,7 +146,8 @@ export class MovieStatisticsDto {
       NOT_SURE: 6,
     },
   })
-  numPresentValuation: any
+  @Type(() => numPresentValuation)
+  numPresentValuation: numPresentValuation
 
   @Expose()
   @ApiProperty({
@@ -63,7 +156,8 @@ export class MovieStatisticsDto {
       FEMALE: 2,
     },
   })
-  numGender: any
+  @Type(() => numGender)
+  numGender: numGender
 
   @Expose()
   @ApiProperty({
@@ -79,7 +173,8 @@ export class MovieStatisticsDto {
       NINETIES: 2,
     },
   })
-  numAge: any
+  @Type(() => numAge)
+  numAge: numAge
 
   @Expose()
   @ApiProperty({ example: '2024-09' })

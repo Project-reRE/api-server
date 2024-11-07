@@ -241,7 +241,9 @@ export class RevaluationService {
       .innerJoinAndSelect('revaluation.movie', 'movie')
       .leftJoinAndSelect('revaluation.user', 'user')
       .leftJoinAndSelect('revaluation.statistics', 'statistics')
-      .leftJoinAndSelect('revaluation.revaluationLikes', 'revaluationLikes', 'revaluationLikes.user.id = user.id')
+      .leftJoinAndSelect('revaluation.revaluationLikes', 'revaluationLikes', 'revaluationLikes.userId = :userId', {
+        userId: request.requestUserId,
+      })
       .where(`revaluation.createdAt between :startDate and :endDate`, {
         startDate: startDate,
         endDate: endDate,
@@ -257,7 +259,7 @@ export class RevaluationService {
     }
 
     if (request.userId) {
-      queryBuilder.andWhere(`user.id = :userId`, { userId: request.userId })
+      queryBuilder.andWhere(`user.id = :userId`, { userId: request.requestUserId })
     }
 
     if (request.movieId) {

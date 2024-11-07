@@ -119,7 +119,7 @@ export class MovieService {
         .map((item, index) => ({
           rank: index + 1,
           type: item.type,
-          value: item.value,
+          value: String(item.value),
         }))
     }
 
@@ -156,9 +156,6 @@ export class MovieService {
       numAgePercent: existMovieStatistics.numAge ? getPercentage(existMovieStatistics.numAge) : [],
     }
 
-    // 모든 값이 노출되어야 하는 데이터는 그대로 전달
-    existMovie.statistics = [transformedStatistics]
-
     let genre = []
     if (typeof existMovie.data.genre === 'object') {
       genre = existMovie.data.genre
@@ -166,6 +163,7 @@ export class MovieService {
 
     return {
       ...existMovie,
+      statistics: [transformedStatistics],
       data: {
         ...existMovie.data,
         genre,

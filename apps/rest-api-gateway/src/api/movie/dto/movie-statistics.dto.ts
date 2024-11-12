@@ -134,6 +134,20 @@ class numGender {
   FEMALE: string
 }
 
+class numPastValuationPercent {
+  @Expose()
+  @ApiProperty({ type: String })
+  @Type(() => String)
+  rank: number
+  @Expose()
+  @ApiProperty({ type: String })
+  @Type(() => String)
+  type: string
+  @Expose()
+  @ApiProperty({ type: String })
+  @Type(() => String)
+  value: string
+}
 export class MovieStatisticsDto {
   @Expose()
   @ApiProperty({ type: String })
@@ -211,4 +225,9 @@ export class MovieStatisticsDto {
   @ApiProperty({ type: numSpecialPointTopThree, isArray: true })
   @Type(() => numSpecialPointTopThree)
   numAgePercent: numSpecialPointTopThree[]
+
+  @Expose()
+  @ApiProperty({ type: numPastValuationPercent, isArray: true })
+  @Type(() => numPastValuationPercent)
+  numPastValuationPercent: numPastValuationPercent[]
 }

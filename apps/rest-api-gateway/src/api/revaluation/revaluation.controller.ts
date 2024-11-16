@@ -31,6 +31,7 @@ import { FindRevaluationInMonthDto } from './dto/find-revaluation-in-month.dto'
 import { FindRevaluationInMonthResponse } from './dto/find-revaluation-in-month-response.dto'
 import { plainToInstance } from 'class-transformer'
 import { ReportRevaluationDto } from './dto/report-revaluation.dto'
+import { OptionalJwtAuthGuard } from '../auth/guard/OptionalJwtAuthGuard'
 
 @Controller()
 @ApiTags('revaluations')
@@ -93,7 +94,7 @@ export class RevaluationController {
     return this.revaluationService.removeRevaluation({ revaluationId: revaluationId, requestUserId: user.id })
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(OptionalJwtAuthGuard)
   @Get('/revaluations')
   @ApiOperation({
     summary: ' 영화에 전체에 대한 모든 재평가 조회',

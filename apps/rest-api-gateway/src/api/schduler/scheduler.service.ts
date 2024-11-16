@@ -33,11 +33,9 @@ export class SchedulerService {
     }
 
     const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    // 어제 00시 (자정)
-    const yesterday = new Date(today)
-    yesterday.setDate(today.getDate() - 1)
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0') // 월은 0부터 시작하므로 +1 필요
+    const day = String(today.getDate()).padStart(2, '0')
 
     const movies: (MovieEntity & { count: number })[] = await this.revaluationRepository
       .createQueryBuilder('revaluation')
@@ -45,7 +43,7 @@ export class SchedulerService {
       .select('movie.*')
       .addSelect('COUNT(*) as count')
       .where({
-        createdAt: Between(yesterday, today),
+        createdAt: Between(`${year}-${month}-${Number(day) - 1}`, `${year}-${month}-${day}`),
       })
       .groupBy('movie.id')
       .getRawMany()

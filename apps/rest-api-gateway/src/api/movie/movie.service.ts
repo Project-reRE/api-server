@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { MoreThan, MoreThanOrEqual, Repository } from 'typeorm'
+import { Between, MoreThan, MoreThanOrEqual, Repository } from 'typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
 import { FindOneMovieRequestDto } from './dto/find-one-movie-request.dto'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
@@ -267,16 +267,17 @@ export class MovieService {
 
   async rank(): Promise<(RankingEntity & { data: MovieEntity[] })[]> {
     const today = new Date()
-    today.setUTCHours(0, 0, 0, 0)
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0') // 월은 0부터 시작하므로 +1 필요
+    const day = String(today.getDate()).padStart(2, '0')
     const ranking = await this.rankEntityRepository.find({
       where: {
-        activeAt: MoreThanOrEqual(today),
+        activeAt: Between(new Date(`${year}-${month}-${Number(day) - 1}`), new Date(`${year}-${month}-${Number(day)}`)),
       },
       order: {
         displayOrder: 'ASC',
       },
     })
-
     const rankingWithItem = await Promise.all(
       ranking.map(async (rank) => {
         const items = await this.rankItemEntityRepository.find({
@@ -296,6 +297,7 @@ export class MovieService {
         }
       }),
     )
+
     return rankingWithItem
   }
 }

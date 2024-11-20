@@ -22,7 +22,7 @@ export class SchedulerService {
     private readonly rakingItemRepository: Repository<RankingItemEntity>,
   ) {}
 
-  @Cron('0 9 * * *')
+  @Cron('0 15 * * *') // 9
   async handleCron() {
     const ranking: Record<'액션' | 'SF' | '멜로/로맨스' | '스릴러' | '코메디', (MovieEntity & { count: number })[]> = {
       액션: [],
@@ -31,8 +31,6 @@ export class SchedulerService {
       스릴러: [],
       코메디: [],
     }
-
-    console.log('worker test', new Date(), '0--------------------')
 
     const today = new Date()
     const year = today.getFullYear()

@@ -38,8 +38,8 @@ export class CreateUserRequestDto {
   @IsBoolean()
   readonly gender?: boolean
 
-  @ApiProperty({ example: '1997' })
-  @IsNotEmpty()
+  @ApiPropertyOptional({ example: '1997' })
+  @IsOptional()
   @Matches(/^\d{4}$/, { message: 'birthDate must be a valid year (yyyy)' })
   readonly birthDate?: string
 

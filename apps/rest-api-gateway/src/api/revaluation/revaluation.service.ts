@@ -485,33 +485,35 @@ export class RevaluationService {
       }
     }
 
-    const nowDate = dayjs()
-    const currentYear = nowDate.year() // 현재 연도만 가져옴
-
-    // 사용자의 출생 연도를 숫자로 변환
-    const birthYear = parseInt(existUserEntity.birthDate, 10) // 'yyyy' 형식의 birthDate를 정수로 변환
-
-    // 나이 계산
-    const age = currentYear - birthYear
-
-    // numAge가 null일 경우 객체로 초기화
-    if (!existMovieStatistics.numAge) {
-      existMovieStatistics.numAge = {} // 빈 객체로 초기화
-    }
-
     // 나이대에 따라 numAge 업데이트
-    let ageGroup
+    let ageGroup = 'UNKNOWN'
 
-    if (age >= 10 && age < 20) {
-      ageGroup = 'TEENS'
-    } else if (age >= 20 && age < 30) {
-      ageGroup = 'TWENTIES'
-    } else if (age >= 30 && age < 40) {
-      ageGroup = 'THIRTIES'
-    } else if (age >= 40 && age < 50) {
-      ageGroup = 'FORTIES'
-    } else {
-      ageGroup = 'FIFTIES_PLUS'
+    if (existUserEntity.birthDate) {
+      const nowDate = dayjs()
+      const currentYear = nowDate.year() // 현재 연도만 가져옴
+
+      // 사용자의 출생 연도를 숫자로 변환
+      const birthYear = parseInt(existUserEntity.birthDate, 10) // 'yyyy' 형식의 birthDate를 정수로 변환
+
+      // 나이 계산
+      const age = currentYear - birthYear
+
+      // numAge가 null일 경우 객체로 초기화
+      if (!existMovieStatistics.numAge) {
+        existMovieStatistics.numAge = {} // 빈 객체로 초기화
+      }
+
+      if (age >= 10 && age < 20) {
+        ageGroup = 'TEENS'
+      } else if (age >= 20 && age < 30) {
+        ageGroup = 'TWENTIES'
+      } else if (age >= 30 && age < 40) {
+        ageGroup = 'THIRTIES'
+      } else if (age >= 40 && age < 50) {
+        ageGroup = 'FORTIES'
+      } else {
+        ageGroup = 'FIFTIES_PLUS'
+      }
     }
 
     // 해당 나이대의 값이 있는지 확인하고, 없으면 초기화
@@ -628,26 +630,27 @@ export class RevaluationService {
         }
       }
     }
+    let ageGroup = 'UNKNOWN'
 
-    const nowDate = dayjs()
-    const currentYear = nowDate.year()
+    if (existUserEntity.birthDate) {
+      const nowDate = dayjs()
+      const currentYear = nowDate.year()
 
-    const birthYear = parseInt(existUserEntity.birthDate, 10)
+      const birthYear = parseInt(existUserEntity.birthDate, 10)
 
-    const age = currentYear - birthYear
+      const age = currentYear - birthYear
 
-    let ageGroup
-
-    if (age >= 10 && age < 20) {
-      ageGroup = 'TEENS'
-    } else if (age >= 20 && age < 30) {
-      ageGroup = 'TWENTIES'
-    } else if (age >= 30 && age < 40) {
-      ageGroup = 'THIRTIES'
-    } else if (age >= 40 && age < 50) {
-      ageGroup = 'FORTIES'
-    } else {
-      ageGroup = 'FIFTIES_PLUS'
+      if (age >= 10 && age < 20) {
+        ageGroup = 'TEENS'
+      } else if (age >= 20 && age < 30) {
+        ageGroup = 'TWENTIES'
+      } else if (age >= 30 && age < 40) {
+        ageGroup = 'THIRTIES'
+      } else if (age >= 40 && age < 50) {
+        ageGroup = 'FORTIES'
+      } else {
+        ageGroup = 'FIFTIES_PLUS'
+      }
     }
 
     // 나이대에 따른 감소 처리

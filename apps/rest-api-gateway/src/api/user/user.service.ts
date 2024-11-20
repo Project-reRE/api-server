@@ -103,20 +103,23 @@ export class UserService {
       )
     }
 
-    // 만 14세 미만인지 확인
-    const birthDate = moment(request.birthDate)
-    const currentDate = moment()
-    const age = currentDate.diff(birthDate, 'years')
+    // 옵셔널하게 받지만, 받았을 경우 14세 미만인지 확인
+    if (request.birthDate) {
+      // 만 14세 미만인지 확인
+      const birthDate = moment(request.birthDate)
+      const currentDate = moment()
+      const age = currentDate.diff(birthDate, 'years')
 
-    if (age < 14) {
-      throw new HttpException(
-        {
-          code: 'UNDERAGE_USER',
-          status: HttpStatus.BAD_REQUEST,
-          message: `만 14세 미만은 가입할 수 없습니다.(나이 : ${age})`,
-        },
-        HttpStatus.BAD_REQUEST,
-      )
+      if (age < 14) {
+        throw new HttpException(
+          {
+            code: 'UNDERAGE_USER',
+            status: HttpStatus.BAD_REQUEST,
+            message: `만 14세 미만은 가입할 수 없습니다.(나이 : ${age})`,
+          },
+          HttpStatus.BAD_REQUEST,
+        )
+      }
     }
 
     const creatableUser = this.userRepository.create({ ...request, statistics: {} })

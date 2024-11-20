@@ -469,19 +469,26 @@ export class RevaluationService {
     }
 
     // 성별에 따른 처리
-    if (existUserEntity.gender === true) {
+    if (existUserEntity.gender === 'MALE') {
       // MALE 값이 없는 경우 1로 초기화, 있으면 값 증가
       if (existMovieStatistics.numGender['MALE']) {
         existMovieStatistics.numGender['MALE']++
       } else {
         existMovieStatistics.numGender['MALE'] = 1
       }
-    } else {
+    } else if(existUserEntity.gender === 'FEMALE') {
       // FEMALE 값이 없는 경우 1로 초기화, 있으면 값 증가
       if (existMovieStatistics.numGender['FEMALE']) {
         existMovieStatistics.numGender['FEMALE']++
       } else {
         existMovieStatistics.numGender['FEMALE'] = 1
+      }
+    } else {
+      // FEMALE 값이 없는 경우 1로 초기화, 있으면 값 증가
+      if (existMovieStatistics.numGender['UNKNOWN']) {
+        existMovieStatistics.numGender['UNKNOWN']++
+      } else {
+        existMovieStatistics.numGender['UNKNOWN'] = 1
       }
     }
 
@@ -615,19 +622,25 @@ export class RevaluationService {
     }
 
     // 성별에 따른 감소 처리
-    if (existUserEntity.gender === true) {
+    if (existUserEntity.gender === 'MALE') {
       if (existMovieStatistics.numGender['MALE']) {
         existMovieStatistics.numGender['MALE']--
         if (existMovieStatistics.numGender['MALE'] < 0) {
           existMovieStatistics.numGender['MALE'] = 0 // 0 미만 방지
         }
       }
-    } else {
+    } else if (existUserEntity.gender === 'FEMALE') {
       if (existMovieStatistics.numGender['FEMALE']) {
         existMovieStatistics.numGender['FEMALE']--
         if (existMovieStatistics.numGender['FEMALE'] < 0) {
           existMovieStatistics.numGender['FEMALE'] = 0 // 0 미만 방지
         }
+      } else {
+        if (existMovieStatistics.numGender['UNKNOWN']) {
+          existMovieStatistics.numGender['UNKNOWN']--
+          if (existMovieStatistics.numGender['UNKNOWN'] < 0) {
+            existMovieStatistics.numGender['UNKNOWN'] = 0 // 0 미만 방지
+          }
       }
     }
     let ageGroup = 'UNKNOWN'

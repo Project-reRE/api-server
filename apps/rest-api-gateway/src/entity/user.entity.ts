@@ -39,8 +39,8 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 16, nullable: false, default: 'USER' })
   role: string
 
-  @Column({ type: 'boolean' })
-  gender: boolean
+  @Column({ type: 'varchar', length: 16, nullable: false, default: 'UNKNOWN' })
+  gender: 'MALE' | 'FEMALE' | 'UNKNOWN'
 
   @Column({ type: 'varchar', length: 4, nullable: true, default: null })
   @Transform(({ value }) => (value ? value.slice(0, 4) : value))

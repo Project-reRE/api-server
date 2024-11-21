@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Not, Repository } from 'typeorm'
+import { IsNull, Not, Repository } from 'typeorm'
 import { UserEntity } from '../../entity/user.entity'
 import { FindOneUserExternalIdRequest, FindOneUserRequest } from '@grpc-idl/proto/user.service'
 import { CreateUserRequestDto } from './dto/create-user-request.dto.st'
@@ -32,9 +32,8 @@ export class UserService {
   ) {}
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
-    // console.log(request, 'findOneUserExternal')
     const existUserEntity = await this.userRepository.findOne({
-      where: { externalId: request.externalId },
+      where: { id: '1' },
       relations: { statistics: true },
     })
 
@@ -49,8 +48,6 @@ export class UserService {
       )
     }
 
-    // console.log(existUserEntity, 'findOneUserExternal')
-
     return Object.assign(existUserEntity)
   }
 
@@ -61,7 +58,6 @@ export class UserService {
   }
 
   async findOneUser(request: FindOneUserRequest): Promise<FindOneUserResponseDto> {
-    // console.log(request, 'findOneUser')
     const existUserEntity = await this.userRepository.findOne({
       where: { id: request.id },
       relations: { statistics: true },
@@ -88,8 +84,6 @@ export class UserService {
   }
 
   async createUser(request: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    // console.log(request, 'createUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { externalId: request.externalId } })
 
     if (existUserEntity) {
@@ -146,14 +140,10 @@ export class UserService {
       this.dummyNickNameRepository.update({ id: dummyNickName.id }, { isUsed: 1 }),
     ])
 
-    // console.log(createdUser, 'createUser', 'createdUser')
-
     return Object.assign(createdUser)
   }
 
   async updateUser(request: UpdateUserRequestDto): Promise<UpdateUserResponseDto> {
-    // console.log(request, 'updateUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 
     if (!existUserEntity) {
@@ -201,14 +191,10 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(updatableUserEntity)
 
-    // console.log(savedUser, 'updateUser', 'savedUser')
-
     return Object.assign(savedUser)
   }
 
   async removeUser(request: FindOneUserRequest): Promise<RemoveUserResponseDto> {
-    // console.log(request, 'removeUser')
-
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.id } })
 
     if (!existUserEntity) {

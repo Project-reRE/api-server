@@ -17,27 +17,24 @@ export class AuthController {
 
   @Get('kakao')
   async kakaoLogin(@Headers('kakao-token') kakaoToken: string) {
-    // console.log({ methodName: 'kakaoLogin', data: kakaoToken, context: 'kakaoToken' })
-    const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
+    // const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
 
-    // console.log({ methodName: 'kakaoLogin', data: kakaoUser, context: 'kakaoUser' })
+    // const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
+    //   kakaoUser.id,
+    //   kakaoUser.kakao_account.email,
+    // )
 
-    const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
-      kakaoUser.id,
-      kakaoUser.kakao_account.email,
-    )
+    // if (isAlreadyRegisterEmail)
+    //   throw new HttpException(
+    //     {
+    //       code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+    //       status: HttpStatus.CONFLICT,
+    //       message: `already registered user by email`,
+    //     },
+    //     HttpStatus.CONFLICT,
+    //   )
 
-    if (isAlreadyRegisterEmail)
-      throw new HttpException(
-        {
-          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
-          status: HttpStatus.CONFLICT,
-          message: `already registered user by email`,
-        },
-        HttpStatus.CONFLICT,
-      )
-
-    const existUser = await this.userService.findOneUserExternal({ externalId: kakaoUser.id }).catch((e) => {
+    const existUser = await this.userService.findOneUserExternal({ externalId: '1' }).catch((e) => {
       if (e.response.code) {
         throw new HttpException(
           {
@@ -58,8 +55,6 @@ export class AuthController {
         )
       }
     })
-
-    // console.log({ methodName: 'kakaoLogin', data: existUser, context: 'existUser' })
 
     const payload = {
       id: existUser.id,
@@ -82,10 +77,8 @@ export class AuthController {
 
   @Get('google')
   async googleLogin(@Headers('google-token') googleToken: string) {
-    // console.log({ methodName: 'googleLogin', data: googleToken, context: 'googleToken' })
     const googleUser = await this.authService.getUserInfoForGoogle(googleToken)
 
-    // console.log({ methodName: 'googleLogin', data: googleUser, context: 'googleUser' })
     const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
       googleUser.sub,
       googleUser.email,
@@ -139,15 +132,12 @@ export class AuthController {
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
-    console.log(jwt, 'goggle')
 
     return { jwt, refreshToken }
   }
 
   @Get('apple')
   async appleLogin(@Headers('apple-token') appleToken: string) {
-    // console.log({ methodName: 'appleLogin', data: appleToken, context: 'appleToken' })
-
     // Apple 토큰으로 사용자 정보 가져오기
     const appleUser = await this.authService.getUserInfoForApple(appleToken)
 
@@ -164,8 +154,6 @@ export class AuthController {
         },
         HttpStatus.CONFLICT,
       )
-
-    // console.log({ methodName: 'appleLogin', data: appleUser, context: 'appleUser' })
 
     // DB에서 사용자가 존재하는지 확인
     const existUser = await this.userService.findOneUserExternal({ externalId: appleUser.sub }).catch((e) => {
@@ -207,7 +195,6 @@ export class AuthController {
     const refreshToken = this.jwtService.sign({ id: payload.id }, { secret: jwtConstants.secret, expiresIn: '30d' })
 
     //TODO Prod 배포하기전에 삭제
-    console.log(jwt, 'apple')
 
     return { jwt, refreshToken }
   }

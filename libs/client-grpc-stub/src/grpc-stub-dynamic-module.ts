@@ -16,8 +16,6 @@ export const createGrpcStubClientFactory = (
 ) => ({
   provide: provideName,
   useFactory: (configuration: GrpcStubConfiguration): ClientGrpcProxy => {
-    // console.log(`GRPC_STUB_MODULE_CONFIG: ${JSON.stringify(configuration)}`)
-
     return ClientProxyFactory.create({
       transport: Transport.GRPC,
       options: {

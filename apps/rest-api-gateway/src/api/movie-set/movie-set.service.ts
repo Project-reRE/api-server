@@ -11,7 +11,6 @@ export class MovieSetService {
   ) {}
 
   async findOneMovieSet(request: any): Promise<any> {
-    // console.log(request, 'findOneMovieSet')
 
     const existMovie = await this.movieRepository.findOne({ where: { id: request.id } })
 
@@ -26,13 +25,11 @@ export class MovieSetService {
       )
     }
 
-    // console.log(existMovie, 'findOneMovie')
 
     return existMovie
   }
 
   async findMovieSet(request: any): Promise<any> {
-    // console.log(request, 'findOneMovieSet')
 
     const existMovie = await this.movieRepository.findOne({ where: { id: request.id } })
 
@@ -47,7 +44,6 @@ export class MovieSetService {
       )
     }
 
-    // console.log(existMovie, 'findOneMovie')
 
     return existMovie
   }

@@ -16,7 +16,6 @@ export class MovieSetController {
   })
   @ApiOkResponse({ type: FindMovieSetResponseDto })
   async findOpenMovieSets(): Promise<FindMovieSetResponseDto> {
-    // console.log({ methodName: 'findOpenMovieSets', data: '', context: 'request' })
     // home service 개발 완료 전 까지 Dummy Data return
 
     const dummyResponse: MovieSetDto[] = [

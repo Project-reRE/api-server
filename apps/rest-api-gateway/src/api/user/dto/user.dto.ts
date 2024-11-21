@@ -1,4 +1,4 @@
-import { IsBoolean, IsDateString, IsString } from 'class-validator'
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { UserStatisticsDto } from './user-statistics.dto'
 
@@ -53,15 +53,17 @@ export class UserDto {
 
   @ApiProperty({
     example: true,
+    enum: ['MALE', 'FEMALE', 'UNKNOWN'],
   })
-  @IsBoolean()
-  gender: boolean
+  @IsEnum(['MALE', 'FEMALE', 'UNKNOWN'])
+  gender: 'MALE' | 'FEMALE' | 'UNKNOWN'
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: '1997-09-29',
   })
   @IsString()
-  birthDate: string
+  @IsOptional()
+  birthDate?: string
 
   @ApiProperty({
     type: UserStatisticsDto,

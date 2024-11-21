@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { Cron } from '@nestjs/schedule'
+import { Cron, CronExpression } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { RevaluationEntity } from '../../entity/revaluation.entity'
-import { Between, MoreThan, Repository } from 'typeorm'
+import { Between, Repository } from 'typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
-import { count } from 'console'
 import { RankingEntity } from '../../entity/ranking.entity'
 import { RankingItemEntity } from '../../entity/rankingItem.entity'
 
@@ -22,7 +21,7 @@ export class SchedulerService {
     private readonly rakingItemRepository: Repository<RankingItemEntity>,
   ) {}
 
-  @Cron('0 15 * * *') // 9
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { timeZone: 'Asia/Seoul' }) // 9
   async handleCron() {
     const ranking: Record<'액션' | 'SF' | '멜로/로맨스' | '스릴러' | '코메디', (MovieEntity & { count: number })[]> = {
       액션: [],
@@ -64,7 +63,7 @@ export class SchedulerService {
         ranking[key].sort((a, b) => b.count - a.count)
       }
     })
-
+    console.log(ranking)
     await Promise.all(
       Object.keys(ranking).map((key, index) =>
         this.rakingRepository

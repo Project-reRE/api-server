@@ -33,7 +33,7 @@ export class UserService {
 
   async findOneUserExternal(request: FindOneUserExternalIdRequest): Promise<FindOneUserResponseDto> {
     const existUserEntity = await this.userRepository.findOne({
-      where: { id: '1' },
+      where: { externalId: request.externalId },
       relations: { statistics: true },
     })
 

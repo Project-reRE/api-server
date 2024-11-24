@@ -17,24 +17,24 @@ export class AuthController {
 
   @Get('kakao')
   async kakaoLogin(@Headers('kakao-token') kakaoToken: string) {
-    // const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
+    const kakaoUser = await this.authService.getUserInfoForKakao(kakaoToken)
 
-    // const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
-    //   kakaoUser.id,
-    //   kakaoUser.kakao_account.email,
-    // )
+    const isAlreadyRegisterEmail = await this.userService.isAlreadyEmailUsedOtherPlatform(
+      kakaoUser.id,
+      kakaoUser.kakao_account.email,
+    )
 
-    // if (isAlreadyRegisterEmail)
-    //   throw new HttpException(
-    //     {
-    //       code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
-    //       status: HttpStatus.CONFLICT,
-    //       message: `already registered user by email`,
-    //     },
-    //     HttpStatus.CONFLICT,
-    //   )
+    if (isAlreadyRegisterEmail)
+      throw new HttpException(
+        {
+          code: 'ALREADY_REGISTERED_USER_BY_EMAIL',
+          status: HttpStatus.CONFLICT,
+          message: `already registered user by email`,
+        },
+        HttpStatus.CONFLICT,
+      )
 
-    const existUser = await this.userService.findOneUserExternal({ externalId: '1' }).catch((e) => {
+    const existUser = await this.userService.findOneUserExternal({ externalId: kakaoUser.id }).catch((e) => {
       if (e.response.code) {
         throw new HttpException(
           {

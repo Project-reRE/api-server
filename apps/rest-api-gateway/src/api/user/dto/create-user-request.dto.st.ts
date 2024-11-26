@@ -1,5 +1,6 @@
 import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 
 export class CreateUserRequestDto {
   @ApiProperty({
@@ -30,14 +31,17 @@ export class CreateUserRequestDto {
   readonly description?: string
 
   @ApiProperty({
-    type: String,
+    type: String || Boolean,
     default: true,
     description: "'MALE', 'FEMALE', 'UNKNOWN'",
     enum: ['MALE', 'FEMALE', 'UNKNOWN'],
   })
   @IsNotEmpty()
-  @IsEnum(['MALE', 'FEMALE', 'UNKNOWN'])
-  readonly gender: 'MALE' | 'FEMALE' | 'UNKNOWN' = 'UNKNOWN'
+  // @IsEnum(['MALE', 'FEMALE', 'UNKNOWN'])
+  @Transform(({ value }) => {
+    return typeof value === 'boolean' ? (value ? 'MALE' : 'FEMALE') : value
+  })
+  readonly gender: 'MALE' | 'FEMALE' | 'UNKNOWN'
 
   @ApiPropertyOptional({ example: '1997' })
   @IsOptional()

@@ -201,7 +201,7 @@ export class MovieService {
       `${listCount ? `&listCount=${listCount}` : ``}` +
       `${startCount ? `&startCount=${startCount}` : ``}` +
       `&releaseDte=${getFiveYearsAgo()}`
-
+    console.log(URL)
     const existMovieData: any = await axios({
       url: URL,
       method: 'GET',

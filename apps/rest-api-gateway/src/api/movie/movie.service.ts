@@ -193,20 +193,57 @@ export class MovieService {
     }
 
     // 오늘부터 5년 전의 날짜를 releaseDte에 삽입
-    const URL =
+    const MOVIE_URL =
       this.KMDB_API_URL +
       `&ServiceKey=${this.KMDB_API_KEY}` +
       `${title ? `&title="${title}"` : ``}` +
       `${detail ? `&detail=${detail}` : ``}` +
       `${listCount ? `&listCount=${listCount}` : ``}` +
       `${startCount ? `&startCount=${startCount}` : ``}` +
-      `&releaseDte=${getFiveYearsAgo()}`
-    console.log(URL)
-    const existMovieData: any = await axios({
-      url: URL,
-      method: 'GET',
-    })
-    const results = existMovieData.data.Data[0].Result?.map((value) => {
+      `&releaseDte=${getFiveYearsAgo()}` +
+      '&type=극영화'
+
+    const ANI_URL =
+      this.KMDB_API_URL +
+      `&ServiceKey=${this.KMDB_API_KEY}` +
+      `${title ? `&title="${title}"` : ``}` +
+      `${detail ? `&detail=${detail}` : ``}` +
+      `${listCount ? `&listCount=${listCount}` : ``}` +
+      `${startCount ? `&startCount=${startCount}` : ``}` +
+      `&releaseDte=${getFiveYearsAgo()}` +
+      '&type=애니메이션'
+
+    const DOCUMENTARY_URL =
+      this.KMDB_API_URL +
+      `&ServiceKey=${this.KMDB_API_KEY}` +
+      `${title ? `&title="${title}"` : ``}` +
+      `${detail ? `&detail=${detail}` : ``}` +
+      `${listCount ? `&listCount=${listCount}` : ``}` +
+      `${startCount ? `&startCount=${startCount}` : ``}` +
+      `&releaseDte=${getFiveYearsAgo()}` +
+      '&type=다큐멘터리'
+
+    const [movie, ani, doc]: any = await Promise.all([
+      axios({
+        url: MOVIE_URL,
+        method: 'GET',
+      }),
+      axios({
+        url: ANI_URL,
+        method: 'GET',
+      }),
+      axios({
+        url: DOCUMENTARY_URL,
+        method: 'GET',
+      }),
+    ])
+
+    const result = [
+      ...(movie.data.Data[0].Result ? movie.data.Data[0].Result?.filter((x) => x.repRlsDate) : []),
+      ...(ani.data.Data[0].Result ? ani.data.Data[0].Result?.filter((x) => x.repRlsDate) : []),
+      ...(doc.data.Data[0].Result ? doc.data.Data[0].Result.filter((x) => x.repRlsDate) : []),
+    ]
+    const results = result?.map((value) => {
       const posters = value?.posters?.toLowerCase()?.split('.jpg')[0]
       const stills = value?.stills?.toLowerCase()?.split('.jpg')[0]
 

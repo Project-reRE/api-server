@@ -77,13 +77,10 @@ export class RevaluationService {
       )
     }
 
-    // const beforeRevaluation = this.revaluationRepository.create(existRevaluation)
-    const updatableRevaluation = this.revaluationRepository.merge(existRevaluation, request)
-
-    const updatedRevaluation = await this.revaluationRepository.save(updatableRevaluation)
     const existUserEntity = await this.userRepository.findOne({ where: { id: request.requestUserId } })
-
     await this.decreaseMovieStatistics(existRevaluation.movie.id, existRevaluation, existUserEntity)
+    const updatableRevaluation = this.revaluationRepository.merge(existRevaluation, request)
+    const updatedRevaluation = await this.revaluationRepository.save(updatableRevaluation)
     await this.increaseMovieStatistics(existRevaluation.movie.id, updatedRevaluation, existUserEntity)
 
     return updatedRevaluation

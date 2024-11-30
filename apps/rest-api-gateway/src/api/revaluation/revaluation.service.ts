@@ -401,7 +401,8 @@ export class RevaluationService {
 
     // 이후 존재하는 값이 있는지 확인하고 업데이트
     if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]) {
-      existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]++
+      existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] =
+        existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] + 1
     } else {
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] = 1
     }
@@ -413,7 +414,8 @@ export class RevaluationService {
 
     // 이후 존재하는 값이 있는지 확인하고 업데이트
     if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]) {
-      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]++
+      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] =
+        existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] + 1
     } else {
       existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] = 1
     }
@@ -425,7 +427,8 @@ export class RevaluationService {
 
     // 이후 존재하는 값이 있는지 확인하고 업데이트
     if (existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]) {
-      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]++
+      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] =
+        existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] + 1
     } else {
       existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] = 1
     }
@@ -518,7 +521,6 @@ export class RevaluationService {
     if (!existMovieStatistics) {
       return // 데이터가 없으면 반환
     }
-
     // 총합 계산 전 기존 참가자 수가 0인지 확인
     if (existMovieStatistics.numStarsParticipants > 0) {
       const beforeTotal = existMovieStatistics.numStars * existMovieStatistics.numStarsParticipants
@@ -560,7 +562,8 @@ export class RevaluationService {
       existMovieStatistics.numPastValuation &&
       existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]
     ) {
-      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]--
+      existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] =
+        existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] - 1
       if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] < 0) {
         existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] = 0 // 0 미만 방지
       }
@@ -571,7 +574,8 @@ export class RevaluationService {
       existMovieStatistics.numPresentValuation &&
       existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]
     ) {
-      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation]--
+      existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] =
+        existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] - 1
       if (existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] < 0) {
         existMovieStatistics.numPresentValuation[revaluationEntity.presentValuation] = 0 // 0 미만 방지
       }
@@ -599,39 +603,38 @@ export class RevaluationService {
           }
         }
       }
-      let ageGroup = 'UNKNOWN'
-
-      if (existUserEntity.birthDate) {
-        const nowDate = dayjs()
-        const currentYear = nowDate.year()
-
-        const birthYear = parseInt(existUserEntity.birthDate, 10)
-
-        const age = currentYear - birthYear
-
-        if (age >= 10 && age < 20) {
-          ageGroup = 'TEENS'
-        } else if (age >= 20 && age < 30) {
-          ageGroup = 'TWENTIES'
-        } else if (age >= 30 && age < 40) {
-          ageGroup = 'THIRTIES'
-        } else if (age >= 40 && age < 50) {
-          ageGroup = 'FORTIES'
-        } else {
-          ageGroup = 'FIFTIES_PLUS'
-        }
-      }
-
-      // 나이대에 따른 감소 처리
-      if (existMovieStatistics.numAge[ageGroup]) {
-        existMovieStatistics.numAge[ageGroup]--
-        if (existMovieStatistics.numAge[ageGroup] < 0) {
-          existMovieStatistics.numAge[ageGroup] = 0 // 0 미만 방지
-        }
-      }
-
-      await this.movieStatisticsRepository.save(existMovieStatistics)
     }
+    let ageGroup = 'UNKNOWN'
+
+    if (existUserEntity.birthDate) {
+      const nowDate = dayjs()
+      const currentYear = nowDate.year()
+
+      const birthYear = parseInt(existUserEntity.birthDate, 10)
+
+      const age = currentYear - birthYear
+
+      if (age >= 10 && age < 20) {
+        ageGroup = 'TEENS'
+      } else if (age >= 20 && age < 30) {
+        ageGroup = 'TWENTIES'
+      } else if (age >= 30 && age < 40) {
+        ageGroup = 'THIRTIES'
+      } else if (age >= 40 && age < 50) {
+        ageGroup = 'FORTIES'
+      } else {
+        ageGroup = 'FIFTIES_PLUS'
+      }
+    }
+
+    // 나이대에 따른 감소 처리
+    if (existMovieStatistics.numAge[ageGroup]) {
+      existMovieStatistics.numAge[ageGroup]--
+      if (existMovieStatistics.numAge[ageGroup] < 0) {
+        existMovieStatistics.numAge[ageGroup] = 0 // 0 미만 방지
+      }
+    }
+    await this.movieStatisticsRepository.save(existMovieStatistics)
   }
 
   private async createRevaluationStatistics(revaluationId: string): Promise<RevaluationStatisticsEntity> {

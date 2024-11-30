@@ -261,17 +261,18 @@ export class RevaluationService {
     const today = new Date()
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
 
-    // 이번 달 마지막 날 (일자를 다음 달 1일로 설정하고 하루 전으로 변경)
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0') // 월은 0부터 시작하므로 +1 필요
+    const day = String(today.getDate()).padStart(2, '0')
 
     const revaluation = await this.revaluationRepository.findOne({
       where: {
-        createdAt: Between(startOfMonth, endOfMonth),
+        createdAt: Between(startOfMonth, new Date(`${year}-${month}-${day} 23:59:59`)),
         movie: {
           id: query.movieId,
         },
         user: {
-          id: user.id,
+          id: '10',
         },
       },
     })

@@ -550,8 +550,8 @@ export class RevaluationService {
     // numSpecialPoint 감소 처리
     if (existMovieStatistics.numSpecialPoint && existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]) {
       existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint]--
-      if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] < 0) {
-        existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] = 0 // 0 미만 방지
+      if (existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] <= 0) {
+        delete existMovieStatistics.numSpecialPoint[revaluationEntity.specialPoint] // 0 미만 방지
       }
     }
 
@@ -562,8 +562,8 @@ export class RevaluationService {
     ) {
       existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] =
         existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] - 1
-      if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] === 0) {
-        delete existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]
+      if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] < 0) {
+        existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] = 0 // 0 미만 방지
       }
     }
 

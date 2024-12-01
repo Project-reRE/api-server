@@ -562,8 +562,8 @@ export class RevaluationService {
     ) {
       existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] =
         existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] - 1
-      if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] < 0) {
-        existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] = 0 // 0 미만 방지
+      if (existMovieStatistics.numPastValuation[revaluationEntity.pastValuation] === 0) {
+        delete existMovieStatistics.numPastValuation[revaluationEntity.pastValuation]
       }
     }
 

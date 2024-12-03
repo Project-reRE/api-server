@@ -23,6 +23,7 @@ export class SchedulerService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { timeZone: 'Asia/Seoul' }) // 9
   async handleCron() {
+    console.log('Called when the current time is 00:00 in Asia/Seoul timezone', new Date())
     const ranking: Record<'액션' | 'SF' | '멜로/로맨스' | '스릴러' | '코메디', (MovieEntity & { count: number })[]> = {
       액션: [],
       SF: [],
@@ -63,7 +64,7 @@ export class SchedulerService {
         ranking[key].sort((a, b) => b.count - a.count)
       }
     })
-    console.log(ranking)
+
     await Promise.all(
       Object.keys(ranking).map((key, index) =>
         this.rakingRepository
@@ -74,7 +75,7 @@ export class SchedulerService {
               displayOrder: index,
               condition: 'most_revaluation',
               template: 'scroll_view',
-              activeAt: new Date(),
+              activeAt: new Date(`${year}-${month}-${day}`),
             }),
           )
           .then((rank) =>

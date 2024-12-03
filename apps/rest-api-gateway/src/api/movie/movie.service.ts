@@ -309,7 +309,7 @@ export class MovieService {
     const day = String(today.getDate()).padStart(2, '0')
     const ranking = await this.rankEntityRepository.find({
       where: {
-        activeAt: Between(new Date(`${year}-${month}-${Number(day) - 1}`), new Date(`${year}-${month}-${Number(day)}`)),
+        activeAt: new Date(`${year}-${month}-${Number(day)}`),
       },
       order: {
         displayOrder: 'ASC',

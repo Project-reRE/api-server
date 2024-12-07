@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Between, MoreThan, MoreThanOrEqual, Repository } from 'typeorm'
+import { Between, LessThan, MoreThan, MoreThanOrEqual, Repository } from 'typeorm'
 import { MovieEntity } from '../../entity/movie.entity'
 import { FindOneMovieRequestDto } from './dto/find-one-movie-request.dto'
 import { FindMovieQueryDto } from './dto/find-movie.query.dto'
@@ -309,7 +309,7 @@ export class MovieService {
     const day = String(today.getDate()).padStart(2, '0')
     const ranking = await this.rankEntityRepository.find({
       where: {
-        activeAt: new Date(`${year}-${month}-${Number(day)}`),
+        activeAt: MoreThanOrEqual(new Date(`${year}-${month}-${Number(day)} 00:00:00`)),
       },
       order: {
         displayOrder: 'ASC',

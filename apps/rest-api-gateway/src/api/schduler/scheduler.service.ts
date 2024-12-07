@@ -43,7 +43,10 @@ export class SchedulerService {
       .select('movie.*')
       .addSelect('COUNT(*) as count')
       .where({
-        createdAt: Between(`${year}-${month}-${Number(day)}`, `${year}-${month}-${day + 1}`),
+        createdAt: Between(
+          `${year}-${month}-${day}`,
+          `${year}-${month}-${String(today.getDate() + 1).padStart(2, '0')}`,
+        ),
       })
       .groupBy('movie.id')
       .getRawMany()

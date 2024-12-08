@@ -271,7 +271,7 @@ export class RevaluationService {
           id: query.movieId,
         },
         user: {
-          id: '10',
+          id: user.id,
         },
       },
     })

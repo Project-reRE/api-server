@@ -212,7 +212,7 @@ export class RevaluationController {
     }
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('my/revaluations/check-in-month')
   @ApiOperation({
     description: '특정 영화에 대한 내 이번달 재평가 여부 확인',

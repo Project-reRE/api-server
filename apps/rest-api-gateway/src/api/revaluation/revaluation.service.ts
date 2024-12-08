@@ -139,7 +139,6 @@ export class RevaluationService {
     const revaluationThresholdHour = parseInt(REVALUATION_THRESHOLD_HOUR)
     const revaluationThresholdDate = new Date()
     revaluationThresholdDate.setHours(revaluationThresholdDate.getHours() - revaluationThresholdHour)
-
     const existRevaluation = await this.revaluationRepository.findOne({
       where: {
         movie: { id: request.movieId },
@@ -451,7 +450,7 @@ export class RevaluationService {
       } else {
         existMovieStatistics.numGender['FEMALE'] = 1
       }
-    } else {
+    } else if (existUserEntity.gender === 'UNKNOWN') {
       // FEMALE 값이 없는 경우 1로 초기화, 있으면 값 증가
       if (existMovieStatistics.numGender['UNKNOWN']) {
         existMovieStatistics.numGender['UNKNOWN']++
@@ -462,7 +461,10 @@ export class RevaluationService {
 
     // 나이대에 따라 numAge 업데이트
     let ageGroup = 'UNKNOWN'
-
+    // numAge가 null일 경우 객체로 초기화
+    if (!existMovieStatistics.numAge) {
+      existMovieStatistics.numAge = {} // 빈 객체로 초기화
+    }
     if (existUserEntity.birthDate) {
       const nowDate = dayjs()
       const currentYear = nowDate.year() // 현재 연도만 가져옴
@@ -472,11 +474,6 @@ export class RevaluationService {
 
       // 나이 계산
       const age = currentYear - birthYear
-
-      // numAge가 null일 경우 객체로 초기화
-      if (!existMovieStatistics.numAge) {
-        existMovieStatistics.numAge = {} // 빈 객체로 초기화
-      }
 
       if (age >= 10 && age < 20) {
         ageGroup = 'TEENS'
@@ -593,12 +590,12 @@ export class RevaluationService {
         if (existMovieStatistics.numGender['FEMALE'] < 0) {
           existMovieStatistics.numGender['FEMALE'] = 0 // 0 미만 방지
         }
-      } else {
-        if (existMovieStatistics.numGender['UNKNOWN']) {
-          existMovieStatistics.numGender['UNKNOWN']--
-          if (existMovieStatistics.numGender['UNKNOWN'] < 0) {
-            existMovieStatistics.numGender['UNKNOWN'] = 0 // 0 미만 방지
-          }
+      }
+    } else if (existUserEntity.gender === 'UNKNOWN') {
+      if (existMovieStatistics.numGender['UNKNOWN']) {
+        existMovieStatistics.numGender['UNKNOWN']--
+        if (existMovieStatistics.numGender['UNKNOWN'] < 0) {
+          existMovieStatistics.numGender['UNKNOWN'] = 0 // 0 미만 방지
         }
       }
     }

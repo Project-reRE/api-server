@@ -303,13 +303,11 @@ export class MovieService {
   }
 
   async rank(): Promise<(RankingEntity & { data: MovieEntity[] })[]> {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, '0') // 월은 0부터 시작하므로 +1 필요
-    const day = String(today.getDate()).padStart(2, '0')
+    const { activeAt } = await (await this.rankEntityRepository.find({ order: { activeAt: 'DESC' }, take: 1 })).at(0)
+
     const ranking = await this.rankEntityRepository.find({
       where: {
-        activeAt: MoreThanOrEqual(new Date(`${year}-${month}-${Number(day)} 00:00:00`)),
+        activeAt,
       },
       order: {
         displayOrder: 'ASC',

@@ -332,8 +332,6 @@ export class MovieService {
         }
       }),
     )
-    const emptyChecker = rankingWithItem.map((rank) => rank.data.length).filter((length) => length !== 0)
-    if (R.equals(0, R.length(emptyChecker))) return []
     return rankingWithItem
   }
 }

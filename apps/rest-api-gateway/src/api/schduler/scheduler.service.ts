@@ -7,7 +7,7 @@ import { MovieEntity } from '../../entity/movie.entity'
 import { RankingEntity } from '../../entity/ranking.entity'
 import { RankingItemEntity } from '../../entity/rankingItem.entity'
 
-const RANKING_INCLUDE_GENRE = ['액션', 'SF', '멜로/로맨스', '스릴러', '코메디']
+const RANKING_INCLUDE_GENRE = ['액션', 'SF', '멜로/로맨스', '스릴러', '코메디', '드라마']
 type Genre = (typeof RANKING_INCLUDE_GENRE)[number]
 
 @Injectable()
@@ -24,12 +24,16 @@ export class SchedulerService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { timeZone: 'Asia/Seoul' }) // 9
   async handleCron() {
     console.log('Called when the current time is 00:00 in Asia/Seoul timezone', new Date())
-    const ranking: Record<'액션' | 'SF' | '멜로/로맨스' | '스릴러' | '코메디', (MovieEntity & { count: number })[]> = {
+    const ranking: Record<
+      '액션' | 'SF' | '멜로/로맨스' | '스릴러' | '코메디' | '드라마',
+      (MovieEntity & { count: number })[]
+    > = {
       액션: [],
       SF: [],
       '멜로/로맨스': [],
       스릴러: [],
       코메디: [],
+      드라마: [],
     }
 
     const today = new Date()

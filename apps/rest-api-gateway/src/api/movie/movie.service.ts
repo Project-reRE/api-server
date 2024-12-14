@@ -12,7 +12,7 @@ import * as dayjs from 'dayjs'
 import { MovieStatisticsEntity } from '../../entity/movie-statistics.entity'
 import { RankingEntity } from '../../entity/ranking.entity'
 import { RankingItemEntity } from '../../entity/rankingItem.entity'
-
+import * as R from 'ramda'
 @Injectable()
 export class MovieService {
   KMDB_API_KEY = process.env.KMDB_API_KEY
@@ -332,7 +332,8 @@ export class MovieService {
         }
       }),
     )
-
+    const emptyChecker = rankingWithItem.map((rank) => rank.data.length).filter((length) => length !== 0)
+    if (R.equals(0, R.length(emptyChecker))) return []
     return rankingWithItem
   }
 }
